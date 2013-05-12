@@ -6,21 +6,22 @@ MarkWiki
 Running MarkWiki
 ----------------
 
-From the root directory, run:
+From the project's root directory, run:
 
     $ pip install -r requirements.txt
     $ python markwiki.py
 
-Design Goals
-------------
+Design Goal
+-----------
 
-MarkWiki should follow this simple design goal:
-
-* The wiki should be as simple as possible to set up. For a basic working
-  configuration, this should never be more than two steps.
+MarkWiki should be as simple as possible to set up. A basic working
+configuration should never need more than two steps.
 
     1.  Install the dependencies.
     2.  Start the web server.
+
+Why? MarkWiki is aimed at teams that want a no fuss, no frills wiki. Simplicity
+trumps features.
 
 Dependencies
 ------------
