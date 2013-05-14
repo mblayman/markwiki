@@ -1,5 +1,3 @@
 {% extends 'base.html' %}
 {% block title %}{{ title }}{% endblock %}
-{% block content %}
-  <h1>Hello Wiki World From {{ title }}</h1>
-{% endblock %}
+{% block content %}{{ wiki|safe }}{% endblock %}

@@ -6,6 +6,7 @@ import shutil
 
 from flask import Flask
 from flask import render_template
+import markdown
 # TODO: Make an extension to replace wiki words with links.
 
 # Globals - The very few
@@ -28,6 +29,12 @@ def get_wiki(page_path):
     '''Get the wiki's page path.'''
     return os.path.join(wiki_path, page_path + '.md')
 
+def render_markdown(wiki_page):
+    '''Render the Markdown from the wiki page provided. Assumes path exists.'''
+    with open(wiki_page) as wiki_file:
+        text = wiki_file.read()
+        return markdown.markdown(text, safe_mode='escape')
+
 @app.route('/')
 def index():
     '''Display the MarkWiki main page.'''
@@ -37,14 +44,19 @@ def index():
 @app.route('/wiki/<path:page_path>')
 def wiki(page_path='MarkWiki'):
     '''Render the wiki page or make a new one if the wiki doesn't exist.'''
+    wiki_html = ''
+
     wiki_page = get_wiki(page_path)
-    # TODO: Fetch the wiki page from the site, render it and
-    # insert it into the template.
+    if os.path.isfile(wiki_page):
+        wiki_html = render_markdown(wiki_page)
+    else:
+        # TODO: Send to a creation form.
+        pass
 
     # Always use the last name in the path as the title.
     title = os.path.split(page_path)[-1]
 
-    return render_template('wiki.html', title=title)
+    return render_template('wiki.html', title=title, wiki=wiki_html)
 
 if __name__ == '__main__':
     # TODO: Make the wiki location configurable.
@@ -55,6 +67,7 @@ if __name__ == '__main__':
     if not os.path.exists(wiki_path):
         bootstrap()
 
+    # TODO: Not production ready yet. Debug is on and dangerous.
     app.debug = True
     app.run(host='0.0.0.0')
 
