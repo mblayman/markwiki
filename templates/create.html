@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}
+  {% if page_path %}
+  Create {{ page_path }}
+  {% else %}
+  Create a wiki
+  {% endif %}
+{% endblock %}
+{% block content %}
+<form action='/make_wiki' method='POST'>
+  <label for='page_path'>Wiki:</label>
+  <input type='text' name='page_path'
+  {% if page_path %}
+    value='{{ page_path }}'
+  {% else %}
+    autofocus='autofocus'
+  {% endif %}
+  >
+  <br>
+  <textarea rows='45' cols='80' name='wiki_content'
+  {% if page_path %}
+    autofocus='autofocus'
+  {% endif %}
+    placeholder='Start writing your wiki...'></textarea>
+  <br>
+  <input type='submit' value='Save Wiki'>
+</form>
+{% endblock %}
