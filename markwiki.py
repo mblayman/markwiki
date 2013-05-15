@@ -45,7 +45,7 @@ def write_wiki(path, content):
     try:
         with open(path, 'w') as wiki:
             wiki.write(content)
-        return False
+        return True
     except IOError:
         # Something bad happened while writing so report failure.
         return False
