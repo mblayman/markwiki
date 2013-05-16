@@ -17,8 +17,8 @@ Design Goal
 MarkWiki should be as simple as possible to set up. A basic working
 configuration should never need more than two steps.
 
-    1.  Install the dependencies.
-    2.  Start the web server.
+1.  Install the dependencies.
+2.  Start the web server.
 
 Why? MarkWiki is aimed at teams that want a no fuss, no frills wiki. Simplicity
 trumps features.
