@@ -39,6 +39,20 @@ def render_markdown(wiki_page):
         text = wiki_file.read()
         return markdown.markdown(text, safe_mode='escape')
 
+def render_wiki_editor(page_path, wiki_page):
+    '''Render the wiki editor with content from the provided wiki page.
+    Assumes a valid wiki page path.'''
+    try:
+        with open(wiki_page, 'r') as wiki:
+            wiki_content = wiki.read()
+            return render_template('edit.html', page_path=page_path,
+                wiki_content=wiki_content)
+    except IOError:
+        abort(500)
+
+    # Some weird stuff happened if we got here.
+    abort(500)
+
 def write_wiki(path, content):
     '''Write the wiki content to the path provided. Assumes valid path.'''
     # TODO: Make sure all the intermediate directories exist.
@@ -101,6 +115,36 @@ def make_wiki():
     else:
         # TODO: Report that the path is not valid.
         pass
+
+@app.route('/edit/')
+@app.route('/edit/<path:page_path>')
+def edit(page_path=None):
+    '''Edit a wiki page.'''
+    # It should be possible to create a new page from the edit link.
+    if page_path is None:
+        return create(page_path)
+
+    if valid_page_path(page_path):
+        wiki_page = get_wiki(page_path)
+
+        # Proceed if the wiki exists.
+        if os.path.exists(wiki_page):
+            return render_wiki_editor(page_path, wiki_page)
+        else:
+            # Get the user going with this new page.
+            return create(page_path)
+    else:
+        # TODO: Report that the path is not valid.
+        pass
+
+@app.route('/update_wiki', methods=['POST'])
+def update_wiki():
+    '''Update a wiki page.'''
+    # If the path changed, then this is now a new page.
+    if request.form['original_page_path'] != request.form['page_path']:
+        return make_wiki()
+
+    # TODO: Save the wiki again. Is it possible to generalize?
 
 @app.route('/wiki/')
 @app.route('/wiki/<path:page_path>')

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Edit {{ page_path }}{% endblock %}
+{% block content %}
+<form action='/update_wiki' method='POST'>
+  <input type='hidden' name='original_page_path' value='{{ page_path }}'>
+  <label for='page_path'>Wiki:</label>
+  <input type='text' name='page_path' value='{{ page_path }}'>
+  <br>
+  <textarea rows='45' cols='80' name='wiki_content'
+    autofocus='autofocus'>{{ wiki_content }}</textarea>
+  <br>
+  <input type='submit' value='Save Wiki'>
+</form>
+{% endblock %}
