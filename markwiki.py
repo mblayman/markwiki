@@ -59,10 +59,9 @@ def write_wiki(path, content):
     try:
         with open(path, 'w') as wiki:
             wiki.write(content)
-        return True
     except IOError:
         # Something bad happened while writing so report failure.
-        return False
+        abort(500)
 
 def valid_page_path(page_path):
     '''Check that the page path is valid.'''
@@ -104,11 +103,8 @@ def make_wiki():
 
         # Proceed if the wiki does not exist.
         if not os.path.exists(wiki_page):
-            success = write_wiki(wiki_page, request.form['wiki_content'])
-            if success:
-                return redirect(url_for('wiki', page_path=page_path))
-            else:
-                abort(500)
+            write_wiki(wiki_page, request.form['wiki_content'])
+            return redirect(url_for('wiki', page_path=page_path))
         else:
             # TODO: Report back that the page already exists.
             pass
@@ -143,8 +139,13 @@ def update_wiki():
     # If the path changed, then this is now a new page.
     if request.form['original_page_path'] != request.form['page_path']:
         return make_wiki()
-
-    # TODO: Save the wiki again. Is it possible to generalize?
+    else:
+        # Because the path is the same as the original, then it must be valid
+        # because it is a pre-existing page.
+        page_path = request.form['page_path']
+        wiki_page = get_wiki(page_path)
+        write_wiki(wiki_page, request.form['wiki_content'])
+        return redirect(url_for('wiki', page_path=page_path))
 
 @app.route('/wiki/')
 @app.route('/wiki/<path:page_path>')
