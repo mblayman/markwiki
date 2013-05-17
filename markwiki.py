@@ -19,6 +19,9 @@ here = os.path.abspath(os.path.dirname(__file__))
 # The location of all wiki content
 wiki_path = ''
 
+class ValidationError(Exception):
+    '''A simple exception to use to report errors to users.'''
+
 def bootstrap():
     '''Bootstrap the wiki with some basic content.'''
     # Create the wiki at the specified path.
@@ -55,7 +58,15 @@ def render_wiki_editor(page_path, wiki_page):
 
 def write_wiki(path, content):
     '''Write the wiki content to the path provided. Assumes valid path.'''
-    # TODO: Make sure all the intermediate directories exist.
+    # Determine if the directories are already in place.
+    directory = os.path.dirname(path)
+    if  not os.path.exists(directory):
+        # This could be nested deeply so make the intermediate directories too.
+        try:
+            os.makedirs(directory)
+        except:
+            abort(500)
+
     try:
         with open(path, 'w') as wiki:
             wiki.write(content)
@@ -63,20 +74,36 @@ def write_wiki(path, content):
         # Something bad happened while writing so report failure.
         abort(500)
 
-def valid_page_path(page_path):
-    '''Check that the page path is valid.'''
+def validate_directories(directories):
+    '''Check that the directories are sane.'''
+    for directory in directories:
+        # Prevent any double, triple, or however many slashes in a row.
+        if directory == '':
+            raise ValidationError('It looks like there were multiple slashes '
+                'in a row in your wiki name.')
+
+        # No relative paths allowed.
+        if directory in ['..', '.']:
+            raise ValidationError('Wiki names can\'t include just \'..\' or '
+                '\'.\' between slashes.')
+
+        # None of the directory parts can end in '.md' because that would
+        # screw up the ability to make a wiki in the directory that has the
+        # same name.
+        if directory.endswith('.md'):
+            raise ValidationError("Wiki names can't end in '.md' in the parts "
+                "before the last slash. Sorry, this rule is weird. I know.")
+
+def validate_page_path(page_path):
+    '''Check that the page path is valid. Return an '''
     # An empty page path is no good.
     if page_path is None or page_path == '':
-        return False
+        raise ValidationError('You need to supply some wiki name.')
 
-    # Neither is a path that uses relative path stuff.
-    # TODO: implement this check
-
-    # None of the directory parts can end in '.md' because that would screw
-    # up the ability to make a wiki in the directory that has the same name.
-    # TODO: implement this check
-
-    return True
+    # Do some directory checking.
+    page_parts = page_path.split('/')
+    if len(page_parts) > 1:
+        validate_directories(page_parts[:-1])
 
 @app.errorhandler(500)
 def internal_server_error(error):
@@ -98,7 +125,8 @@ def create(page_path=None):
 def make_wiki():
     '''Make the wiki page.'''
     page_path = request.form['page_path']
-    if valid_page_path(page_path):
+    try:
+        validate_page_path(page_path)
         wiki_page = get_wiki(page_path)
 
         # Proceed if the wiki does not exist.
@@ -108,7 +136,7 @@ def make_wiki():
         else:
             # TODO: Report back that the page already exists.
             pass
-    else:
+    except ValidationError as verror:
         # TODO: Report that the path is not valid.
         pass
 
@@ -120,7 +148,8 @@ def edit(page_path=None):
     if page_path is None:
         return create(page_path)
 
-    if valid_page_path(page_path):
+    try:
+        validate_page_path(page_path)
         wiki_page = get_wiki(page_path)
 
         # Proceed if the wiki exists.
@@ -129,7 +158,7 @@ def edit(page_path=None):
         else:
             # Get the user going with this new page.
             return create(page_path)
-    else:
+    except ValidationError as verror:
         # TODO: Report that the path is not valid.
         pass
 
