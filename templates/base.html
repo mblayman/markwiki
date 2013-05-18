@@ -2,18 +2,37 @@
 <html>
 <head>
   <title>{% block title%}{% endblock %}</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <link rel='stylesheet' media='screen'
+    href='{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}'>
+  <link rel='stylesheet' media='screen'
+    href='{{ url_for('static', filename='bootstrap/css/bootstrap-responsive.min.css') }}'>
+  <style>
+    textarea { font-family: monospace; }
+  </style>
 </head>
 <body>
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      <ul>
-      {% for message in messages %}
-        <li>{{ message }}</li>
-      {% endfor %}
-      </ul>
-    {% endif %}
-  {% endwith %}
-  {% block content %}
-  {% endblock %}
+<div class='container'>
+<div class='row'>
+  <div class='span3 offset1'>
+    <ul>
+      <li><a href='{{ url_for('create') }}'>Create a Wiki</a></li>
+    </ul>
+  </div>
+  <div class='span8'>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    {% block content %}
+    {% endblock %}
+  </div>
+</div>
+</div>
 </body>
 </html>

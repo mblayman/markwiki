@@ -8,26 +8,33 @@
 {% endblock %}
 {% block content %}
 <form action='/make_wiki' method='POST'>
-  <label for='page_path'>Wiki:</label>
-  <input type='text' name='page_path'
-  {% if page_path %}
-    value='{{ page_path }}'
-  {% else %}
-    autofocus='autofocus'
-  {% endif %}
-  >
-  <br>
-  <textarea rows='45' cols='80' name='wiki_content'
-  {% if page_path %}
-    autofocus='autofocus'
-  {% endif %}
-    placeholder='Start writing your wiki...'
-  {% if wiki_content %}
-    >{{ wiki_content }}</textarea>
-  {% else %}
-    ></textarea>
-  {% endif %}
-  <br>
-  <input type='submit' value='Save Wiki'>
+  <div class='control-group'>
+    <label for='page_path'>Wiki</label>
+    <input type='text' name='page_path'
+    {% if page_path %}
+      value='{{ page_path }}'
+    {% else %}
+      autofocus='autofocus'
+    {% endif %}
+      placeholder='Provide a wiki name...'
+    >
+  </div>
+  <div class='control-group'>
+    <textarea rows='30' name='wiki_content' class='span7'
+    {% if page_path %}
+      autofocus='autofocus'
+    {% endif %}
+      placeholder='Start writing your wiki...'
+    {% if wiki_content %}
+      >{{ wiki_content }}</textarea>
+    {% else %}
+      ></textarea>
+    {% endif %}
+  </div>
+  <div class='control-group'>
+    <button type='submit' class='btn btn-success'>
+      <i class='icon-ok icon-white'></i> Save Wiki
+    </button>
+  </div>
 </form>
 {% endblock %}
