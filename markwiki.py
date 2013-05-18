@@ -137,6 +137,7 @@ def make_wiki():
             # TODO: Report back that the page already exists.
             pass
     except ValidationError as verror:
+        # TODO: use verror.message
         # TODO: Report that the path is not valid.
         pass
 
@@ -146,7 +147,7 @@ def edit(page_path=None):
     '''Edit a wiki page.'''
     # It should be possible to create a new page from the edit link.
     if page_path is None:
-        return create(page_path)
+        return redirect(url_for('create'))
 
     try:
         validate_page_path(page_path)
@@ -157,10 +158,13 @@ def edit(page_path=None):
             return render_wiki_editor(page_path, wiki_page)
         else:
             # Get the user going with this new page.
-            return create(page_path)
+            return redirect(url_for('create', page_path=page_path))
     except ValidationError as verror:
-        # TODO: Report that the path is not valid.
-        pass
+        # The user tried to create a page straight from the URL, but the path
+        # isn't correct. Give them the page path again in case they fat
+        # fingered something.
+        # TODO: make sure to report that the path is invalid.
+        return redirect(url_for('create', page_path=page_path))
 
 @app.route('/update_wiki', methods=['POST'])
 def update_wiki():
