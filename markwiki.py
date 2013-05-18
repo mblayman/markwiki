@@ -200,7 +200,16 @@ def wiki(page_path='MarkWiki'):
     # Always use the last name in the path as the title.
     title = os.path.split(page_path)[-1]
 
-    return render_template('wiki.html', title=title, wiki=wiki_html)
+    return render_template('wiki.html', page_path=page_path, title=title,
+        wiki=wiki_html)
+
+@app.route('/delete/<path:page_path>')
+def delete(page_path):
+    '''Delete the wiki page.'''
+    # TODO: Don't delete MarkWiki.
+    # TODO: Delete the page.
+    # TODO: Check to make sure the page exists.
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     # TODO: Make the wiki location configurable.

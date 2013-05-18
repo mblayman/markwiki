@@ -5,6 +5,12 @@
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <link rel='stylesheet' media='screen'
     href='{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}'>
+  <style>
+    body {
+      /* 60px to make the container go all the way to the bottom of the topbar*/
+      padding-top: 60px;
+    }
+  </style>
   <link rel='stylesheet' media='screen'
     href='{{ url_for('static', filename='bootstrap/css/bootstrap-responsive.min.css') }}'>
   <style>
@@ -12,14 +18,29 @@
   </style>
 </head>
 <body>
+<div class='navbar navbar-fixed-top navbar-inverse'>
+  <div class='navbar-inner'>
+    <div class='container'>
+      <a class='brand' href='{{ url_for('index') }}'>MarkWiki</a>
+    </div>
+  </div>
+</div>
 <div class='container'>
 <div class='row'>
   <div class='span3 offset1'>
-    <ul>
-      <li><a href='{{ url_for('create') }}'>Create a Wiki</a></li>
+    <ul class='nav nav-list'>
+      <li class='nav-header'>Actions</li>
+      <li><a href='{{ url_for('index') }}'><i
+        class='icon-home'></i> Go Home</a></li>
+      <li><a href='{{ url_for('create') }}'><i
+        class='icon-pencil'></i> Create a Wiki</a></li>
+      <li><a href='/help'><!-- TODO - Write a help page. --><i
+        class='icon-question-sign'></i> Get Help</a></li>
+      {% block actions %}{% endblock %}
     </ul>
   </div>
   <div class='span8'>
+    <!-- TODO: Do something with the Bootstrap alerts. -->
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         <ul>
@@ -33,6 +54,10 @@
     {% endblock %}
   </div>
 </div>
+<hr>
+<footer>
+  <p>MarkWiki is open source software.</p>
+</footer>
 </div>
 </body>
 </html>
