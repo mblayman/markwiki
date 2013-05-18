@@ -21,7 +21,12 @@
   {% if page_path %}
     autofocus='autofocus'
   {% endif %}
-    placeholder='Start writing your wiki...'></textarea>
+    placeholder='Start writing your wiki...'
+  {% if wiki_content %}
+    >{{ wiki_content }}</textarea>
+  {% else %}
+    ></textarea>
+  {% endif %}
   <br>
   <input type='submit' value='Save Wiki'>
 </form>

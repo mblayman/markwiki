@@ -5,6 +5,7 @@ import os
 import shutil
 
 from flask import abort
+from flask import flash
 from flask import Flask
 from flask import redirect
 from flask import render_template
@@ -18,6 +19,10 @@ app = Flask(__name__)
 here = os.path.abspath(os.path.dirname(__file__))
 # The location of all wiki content
 wiki_path = ''
+
+# The app needs a secret key to use flash messages. If more serious session
+# management is needed then the secret key will have to handled better.
+app.secret_key = 'It\'s a secret to everybody.'
 
 class ValidationError(Exception):
     '''A simple exception to use to report errors to users.'''
@@ -117,9 +122,10 @@ def index():
 
 @app.route('/create/')
 @app.route('/create/<path:page_path>')
-def create(page_path=None):
+def create(page_path=None, wiki_content=None):
     '''Display the wiki creation form.'''
-    return render_template('create.html', page_path=page_path)
+    return render_template('create.html', page_path=page_path,
+        wiki_content=wiki_content)
 
 @app.route('/make_wiki', methods=['POST'])
 def make_wiki():
@@ -134,12 +140,11 @@ def make_wiki():
             write_wiki(wiki_page, request.form['wiki_content'])
             return redirect(url_for('wiki', page_path=page_path))
         else:
-            # TODO: Report back that the page already exists.
-            pass
+            flash('That wiki name already exists. Please choose another.')
+            return create(page_path, request.form['wiki_content'])
     except ValidationError as verror:
-        # TODO: use verror.message
-        # TODO: Report that the path is not valid.
-        pass
+        flash(verror.message)
+        return create(page_path, request.form['wiki_content'])
 
 @app.route('/edit/')
 @app.route('/edit/<path:page_path>')
@@ -163,7 +168,7 @@ def edit(page_path=None):
         # The user tried to create a page straight from the URL, but the path
         # isn't correct. Give them the page path again in case they fat
         # fingered something.
-        # TODO: make sure to report that the path is invalid.
+        flash(verror.message)
         return redirect(url_for('create', page_path=page_path))
 
 @app.route('/update_wiki', methods=['POST'])
