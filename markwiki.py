@@ -30,14 +30,13 @@ class ValidationError(Exception):
 
 def bootstrap():
     '''Bootstrap the wiki with some basic content.'''
-    # TODO: copy all help files to the wiki area.
-    # Create the wiki at the specified path.
-    os.makedirs(wiki_path)
+    # Copy all the help content.
+    markwiki_help = os.path.join(here, 'templates', 'MarkWiki')
+    shutil.copytree(markwiki_help, os.path.join(wiki_path, 'MarkWiki'))
 
     # Populate the wiki with the main page.
-    markwiki = 'MarkWiki.md'
-    markwiki_source = os.path.join(here, 'templates', markwiki)
-    shutil.copy(markwiki_source, os.path.join(wiki_path, markwiki))
+    markwiki_source = os.path.join(markwiki_help, 'Introduction.md')
+    shutil.copy(markwiki_source, os.path.join(wiki_path, 'MarkWiki.md'))
 
 def build_wiki_url(label, base, end):
     '''Build the wiki URL for the WikiLinkExtension.'''
