@@ -28,7 +28,7 @@
 <div class='container'>
 <div class='row'>
   <div class='span3 offset1'>
-    <ul class='nav nav-list'>
+    <ul class='nav nav-list' data-spy='affix'>
       <li class='nav-header'>Actions</li>
       <li><a href='{{ url_for('index') }}'><i
         class='icon-home'></i> Go Home</a></li>
@@ -40,24 +40,28 @@
     </ul>
   </div>
   <div class='span8'>
-    <!-- TODO: Do something with the Bootstrap alerts. -->
     {% with messages = get_flashed_messages() %}
       {% if messages %}
-        <ul>
         {% for message in messages %}
-          <li>{{ message }}</li>
+          <div class='alert alert-error fade in'>
+            <button class="close" data-dismiss="alert" type="button">×</button>
+            {{ message }}
+          </div>
         {% endfor %}
-        </ul>
       {% endif %}
     {% endwith %}
     {% block content %}
     {% endblock %}
   </div>
 </div>
+<br class='clearfix'>
 <hr>
 <footer>
   <p>MarkWiki is open source software.</p>
 </footer>
 </div>
+<script src='{{ url_for('static', filename='jquery-2.0.0.min.js') }}'></script>
+<script src='{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}'>
+</script>
 </body>
 </html>
