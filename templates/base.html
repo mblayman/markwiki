@@ -34,12 +34,12 @@
         class='icon-home'></i> Go Home</a></li>
       <li><a href='{{ url_for('create') }}'><i
         class='icon-pencil'></i> Create a Wiki</a></li>
-      <li><a href='/help'><!-- TODO - Write a help page. --><i
+      <li><a href='{{ url_for('wiki', page_path='MarkWiki/Help') }}'><i
         class='icon-question-sign'></i> Get Help</a></li>
       {% block actions %}{% endblock %}
     </ul>
   </div>
-  <div class='span8'>
+  <div class='span7'>
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         {% for message in messages %}

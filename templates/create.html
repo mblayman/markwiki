@@ -3,10 +3,11 @@
   {% if page_path %}
   Create {{ page_path }}
   {% else %}
-  Create a wiki
+  Create a Wiki
   {% endif %}
 {% endblock %}
 {% block content %}
+<h1>{{ self.title() }}</h1>
 <form action='/make_wiki' method='POST'>
   <div class='control-group'>
     <label for='page_path'>Wiki</label>
