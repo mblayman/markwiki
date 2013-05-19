@@ -12,7 +12,8 @@ from flask import render_template
 from flask import request
 from flask import url_for
 import markdown
-# TODO: Make an extension to replace wiki words with links.
+
+from wikilinks import MarkWikiLinkExtension
 
 # Globals - The very few
 app = Flask(__name__)
@@ -37,6 +38,10 @@ def bootstrap():
     markwiki_source = os.path.join(here, 'templates', markwiki)
     shutil.copy(markwiki_source, os.path.join(wiki_path, markwiki))
 
+def build_wiki_url(label, base, end):
+    '''Build the wiki URL for the WikiLinkExtension.'''
+    return url_for('wiki', page_path=label)
+
 def get_wiki(page_path):
     '''Get the wiki's page path.'''
     return os.path.join(wiki_path, page_path + '.md')
@@ -45,7 +50,9 @@ def render_markdown(wiki_page):
     '''Render the Markdown from the wiki page provided. Assumes path exists.'''
     with open(wiki_page) as wiki_file:
         text = wiki_file.read()
-        return markdown.markdown(text, safe_mode='escape')
+        extensions = [wiki_link_extension]
+        return markdown.markdown(text, safe_mode='escape',
+            extensions=extensions, output_format='html5' )
 
 def render_wiki_editor(page_path, wiki_page):
     '''Render the wiki editor with content from the provided wiki page.
@@ -229,6 +236,9 @@ if __name__ == '__main__':
     # TODO: Make the wiki location configurable.
     home = os.path.expanduser('~')
     wiki_path = os.path.join(home, '.markwiki')
+    wiki_link_extension = MarkWikiLinkExtension(configs={
+        'build_url': build_wiki_url
+    })
 
     # Check if the wiki exists and bootstrap if it isn't there.
     if not os.path.exists(wiki_path):
