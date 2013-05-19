@@ -206,9 +206,23 @@ def wiki(page_path='MarkWiki'):
 @app.route('/delete/<path:page_path>')
 def delete(page_path):
     '''Delete the wiki page.'''
-    # TODO: Don't delete MarkWiki.
-    # TODO: Delete the page.
-    # TODO: Check to make sure the page exists.
+    if page_path == 'MarkWiki':
+        flash('You sneaky devil. You can\'t delete the main page. '
+            'But feel free to edit it.')
+
+    try:
+        validate_page_path(page_path)
+        wiki_page = get_wiki(page_path)
+
+        # Proceed if the wiki exists.
+        if os.path.exists(wiki_page):
+            os.remove(wiki_page)
+        else:
+            flash('That wiki doesn\'t exist.')
+    except ValidationError as verror:
+        # The user tried to delete a bogus page straight from the URL.
+        flash(verror.message)
+
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
