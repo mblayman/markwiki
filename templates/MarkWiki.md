@@ -7,9 +7,8 @@ text based approach to define content which you can [learn very quickly] [syn].
 Why Should I Use MarkWiki?
 --------------------------
 
-The aim of MarkWiki is to have a dead simple set of features and be easy to set
-up. MarkWiki was born out of frustration with bad documentation tools behind a
-company firewall.
+The aim of MarkWiki is to be dead simple. MarkWiki was born out of frustration
+with bad documentation tools behind a company firewall.
 
 You should consider MarkWiki if you:
 
@@ -25,16 +24,28 @@ configuration so you don't have to restart MarkWiki manually every time your
 server reboots. Check out [[MarkWiki/Deployment]].
 
 You might, however, be reading this from some other website. MarkWiki
-requires a couple of steps to get going. Fire up the command line and follow
-along!
+requires a few steps to get going. Fire up the command line and follow along!
 
-1. Install it.
+1. Download it. (TODO: Provide a place to download.)
+2. Install it.
+3. Run the built-in web server.
 
-    $ pip install -r requirements.txt
+```bash
+$ pip install -r requirements.txt
+$ python markwiki.py
+```
 
-2. Run the built-in web server.
+Now What?
+---------
 
-    $ python markwiki.py
+You can begin by editing this page to suit your needs (don't worry, a copy of
+this page can be found at [[MarkWiki/Introduction]] if you ever need to refer
+back).
+
+There are a couple of things that MarkWiki does differently than Markdown. The
+most obvious one is that we support internal wiki pages. You can make a wiki
+page by surrounding a path in double square brackets (e.g., \[[MyCoolPage]]).
+Other differences can be found by checking out [[MarkWiki/Syntax]].
 
 [syn]: http://daringfireball.net/projects/markdown/syntax
 

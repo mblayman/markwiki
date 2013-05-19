@@ -30,6 +30,7 @@ class ValidationError(Exception):
 
 def bootstrap():
     '''Bootstrap the wiki with some basic content.'''
+    # TODO: copy all help files to the wiki area.
     # Create the wiki at the specified path.
     os.makedirs(wiki_path)
 
