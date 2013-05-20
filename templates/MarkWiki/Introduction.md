@@ -4,8 +4,7 @@ Welcome to MarkWiki
 > MarkWiki is a wiki that uses Markdown to create pages. Markdown has a simple
 text based approach to define content which you can [learn very quickly] [syn].
 
-Why Should I Use MarkWiki?
---------------------------
+### Why Should I Use MarkWiki?
 
 The aim of MarkWiki is to be dead simple. MarkWiki was born out of frustration
 with bad documentation tools behind a company firewall.
@@ -15,8 +14,7 @@ You should consider MarkWiki if you:
 * Need something working fast.
 * Are looking for a no fuss answer to how to collaborate with teammates.
 
-Getting Started
----------------
+### Getting Started
 
 If you've made it this far, then you've probably figured out how to run
 MarkWiki. Congratulations! Now you may want to consider a bit more
@@ -35,8 +33,7 @@ $ pip install -r requirements.txt
 $ python markwiki.py
 ```
 
-Now What?
----------
+### Now What?
 
 You can begin by editing this page to suit your needs (don't worry, a copy of
 this page can be found at [[MarkWiki/Introduction]] if you ever need to refer
