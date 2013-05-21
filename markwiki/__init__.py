@@ -2,41 +2,36 @@
 '''A simple wiki using Markdown'''
 
 import os
-import shutil
+import sys
 
 from flask import Flask
 
+from markwiki.util import bootstrap
+
+# Production configurations should override this setting and not debug.
+DEBUG = True
+# The app needs a secret key to use flash messages.
+SECRET_KEY = 'It\'s a secret to everybody.'
+# The location of all wiki content
+WIKI_PATH = os.path.join(os.path.expanduser('~'), '.markwiki')
+
 app = Flask(__name__)
 
-# TODO: Not production ready yet. Debug is on and dangerous.
-app.debug = True
+# Load all the capitalized variables defined here as configuration.
+app.config.from_object(__name__)
 
-# The app needs a secret key to use flash messages. If more serious session
-# management is needed then the secret key will have to handled better.
-app.secret_key = 'It\'s a secret to everybody.'
-
-# TODO: Make the wiki location configurable.
-home = os.path.expanduser('~')
-wiki_path = os.path.join(home, '.markwiki')
-
-# The location of all wiki content
-app.config['WIKI_PATH'] = wiki_path
-
-import markwiki.views
-
-def bootstrap():
-    '''Bootstrap the wiki with some basic content.'''
-    here = os.path.abspath(os.path.dirname(__file__))
-
-    # Copy all the help content.
-    markwiki_help = os.path.join(here, 'templates', 'MarkWiki')
-    shutil.copytree(markwiki_help, os.path.join(wiki_path, 'MarkWiki'))
-
-    # Populate the wiki with the main page.
-    markwiki_source = os.path.join(markwiki_help, 'Introduction.md')
-    shutil.copy(markwiki_source, os.path.join(wiki_path, 'MarkWiki.md'))
+# Load production setting from a configuration file.
+# TODO: use from_envvar
 
 # Check if the wiki exists and bootstrap if it isn't there.
-if not os.path.exists(wiki_path):
-    bootstrap()
+if not os.path.exists(WIKI_PATH):
+    bootstrap(WIKI_PATH)
+else:
+    # The wiki path must be a directory.
+    if not os.path.isdir(WIKI_PATH):
+        sys.exit('Sorry, the wiki path must be a directory.')
+
+# Because the import is circular, the importing of the views should be the last
+# thing so that there is no temptation to use them and cause craziness.
+import markwiki.views
 
