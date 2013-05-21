@@ -9,7 +9,7 @@ Running MarkWiki
 From the project's root directory, run:
 
     $ pip install -r requirements.txt
-    $ python markwiki.py
+    $ python runserver.py
 
 Design Goal
 -----------

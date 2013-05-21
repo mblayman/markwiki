@@ -10,10 +10,13 @@ License: [BSD](http://www.opensource.org/licenses/bsd-license.php)
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
+
+import re
+
+from flask import url_for
 from markdown.extensions import Extension
 from markdown.inlinepatterns import Pattern
 from markdown.util import etree
-import re
 
 def build_url(label, base, end):
     """ Build a url from the label, a base, and an end. """
@@ -21,7 +24,7 @@ def build_url(label, base, end):
     return '%s%s%s'% (base, clean_label, end)
 
 
-class MarkWikiLinkExtension(Extension):
+class WikiLinkExtension(Extension):
     def __init__(self, configs):
         # set extension defaults
         self.config = {
@@ -80,3 +83,16 @@ class WikiLinks(Pattern):
 
 def makeExtension(configs=None) :
     return WikiLinkExtension(configs=configs)
+
+def build_wiki_url(label, base, end):
+    '''Build the wiki URL for the WikiLinkExtension.'''
+    return url_for('wiki', page_path=label)
+
+class MarkWikiLinkExtension(WikiLinkExtension):
+    '''A custom wiki link extension using a flask URL builder.'''
+
+    def __init__(self):
+        super(MarkWikiLinkExtension, self).__init__(configs={
+            'build_url': build_wiki_url
+        })
+

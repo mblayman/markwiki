@@ -30,7 +30,7 @@ requires a few steps to get going. Fire up the command line and follow along!
 
 ```bash
 $ pip install -r requirements.txt
-$ python markwiki.py
+$ python runserver.py
 ```
 
 ### Now What?

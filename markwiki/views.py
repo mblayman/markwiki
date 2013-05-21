@@ -1,58 +1,20 @@
 # Copyright (c) 2013, Matt Layman
-'''A simple wiki using Markdown'''
+'''The views that MarkWiki displays'''
 
 import os
-import shutil
 
 from flask import abort
 from flask import flash
-from flask import Flask
 from flask import redirect
 from flask import render_template
 from flask import request
 from flask import url_for
-import markdown
 
-from wikilinks import MarkWikiLinkExtension
-
-# Globals - The very few
-app = Flask(__name__)
-here = os.path.abspath(os.path.dirname(__file__))
-# The location of all wiki content
-wiki_path = ''
-
-# The app needs a secret key to use flash messages. If more serious session
-# management is needed then the secret key will have to handled better.
-app.secret_key = 'It\'s a secret to everybody.'
-
-class ValidationError(Exception):
-    '''A simple exception to use to report errors to users.'''
-
-def bootstrap():
-    '''Bootstrap the wiki with some basic content.'''
-    # Copy all the help content.
-    markwiki_help = os.path.join(here, 'templates', 'MarkWiki')
-    shutil.copytree(markwiki_help, os.path.join(wiki_path, 'MarkWiki'))
-
-    # Populate the wiki with the main page.
-    markwiki_source = os.path.join(markwiki_help, 'Introduction.md')
-    shutil.copy(markwiki_source, os.path.join(wiki_path, 'MarkWiki.md'))
-
-def build_wiki_url(label, base, end):
-    '''Build the wiki URL for the WikiLinkExtension.'''
-    return url_for('wiki', page_path=label)
-
-def get_wiki(page_path):
-    '''Get the wiki's page path.'''
-    return os.path.join(wiki_path, page_path + '.md')
-
-def render_markdown(wiki_page):
-    '''Render the Markdown from the wiki page provided. Assumes path exists.'''
-    with open(wiki_page) as wiki_file:
-        text = wiki_file.read()
-        extensions = [wiki_link_extension, 'fenced_code', 'codehilite']
-        return markdown.markdown(text, safe_mode='escape',
-            extensions=extensions, output_format='html5' )
+from markwiki import app
+from markwiki.exceptions import ValidationError
+from markwiki.renderer import render_markdown
+from markwiki.validators import validate_page_path
+from markwiki.wiki import get_wiki, write_wiki
 
 def render_wiki_editor(page_path, wiki_page):
     '''Render the wiki editor with content from the provided wiki page.
@@ -67,55 +29,6 @@ def render_wiki_editor(page_path, wiki_page):
 
     # Some weird stuff happened if we got here.
     abort(500)
-
-def write_wiki(path, content):
-    '''Write the wiki content to the path provided. Assumes valid path.'''
-    # Determine if the directories are already in place.
-    directory = os.path.dirname(path)
-    if  not os.path.exists(directory):
-        # This could be nested deeply so make the intermediate directories too.
-        try:
-            os.makedirs(directory)
-        except:
-            abort(500)
-
-    try:
-        with open(path, 'w') as wiki:
-            wiki.write(content)
-    except IOError:
-        # Something bad happened while writing so report failure.
-        abort(500)
-
-def validate_directories(directories):
-    '''Check that the directories are sane.'''
-    for directory in directories:
-        # Prevent any double, triple, or however many slashes in a row.
-        if directory == '':
-            raise ValidationError('It looks like there were multiple slashes '
-                'in a row in your wiki name.')
-
-        # No relative paths allowed.
-        if directory in ['..', '.']:
-            raise ValidationError('Wiki names can\'t include just \'..\' or '
-                '\'.\' between slashes.')
-
-        # None of the directory parts can end in '.md' because that would
-        # screw up the ability to make a wiki in the directory that has the
-        # same name.
-        if directory.endswith('.md'):
-            raise ValidationError("Wiki names can't end in '.md' in the parts "
-                "before the last slash. Sorry, this rule is weird. I know.")
-
-def validate_page_path(page_path):
-    '''Check that the page path is valid. Return an '''
-    # An empty page path is no good.
-    if page_path is None or page_path == '':
-        raise ValidationError('You need to supply some wiki name.')
-
-    # Do some directory checking.
-    page_parts = page_path.split('/')
-    if len(page_parts) > 1:
-        validate_directories(page_parts[:-1])
 
 @app.errorhandler(500)
 def internal_server_error(error):
@@ -231,20 +144,4 @@ def delete(page_path):
         flash(verror.message)
 
     return redirect(url_for('index'))
-
-if __name__ == '__main__':
-    # TODO: Make the wiki location configurable.
-    home = os.path.expanduser('~')
-    wiki_path = os.path.join(home, '.markwiki')
-    wiki_link_extension = MarkWikiLinkExtension(configs={
-        'build_url': build_wiki_url
-    })
-
-    # Check if the wiki exists and bootstrap if it isn't there.
-    if not os.path.exists(wiki_path):
-        bootstrap()
-
-    # TODO: Not production ready yet. Debug is on and dangerous.
-    app.debug = True
-    app.run(host='0.0.0.0')
 
