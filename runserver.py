@@ -3,5 +3,5 @@
 
 from markwiki import app
 
-app.run(host='0.0.0.0')
+app.run(app.config['SERVER_HOST'], app.config['SERVER_PORT'])
 
