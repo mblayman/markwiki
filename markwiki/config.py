@@ -11,4 +11,3 @@ SERVER_HOST = '0.0.0.0'
 SERVER_PORT = 5000
 # The location of all wiki content
 WIKI_PATH = os.path.join(os.path.expanduser('~'), '.markwiki')
-

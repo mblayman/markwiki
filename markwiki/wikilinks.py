@@ -18,20 +18,21 @@ from markdown.extensions import Extension
 from markdown.inlinepatterns import Pattern
 from markdown.util import etree
 
+
 def build_url(label, base, end):
     """ Build a url from the label, a base, and an end. """
     clean_label = re.sub(r'([ ]+_)|(_[ ]+)|([ ]+)', '_', label)
-    return '%s%s%s'% (base, clean_label, end)
+    return '%s%s%s' % (base, clean_label, end)
 
 
 class WikiLinkExtension(Extension):
     def __init__(self, configs):
         # set extension defaults
         self.config = {
-            'base_url' : ['/', 'String to append to beginning or URL.'],
-            'end_url' : ['/', 'String to append to end of URL.'],
-            'html_class' : ['wikilink', 'CSS hook. Leave blank for none.'],
-            'build_url' : [build_url, 'Callable formats URL from label.'],
+            'base_url': ['/', 'String to append to beginning or URL.'],
+            'end_url': ['/', 'String to append to end of URL.'],
+            'html_class': ['wikilink', 'CSS hook. Leave blank for none.'],
+            'build_url': [build_url, 'Callable formats URL from label.'],
         }
 
         # Override defaults with user settings
@@ -59,7 +60,7 @@ class WikiLinks(Pattern):
             label = m.group(2).strip()
             url = self.config['build_url'](label, base_url, end_url)
             a = etree.Element('a')
-            a.text = label 
+            a.text = label
             a.set('href', url)
             if html_class:
                 a.set('class', html_class)
@@ -81,12 +82,15 @@ class WikiLinks(Pattern):
                 html_class = self.md.Meta['wiki_html_class'][0]
         return base_url, end_url, html_class
 
-def makeExtension(configs=None) :
+
+def makeExtension(configs=None):
     return WikiLinkExtension(configs=configs)
+
 
 def build_wiki_url(label, base, end):
     '''Build the wiki URL for the WikiLinkExtension.'''
     return url_for('wiki', page_path=label)
+
 
 class MarkWikiLinkExtension(WikiLinkExtension):
     '''A custom wiki link extension using a flask URL builder.'''
@@ -95,4 +99,3 @@ class MarkWikiLinkExtension(WikiLinkExtension):
         super(MarkWikiLinkExtension, self).__init__(configs={
             'build_url': build_wiki_url
         })
-

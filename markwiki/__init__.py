@@ -27,4 +27,3 @@ else:
 # Because the import is circular, the importing of the views should be the last
 # thing so that there is no temptation to use them and cause craziness.
 import markwiki.views
-

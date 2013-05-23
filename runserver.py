@@ -4,4 +4,3 @@
 from markwiki import app
 
 app.run(app.config['SERVER_HOST'], app.config['SERVER_PORT'])
-

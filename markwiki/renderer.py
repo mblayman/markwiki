@@ -9,11 +9,11 @@ from markwiki.wikilinks import MarkWikiLinkExtension
 # extension every call.
 wiki_link_extension = MarkWikiLinkExtension()
 
+
 def render_markdown(wiki_page):
     '''Render the Markdown from the wiki page provided. Assumes path exists.'''
     with open(wiki_page) as wiki_file:
         text = wiki_file.read()
         extensions = [wiki_link_extension, 'fenced_code', 'codehilite']
         return markdown.markdown(text, safe_mode='escape',
-            extensions=extensions, output_format='html5' )
-
+                                 extensions=extensions, output_format='html5')

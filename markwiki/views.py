@@ -16,6 +16,7 @@ from markwiki.renderer import render_markdown
 from markwiki.validators import validate_page_path
 from markwiki.wiki import get_wiki, write_wiki
 
+
 def render_wiki_editor(page_path, wiki_page):
     '''Render the wiki editor with content from the provided wiki page.
     Assumes a valid wiki page path.'''
@@ -23,29 +24,33 @@ def render_wiki_editor(page_path, wiki_page):
         with open(wiki_page, 'r') as wiki:
             wiki_content = wiki.read()
             return render_template('edit.html', page_path=page_path,
-                wiki_content=wiki_content)
+                                   wiki_content=wiki_content)
     except IOError:
         abort(500)
 
     # Some weird stuff happened if we got here.
     abort(500)
 
+
 @app.errorhandler(500)
 def internal_server_error(error):
     '''Display a 500 page.'''
     return render_template('internal_server_error.html')
+
 
 @app.route('/')
 def index():
     '''Display the MarkWiki main page.'''
     return wiki('MarkWiki')
 
+
 @app.route('/create/')
 @app.route('/create/<path:page_path>')
 def create(page_path=None, wiki_content=None):
     '''Display the wiki creation form.'''
     return render_template('create.html', page_path=page_path,
-        wiki_content=wiki_content)
+                           wiki_content=wiki_content)
+
 
 @app.route('/make_wiki', methods=['POST'])
 def make_wiki():
@@ -65,6 +70,7 @@ def make_wiki():
     except ValidationError as verror:
         flash(verror.message)
         return create(page_path, request.form['wiki_content'])
+
 
 @app.route('/edit/')
 @app.route('/edit/<path:page_path>')
@@ -91,6 +97,7 @@ def edit(page_path=None):
         flash(verror.message)
         return redirect(url_for('create', page_path=page_path))
 
+
 @app.route('/update_wiki', methods=['POST'])
 def update_wiki():
     '''Update a wiki page.'''
@@ -104,6 +111,7 @@ def update_wiki():
         wiki_page = get_wiki(page_path)
         write_wiki(wiki_page, request.form['wiki_content'])
         return redirect(url_for('wiki', page_path=page_path))
+
 
 @app.route('/wiki/')
 @app.route('/wiki/<path:page_path>')
@@ -121,14 +129,15 @@ def wiki(page_path='MarkWiki'):
     title = os.path.split(page_path)[-1]
 
     return render_template('wiki.html', page_path=page_path, title=title,
-        wiki=wiki_html)
+                           wiki=wiki_html)
+
 
 @app.route('/delete/<path:page_path>')
 def delete(page_path):
     '''Delete the wiki page.'''
     if page_path == 'MarkWiki':
         flash('You sneaky devil. You can\'t delete the main page. '
-            'But feel free to edit it.')
+              'But feel free to edit it.')
 
     try:
         validate_page_path(page_path)
@@ -144,4 +153,3 @@ def delete(page_path):
         flash(verror.message)
 
     return redirect(url_for('index'))
-

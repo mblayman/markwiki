@@ -3,25 +3,30 @@
 
 from markwiki.exceptions import ValidationError
 
+
 def validate_directories(directories):
     '''Check that the directories are sane.'''
     for directory in directories:
         # Prevent any double, triple, or however many slashes in a row.
         if directory == '':
-            raise ValidationError('It looks like there were multiple slashes '
-                'in a row in your wiki name.')
+            raise ValidationError(
+                'It looks like there were multiple slashes in a row in your '
+                'wiki name.')
 
         # No relative paths allowed.
         if directory in ['..', '.']:
-            raise ValidationError('Wiki names can\'t include just \'..\' or '
-                '\'.\' between slashes.')
+            raise ValidationError(
+                'Wiki names can\'t include just \'..\' or \'.\' between '
+                'slashes.')
 
         # None of the directory parts can end in '.md' because that would
         # screw up the ability to make a wiki in the directory that has the
         # same name.
         if directory.endswith('.md'):
-            raise ValidationError("Wiki names can't end in '.md' in the parts "
-                "before the last slash. Sorry, this rule is weird. I know.")
+            raise ValidationError(
+                "Wiki names can't end in '.md' in the parts before the last "
+                "slash. Sorry, this rule is weird. I know.")
+
 
 def validate_page_path(page_path):
     '''Check that the page path is valid.'''
@@ -33,4 +38,3 @@ def validate_page_path(page_path):
     page_parts = page_path.split('/')
     if len(page_parts) > 1:
         validate_directories(page_parts[:-1])
-
