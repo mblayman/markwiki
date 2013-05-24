@@ -24,13 +24,12 @@ server reboots. Check out [[MarkWiki/Deployment]].
 You might, however, be reading this from some other website. MarkWiki
 requires a few steps to get going. Fire up the command line and follow along!
 
-1. Download it. (TODO: Provide a place to download.)
-2. Install it.
-3. Run the built-in web server.
+1. Install it.
+2. Run the built-in web server.
 
 ```bash
-$ pip install -r requirements.txt
-$ python runserver.py
+$ pip install MarkWiki
+$ markwiki
 ```
 
 ### Now What?

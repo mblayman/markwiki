@@ -6,10 +6,23 @@ MarkWiki
 Running MarkWiki
 ----------------
 
+### Users
+
+From a command line, run:
+
+```bash
+$ pip install MarkWiki
+$ markwiki
+```
+
+### Developers
+
 From the project's root directory, run:
 
-    $ pip install -r requirements.txt
-    $ python runserver.py
+```bash
+$ python setup.py develop
+$ markwiki
+```
 
 Design Goal
 -----------
@@ -22,8 +35,3 @@ configuration should never need more than two steps.
 
 Why? MarkWiki is aimed at teams that want a no fuss, no frills wiki. Simplicity
 trumps features.
-
-Dependencies
-------------
-
-All the dependencies for MarkWiki are stored in `requirements.txt`.
