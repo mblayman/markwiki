@@ -1,7 +1,15 @@
 # Copyright (c) 2013, Matt Layman
 '''Validate aspects of MarkWiki.'''
 
+import os
+
+from markwiki import app
 from markwiki.exceptions import ValidationError
+
+
+def is_valid_section(section_path):
+    '''Check if the section path is valid.'''
+    return os.path.isdir(os.path.join(app.config['WIKI_PATH'], section_path))
 
 
 def validate_directories(directories):

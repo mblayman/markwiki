@@ -14,8 +14,9 @@ from flask import url_for
 from markwiki import app
 from markwiki.exceptions import ValidationError
 from markwiki.renderer import render_markdown
-from markwiki.validators import validate_page_path
-from markwiki.wiki import get_sections, get_wiki, write_wiki
+from markwiki.validators import is_valid_section, validate_page_path
+from markwiki.wiki import get_section_content, get_sections
+from markwiki.wiki import get_wiki, write_wiki
 
 
 def render_wiki_editor(page_path, wiki_page):
@@ -42,7 +43,7 @@ def internal_server_error(error):
 @app.route('/')
 def index():
     '''Display the MarkWiki main page.'''
-    return wiki('MarkWiki')
+    return wiki('Home')
 
 
 @app.route('/create/')
@@ -116,7 +117,7 @@ def update_wiki():
 
 @app.route('/wiki/')
 @app.route('/wiki/<path:page_path>')
-def wiki(page_path='MarkWiki'):
+def wiki(page_path='Home'):
     '''Render the wiki page or make a new one if the wiki doesn't exist.'''
     wiki_html = ''
 
@@ -140,16 +141,24 @@ def wiki(page_path='MarkWiki'):
 @app.route('/list/<path:section_path>')
 def list(section_path=''):
     '''List the contents of a directory section.'''
-    flash('The list view is not implemented yet.')
-    return redirect(url_for('index'))
+    if is_valid_section(section_path):
+        (sections, pages) = get_section_content(section_path)
+        return render_template('list.html', section_path=section_path,
+                               sections=sections, pages=pages)
+    else:
+        # This should only happen if a wiki link is created with a bad section
+        # or if someone directly tries to attempt a bad URL.
+        flash('Sorry. That wiki section doesn\'t exist.')
+        return redirect(url_for('index'))
 
 
 @app.route('/delete/<path:page_path>')
 def delete(page_path):
     '''Delete the wiki page.'''
-    if page_path == 'MarkWiki':
+    if page_path == 'Home':
         flash('You sneaky devil. You can\'t delete the main page. '
               'But feel free to edit it.')
+        return redirect(url_for('index'))
 
     try:
         validate_page_path(page_path)

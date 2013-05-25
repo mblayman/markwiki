@@ -8,7 +8,30 @@ from flask import abort
 
 from markwiki import app
 
+# Data types used by MarkWiki
+Page = namedtuple('Page', ['name', 'path'])
 Section = namedtuple('Section', ['name', 'path'])
+
+
+def get_section_content(section_path):
+    '''Get the sections and pages in this section. Assumes valid section.'''
+    pages = []
+    sections = []
+    section_directory = os.path.join(app.config['WIKI_PATH'], section_path)
+    contents = os.listdir(section_directory)
+    contents.sort()
+    for content in contents:
+        if content.endswith('.md'):
+            # Trim the extension.
+            page_name = content[:-3]
+            pages.append(Page(page_name,
+                              os.path.join(section_path, page_name)))
+        else:
+            sections.append(Section(content,
+                            os.path.join(section_path, content)))
+
+    return (sections, pages)
+
 
 def get_sections(page_path):
     '''Extract the sections from the provided page path.'''
@@ -24,6 +47,7 @@ def get_sections(page_path):
             sections.append(Section(part, '/'.join(section_path)))
 
     return sections
+
 
 def get_wiki(page_path):
     '''Get the wiki's page path.'''

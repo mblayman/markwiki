@@ -37,6 +37,8 @@
         class='icon-home'></i> Go Home</a></li>
       <li><a href='{{ url_for('create') }}'><i
         class='icon-pencil'></i> Create a Wiki</a></li>
+      <li><a href='{{ url_for('list') }}'><i
+        class='icon-eye-open'></i> Explore the Wiki</a></li>
       <li><a href='{{ url_for('wiki', page_path='MarkWiki/Help') }}'><i
         class='icon-question-sign'></i> Get Help</a></li>
       {% block actions %}{% endblock %}

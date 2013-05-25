@@ -1,11 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}
-  {% if page_path %}
-  Create {{ page_path }}
-  {% else %}
-  Create a Wiki
-  {% endif %}
-{% endblock %}
+{% block title %}Create {{ page_path|default('a Wiki', true) }}{% endblock %}
 {% block content %}
 <h1>{{ self.title() }}</h1>
 <form action='/make_wiki' method='POST'>

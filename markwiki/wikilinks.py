@@ -89,7 +89,11 @@ def makeExtension(configs=None):
 
 def build_wiki_url(label, base, end):
     '''Build the wiki URL for the WikiLinkExtension.'''
-    return url_for('wiki', page_path=label)
+    if not label.endswith('/'):
+        return url_for('wiki', page_path=label)
+    else:
+        # Trim the last slash.
+        return url_for('list', section_path=label.rstrip('/'))
 
 
 class MarkWikiLinkExtension(WikiLinkExtension):

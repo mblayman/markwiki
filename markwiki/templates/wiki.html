@@ -19,8 +19,8 @@
 <li class='nav-header'>{{ title }} Actions</li>
 <li><a href='{{ url_for('edit', page_path=page_path) }}'><i
   class='icon-edit'></i> Edit</a></li>
-{# MarkWiki is special so don't allow it to be deleted. #}
-{% if page_path != 'MarkWiki' %}
+{# Home is special so don't allow it to be deleted. #}
+{% if page_path != 'Home' %}
 <li><a href='{{ url_for('delete', page_path=page_path) }}'><i
   class='icon-remove'></i> Delete</a></li>
 {% endif %}

@@ -14,5 +14,5 @@ def bootstrap(wiki_path):
     shutil.copytree(markwiki_help, os.path.join(wiki_path, 'MarkWiki'))
 
     # Populate the wiki with the main page.
-    markwiki_source = os.path.join(markwiki_help, 'Introduction.md')
-    shutil.copy(markwiki_source, os.path.join(wiki_path, 'MarkWiki.md'))
+    home_source = os.path.join(markwiki_help, 'Introduction.md')
+    shutil.copy(home_source, os.path.join(wiki_path, 'Home.md'))

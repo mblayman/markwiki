@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}
+Listing of {{ section_path|default('MarkWiki Content', true) }}
+{% endblock %}
+
+{% block content %}
+<!-- TODO: How am I going to display the breadcrumbs for this?
+{% if g.sections %}
+  <ul class='breadcrumb'>
+  {% for section in g.sections %}
+    <li><a href='{{ url_for('list', section_path=section.path) }}'
+      >{{ section.name }}</a> <i class='icon-chevron-right'></i></li>
+  {% endfor %}
+    <li class='active'>{{ title }}</li>
+  </ul>
+{% endif %}
+-->
+
+{% if section_path %}
+<h1>{{ section_path }}</h1>
+{% else %}
+<h1>MarkWiki Content</h1>
+<h5>Explore MarkWiki by clicking on any of the sections or wiki pages
+below.</h5>
+{% endif %}
+
+{% if sections or pages %}
+  {% if sections %}
+  <h3>Sections</h3>
+  <p>{{ section_path|default('MarkWiki Content', true) }} has these
+  sections:</p>
+  <ul class='unstyled'>
+    {% for section in sections %}
+    <li><i class='icon-book'></i> <a
+        href='{{ url_for('list', section_path=section.path) }}'
+        >{{ section.name }}</a></li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if pages %}
+  <h3>Wiki Pages</h3>
+  <p>{{ section_path|default('MarkWiki Content', true) }} has these wiki
+  pages:</p>
+  <ul class='unstyled'>
+    {% for page in pages %}
+    <li><i class='icon-file'></i> <a
+        href='{{ url_for('wiki', page_path=page.path) }}'
+        >{{ page.name }}</a></li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+{% else %}
+<p>Hmmm... it looks like {{ section_path|default('MarkWiki Content', true) }}
+doesn't have any content.</p>
+{% endif %}
+{% endblock %}
