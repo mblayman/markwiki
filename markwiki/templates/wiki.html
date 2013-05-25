@@ -1,6 +1,19 @@
 {% extends 'base.html' %}
 {% block title %}{{ title }}{% endblock %}
-{% block content %}{{ wiki|safe }}{% endblock %}
+
+{% block content %}
+{% if g.sections %}
+  <ul class='breadcrumb'>
+  {% for section in g.sections %}
+    <li><a href='{{ url_for('list', section_path=section.path) }}'
+      >{{ section.name }}</a> <i class='icon-chevron-right'></i></li>
+  {% endfor %}
+    <li class='active'>{{ title }}</li>
+  </ul>
+{% endif %}
+{{ wiki|safe }}
+{% endblock %}
+
 {% block actions %}
 <li class='divider'></li>
 <li class='nav-header'>{{ title }} Actions</li>

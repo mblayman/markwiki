@@ -5,6 +5,7 @@ import os
 
 from flask import abort
 from flask import flash
+from flask import g
 from flask import redirect
 from flask import render_template
 from flask import request
@@ -14,7 +15,7 @@ from markwiki import app
 from markwiki.exceptions import ValidationError
 from markwiki.renderer import render_markdown
 from markwiki.validators import validate_page_path
-from markwiki.wiki import get_wiki, write_wiki
+from markwiki.wiki import get_sections, get_wiki, write_wiki
 
 
 def render_wiki_editor(page_path, wiki_page):
@@ -128,8 +129,19 @@ def wiki(page_path='MarkWiki'):
     # Always use the last name in the path as the title.
     title = os.path.split(page_path)[-1]
 
+    # Get the sections if there are any.
+    g.sections = get_sections(page_path)
+
     return render_template('wiki.html', page_path=page_path, title=title,
                            wiki=wiki_html)
+
+
+@app.route('/list/')
+@app.route('/list/<path:section_path>')
+def list(section_path=''):
+    '''List the contents of a directory section.'''
+    flash('The list view is not implemented yet.')
+    return redirect(url_for('index'))
 
 
 @app.route('/delete/<path:page_path>')

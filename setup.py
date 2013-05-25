@@ -8,11 +8,11 @@ MarkWiki is a simple wiki using Markdown.
 Follow development on `GitHub <https://github.com/mblayman/markwiki>`_.
 '''
 
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
     name='MarkWiki',
-    version='1.0',
+    version='1.1dev',
     url='https://github.com/mblayman/markwiki',
     license='BSD',
     author='Matt Layman',
