@@ -116,7 +116,7 @@ def update_wiki():
 
 
 @app.route('/wiki/')
-@app.route('/wiki/<path:page_path>')
+@app.route('/wiki/<path:page_path>/')
 def wiki(page_path='Home'):
     '''Render the wiki page or make a new one if the wiki doesn't exist.'''
     wiki_html = ''
@@ -138,7 +138,7 @@ def wiki(page_path='Home'):
 
 
 @app.route('/list/')
-@app.route('/list/<path:section_path>')
+@app.route('/list/<path:section_path>/')
 def list(section_path=''):
     '''List the contents of a directory section.'''
     if is_valid_section(section_path):
