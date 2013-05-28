@@ -19,15 +19,14 @@ def freeze(destination):
         destination = os.path.join(os.getcwd(), destination)
 
     app.config['FREEZER_IGNORE_MIMETYPE_WARNINGS'] = True
-    # TODO: Determine why the wiki links aren't relative.
-    app.config['FREEZER_RELATIVE_URLS'] = True
     app.config['FREEZER_DESTINATION'] = destination
 
     # The freeze operation is destructive because it follows the delete
     # links. Copy the wiki into a temporary area and work with that instead.
     _create_wiki_copy()
 
-    # TODO: Document this feature in a Features page. Remove Syntax?
+    # TODO: Document this feature in a Features page. Remove Syntax? Add to
+    # that that only absolute paths are supported.
     freezer = Freezer(app)
 
     # Add the URL generator to suppress a warning. It won't really do anything.
