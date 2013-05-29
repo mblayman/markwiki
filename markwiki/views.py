@@ -15,7 +15,9 @@ from markwiki import app
 from markwiki.exceptions import ValidationError
 from markwiki.renderer import render_markdown
 from markwiki.validators import is_valid_section, validate_page_path
-from markwiki.wiki import get_section_content, get_sections
+from markwiki.wiki import get_section_content
+from markwiki.wiki import get_sections_from_page_path
+from markwiki.wiki import get_sections_from_section_path
 from markwiki.wiki import get_wiki, write_wiki
 
 
@@ -131,7 +133,7 @@ def wiki(page_path='Home'):
     title = os.path.split(page_path)[-1]
 
     # Get the sections if there are any.
-    g.sections = get_sections(page_path)
+    g.sections = get_sections_from_page_path(page_path)
 
     return render_template('wiki.html', page_path=page_path, title=title,
                            wiki=wiki_html)
@@ -142,6 +144,9 @@ def wiki(page_path='Home'):
 def list(section_path=''):
     '''List the contents of a directory section.'''
     if is_valid_section(section_path):
+        # Get the sections here and above.
+        g.sections = get_sections_from_section_path(section_path)
+
         (sections, pages) = get_section_content(section_path)
         return render_template('list.html', section_path=section_path,
                                sections=sections, pages=pages)

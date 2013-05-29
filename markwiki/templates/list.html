@@ -4,17 +4,21 @@ Listing of {{ section_path|default('MarkWiki Content', true) }}
 {% endblock %}
 
 {% block content %}
-<!-- TODO: How am I going to display the breadcrumbs for this?
-{% if g.sections %}
-  <ul class='breadcrumb'>
-  {% for section in g.sections %}
-    <li><a href='{{ url_for('list', section_path=section.path) }}'
-      >{{ section.name }}</a> <i class='icon-chevron-right'></i></li>
-  {% endfor %}
-    <li class='active'>{{ title }}</li>
-  </ul>
-{% endif %}
--->
+<ul class='breadcrumb'>
+  <li><a href='{{ url_for('list') }}'>Explore</a>
+  {% if g.sections|length > 0 %}
+    <i class='icon-chevron-right'></i>
+  {% endif %}
+  </li>
+{% for section in g.sections %}
+  {% if not loop.last %}
+  <li><a href='{{ url_for('list', section_path=section.path) }}'
+    >{{ section.name }}</a> <i class='icon-chevron-right'></i></li>
+  {% else %}
+  <li class='active'>{{ section.name }}</li>
+  {% endif %}
+{% endfor %}
+</ul>
 
 {% if section_path %}
 <h1>{{ section_path }}</h1>

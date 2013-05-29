@@ -2,15 +2,17 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-{% if g.sections %}
-  <ul class='breadcrumb'>
-  {% for section in g.sections %}
-    <li><a href='{{ url_for('list', section_path=section.path) }}'
-      >{{ section.name }}</a> <i class='icon-chevron-right'></i></li>
-  {% endfor %}
-    <li class='active'>{{ title }}</li>
-  </ul>
-{% endif %}
+<ul class='breadcrumb'>
+  <li><a href='{{ url_for('list') }}'>Explore</a>
+    <i class='icon-chevron-right'></i>
+  </li>
+{% for section in g.sections %}
+  <li><a href='{{ url_for('list', section_path=section.path) }}'
+    >{{ section.name }}</a> <i class='icon-chevron-right'></i></li>
+{% endfor %}
+  <li class='active'>{{ title }}</li>
+</ul>
+
 {{ wiki|safe }}
 {% endblock %}
 
