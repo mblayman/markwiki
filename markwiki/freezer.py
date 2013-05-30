@@ -62,6 +62,3 @@ def _prune_frozen(destination):
     unneeded_directories = ['create', 'edit', 'delete']
     for directory in unneeded_directories:
         shutil.rmtree(os.path.join(destination, directory))
-
-    # TODO: Clean out delete, create and edit links.
-    #return _remove_modifying_links(
