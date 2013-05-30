@@ -18,6 +18,10 @@ def freeze(destination):
     if not os.path.isabs(destination):
         destination = os.path.join(os.getcwd(), destination)
 
+    # Set MarkWiki in a freezing mode so that certain elements of the views
+    # won't get rendered.
+    app.config['FREEZING'] = True
+
     app.config['FREEZER_IGNORE_MIMETYPE_WARNINGS'] = True
     app.config['FREEZER_DESTINATION'] = destination
 

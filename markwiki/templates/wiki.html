@@ -17,13 +17,16 @@
 {% endblock %}
 
 {% block actions %}
-<li class='divider'></li>
-<li class='nav-header'>{{ title }} Actions</li>
-<li><a href='{{ url_for('edit', page_path=page_path) }}'><i
-  class='icon-edit'></i> Edit</a></li>
-{# Home is special so don't allow it to be deleted. #}
-{% if page_path != 'Home' %}
-<li><a href='{{ url_for('delete', page_path=page_path) }}'><i
-  class='icon-remove'></i> Delete</a></li>
+{# When freezing, do not display the edit and delete links. #}
+{% if not config['FREEZING'] %}
+  <li class='divider'></li>
+  <li class='nav-header'>{{ title }} Actions</li>
+  <li><a href='{{ url_for('edit', page_path=page_path) }}'><i
+    class='icon-edit'></i> Edit</a></li>
+  {# Home is special so don't allow it to be deleted. #}
+  {% if page_path != 'Home' %}
+  <li><a href='{{ url_for('delete', page_path=page_path) }}'><i
+    class='icon-remove'></i> Delete</a></li>
+  {% endif %}
 {% endif %}
 {% endblock %}
