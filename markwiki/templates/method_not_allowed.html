@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Oops, that's not allowed{% endblock %}
+{% block content %}
+<h1>Oops</h1>
+<p>It looks like something happened that is not allowed. Sorry about that.</p>
+
+<p>If the problem continues, you may want to contact the person who set up
+MarkWiki and ask them to check the error logs.</p>
+
+<p>In geek speak, the problem was a "405 Method Not Allowed" error. The most
+likely cause is that your browser has JavaScript disabled and you attempted to
+delete a page.</p>
+{% endblock %}

@@ -36,6 +36,12 @@ def render_wiki_editor(page_path, wiki_page):
     abort(500)
 
 
+@app.errorhandler(405)
+def method_not_allowed(error):
+    '''Display a 405 page.'''
+    return render_template('method_not_allowed.html')
+
+
 @app.errorhandler(500)
 def internal_server_error(error):
     '''Display a 500 page.'''
@@ -157,7 +163,7 @@ def list(section_path=''):
         return redirect(url_for('index'))
 
 
-@app.route('/delete/<path:page_path>')
+@app.route('/delete/<path:page_path>', methods=['POST'])
 def delete(page_path):
     '''Delete the wiki page.'''
     if page_path == 'Home':

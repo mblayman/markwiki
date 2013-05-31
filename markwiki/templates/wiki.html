@@ -25,8 +25,20 @@
     class='icon-edit'></i> Edit</a></li>
   {# Home is special so don't allow it to be deleted. #}
   {% if page_path != 'Home' %}
-  <li><a href='{{ url_for('delete', page_path=page_path) }}'><i
+  {# Allow users to get an error from the server if JavaScript is disabled. #}
+  <li><a class='delete' href='{{ url_for('delete', page_path=page_path) }}'><i
     class='icon-remove'></i> Delete</a></li>
+  <form id='delete_form' action='{{ url_for('delete', page_path=page_path) }}'
+     method='POST'>
+  </form>
   {% endif %}
 {% endif %}
+{% endblock %}
+
+{% block onready %}
+$('a.delete').click(function(event) {
+  // Prevent the default so that the GET delete doesn't happen before the POST.
+  event.preventDefault();
+  $('#delete_form').submit();
+});
 {% endblock %}
