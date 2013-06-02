@@ -29,8 +29,6 @@ def freeze(destination):
     # links. Copy the wiki into a temporary area and work with that instead.
     _create_wiki_copy()
 
-    # TODO: Document this feature in a Features page. Remove Syntax? Add to
-    # that that only absolute paths are supported.
     freezer = Freezer(app)
 
     # Add the URL generator to suppress a warning. It won't really do anything.

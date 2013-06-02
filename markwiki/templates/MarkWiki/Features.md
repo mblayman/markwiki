@@ -57,6 +57,21 @@ class Foo(object):
 
 ```
 
+### Freezing
+
+In some scenarios, you may not be able to run a web server that is able to run
+MarkWiki, but you need to publish a readable version of your wiki. For that,
+you can freeze your wiki to take a snapshot of the content. It's exactly how
+the [MarkWiki documentation] [docs] is hosted on `http://pythonhosted.org`. To
+freeze your wiki, run:
+
+```bash
+$ markwiki -f "<destination>"
+```
+
+In the example, `<destination>` is the directory that you want the frozen wiki
+to be stored.
+
 [syn]: http://daringfireball.net/projects/markdown/syntax
 [git]: https://github.com
-
+[docs]: http://pythonhosted.org/MarkWiki/
