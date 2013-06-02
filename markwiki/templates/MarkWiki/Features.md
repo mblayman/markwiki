@@ -5,6 +5,8 @@ MarkWiki stays very true to the [original Markdown specification] [syn] with
 some minor deviations. It also has other cool features that make working
 with Markdown even better!
 
+[TOC]
+
 ### Wiki Links
 
 Normal Markdown syntax does not include wiki links, but MarkWiki does. Text
@@ -25,6 +27,11 @@ of this categorization itself by putting all its help pages under the
 `MarkWiki` category. This documentation generally refers to these categories as
 "Sections." Sections can exist within other sections and can be as deep as
 desired, but it is recommended that you [[Please/Do/Not/Torture/Others]].
+
+### Table Of Contents
+
+You can add a table of contents anywhere in the wiki page by putting `[TOC]` on
+a line by itself. This page has an example if you look at the Markdown source.
 
 ### Code Highlighting
 
