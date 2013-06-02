@@ -5,7 +5,7 @@ Boom! Here's Some Help
 
 In order to work with MarkWiki, you need to learn some Markdown. You can either
 jump right into editing and learn as you go (because Markdown is super easy),
-or head over to the [[MarkWiki/Syntax]] page to learn more details.
+or head over to the [[MarkWiki/Features]] page to learn more details.
 
 ### I'm An Admin Who's Been Told To Set Up MarkWiki
 

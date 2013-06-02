@@ -41,7 +41,7 @@ back).
 There are a couple of things that MarkWiki does differently than Markdown. The
 most obvious one is that we support internal wiki pages. You can make a wiki
 page by surrounding a path in double square brackets (e.g., \[[MyCoolPage]]).
-Other differences can be found by checking out [[MarkWiki/Syntax]].
+Other differences can be found by checking out [[MarkWiki/Features]].
 
 [syn]: http://daringfireball.net/projects/markdown/syntax
 

@@ -1,8 +1,9 @@
-Writing In MarkWiki
-===================
+MarkWiki Features
+=================
 
 MarkWiki stays very true to the [original Markdown specification] [syn] with
-some minor deviations.
+some minor deviations. It also has other cool features that make working
+with Markdown even better!
 
 ### Wiki Links
 
