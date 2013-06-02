@@ -3,6 +3,8 @@ MarkWiki
 
 *A simple wiki using Markdown*
 
+The user documentation for MarkWiki is at http://pythonhosted.org/MarkWiki/.
+
 Running MarkWiki
 ----------------
 
