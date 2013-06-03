@@ -31,5 +31,6 @@ setup(
         'Frozen-Flask',
         'Markdown',
         'Pygments',
-    ]
+    ],
+    test_suite='markwiki.tests'
 )
