@@ -13,5 +13,15 @@ There are also different setting that a system administrator will want to set
 for MarkWiki. All the settings are documented on the [[MarkWiki/Settings]]
 page.
 
+### An Example With Nginx
+
+[Nginx] [nginx] is a popular web server to use when deploying to production
+environments. This section will attempt to provide a realistic deployment
+example using MarkWiki and Nginx. This is to help those that might get confused
+by the somewhat unspecific examples listed in the Flask documentation.
+
+** *TODO:* I promise I'll try to get a good example here.**
+
 [flask]: http://flask.pocoo.org/docs/deploying/#deployment
+[nginx]: http://wiki.nginx.org/Main
 

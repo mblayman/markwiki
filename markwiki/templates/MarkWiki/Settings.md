@@ -15,11 +15,24 @@ $ markwiki
 
 [A sample production configuration file is available.] [prod]
 
+The default settings are geared toward development so please be sure to check
+the settings before putting MarkWiki into production. Be safe, folks.
+
 ### MarkWiki Specific Settings
+
+* `SERVER_HOST` - This is the hostname of the server. Defaults to `0.0.0.0`.
+* `SERVER_PORT` - This is the port number used by the server. Defaults to
+  `5000`.
+* `WIKI_PATH` - This is the location where all of MarkWiki's content is
+  stored. Defaults to `~/.markwiki`.
 
 ### Flask Settings Used By MarkWiki
 
-TODO: Document them all.
+* `DEBUG` - This is a debug flag. It is ***VERY IMPORTANT*** that this be set
+  to `False` for a production environment. Otherwise bad guys may find ways
+  to exploit your server. Defaults to `True`.
+* `SECRET_KEY` - This is used to provide security for user session data. Please
+  be sure to select something unique and very hard to guess. Defaults to `It's
+  a secret to everybody.`.
 
-TODO: Make a production sample.
 [prod]: https://raw.github.com/mblayman/markwiki/master/production.config
