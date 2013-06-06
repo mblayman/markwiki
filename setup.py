@@ -12,7 +12,7 @@ from setuptools import setup
 
 setup(
     name='MarkWiki',
-    version='1.1dev',
+    version='1.1',
     url='https://github.com/mblayman/markwiki',
     license='BSD',
     author='Matt Layman',
