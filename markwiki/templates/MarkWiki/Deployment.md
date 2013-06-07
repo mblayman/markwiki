@@ -20,8 +20,10 @@ environments. This section will attempt to provide a realistic deployment
 example using MarkWiki and Nginx. This is to help those that might get confused
 by the somewhat unspecific examples listed in the Flask documentation.
 
-** *TODO:* I promise I'll try to get a good example here.**
+** *TODO:* I promise I'll try to get a good example here. In the interim, you
+may have some success with [the uWSGI quickstart] [uwsgi].**
 
 [flask]: http://flask.pocoo.org/docs/deploying/#deployment
 [nginx]: http://wiki.nginx.org/Main
+[uwsgi]: http://uwsgi-docs.readthedocs.org/en/latest/WSGIquickstart.html
 
