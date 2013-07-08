@@ -8,13 +8,27 @@ from flask import Flask
 
 from markwiki.util import bootstrap
 
-app = Flask(__name__)
 
-# Load the default configuration.
-app.config.from_object('markwiki.config')
+class CustomFlask(Flask):
 
-# Load production settings from a configuration file.
-app.config.from_envvar('MARKWIKI_SETTINGS', silent=True)
+    def __init__(self, *args, **kwargs):
+        super(CustomFlask, self).__init__(*args, **kwargs)
+
+        # Load the default configuration.
+        self.config.from_object('markwiki.config')
+
+        # Load production settings from a configuration file.
+        self.config.from_envvar('MARKWIKI_SETTINGS', silent=True)
+
+        # Allow override of template and static folders
+        if 'STATIC_PATH' in self.config:
+            self.static_folder = self.config['STATIC_PATH']
+
+        if 'TEMPLATE_PATH' in self.config:
+            self.template_folder = self.config['TEMPLATE_PATH']
+
+
+app = CustomFlask(__name__)
 
 # Check if the wiki exists and bootstrap if it isn't there.
 if not os.path.exists(app.config['WIKI_PATH']):
