@@ -1,4 +1,4 @@
-# Copyright (c) 2013, Matt Layman
+# Copyright (c) 2013, Matt Layman and contributors
 '''A simple wiki using Markdown'''
 
 import os
@@ -9,16 +9,20 @@ from flask import Flask
 from markwiki.util import bootstrap
 
 
-class CustomFlask(Flask):
+class MarkWikiApp(Flask):
 
     def __init__(self, *args, **kwargs):
-        super(CustomFlask, self).__init__(*args, **kwargs)
+        super(MarkWikiApp, self).__init__(*args, **kwargs)
 
         # Load the default configuration.
         self.config.from_object('markwiki.config')
 
         # Load production settings from a configuration file.
-        self.config.from_envvar('MARKWIKI_SETTINGS', silent=True)
+        loaded = self.config.from_envvar('MARKWIKI_SETTINGS', silent=True)
+
+        if not loaded:
+            print(' * MARKWIKI_SETTINGS is not set (or has a bad file path). '
+                  'Using defaults ...')
 
         # Allow override of template and static folders
         if 'STATIC_PATH' in self.config:
@@ -28,7 +32,7 @@ class CustomFlask(Flask):
             self.template_folder = self.config['TEMPLATE_PATH']
 
 
-app = CustomFlask(__name__)
+app = MarkWikiApp(__name__)
 
 # Check if the wiki exists and bootstrap if it isn't there.
 if not os.path.exists(app.config['WIKI_PATH']):
