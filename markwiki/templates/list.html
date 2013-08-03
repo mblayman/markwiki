@@ -5,15 +5,11 @@ Listing of {{ section_path|default('MarkWiki Content', true) }}
 
 {% block content %}
 <ul class='breadcrumb'>
-  <li><a href='{{ url_for('list') }}'>Explore</a>
-  {% if g.sections|length > 0 %}
-    <i class='icon-chevron-right'></i>
-  {% endif %}
-  </li>
+  <li><a href='{{ url_for('list') }}'>Explore</a></li>
 {% for section in g.sections %}
   {% if not loop.last %}
   <li><a href='{{ url_for('list', section_path=section.path) }}'
-    >{{ section.name }}</a> <i class='icon-chevron-right'></i></li>
+    >{{ section.name }}</a></li>
   {% else %}
   <li class='active'>{{ section.name }}</li>
   {% endif %}
@@ -33,9 +29,9 @@ below.</h5>
   <h3>Sections</h3>
   <p>{{ section_path|default('MarkWiki Content', true) }} has these
   sections:</p>
-  <ul class='unstyled'>
+  <ul class='list-unstyled'>
     {% for section in sections %}
-    <li><i class='icon-book'></i> <a
+    <li><span class='glyphicon glyphicon-book'></span> <a
         href='{{ url_for('list', section_path=section.path) }}'
         >{{ section.name }}</a></li>
     {% endfor %}
@@ -46,9 +42,9 @@ below.</h5>
   <h3>Wiki Pages</h3>
   <p>{{ section_path|default('MarkWiki Content', true) }} has these wiki
   pages:</p>
-  <ul class='unstyled'>
+  <ul class='list-unstyled'>
     {% for page in pages %}
-    <li><i class='icon-file'></i> <a
+    <li><span class='glyphicon glyphicon-file'></span> <a
         href='{{ url_for('wiki', page_path=page.path) }}'
         >{{ page.name }}</a></li>
     {% endfor %}

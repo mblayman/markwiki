@@ -3,34 +3,35 @@
 
 {% block content %}
 <ul class='breadcrumb'>
-  <li><a href='{{ url_for('list') }}'>Explore</a>
-    <i class='icon-chevron-right'></i>
-  </li>
+  <li><a href='{{ url_for('list') }}'>Explore</a></li>
 {% for section in g.sections %}
   <li><a href='{{ url_for('list', section_path=section.path) }}'
-    >{{ section.name }}</a> <i class='icon-chevron-right'></i></li>
+    >{{ section.name }}</a></li>
 {% endfor %}
   <li class='active'>{{ title }}</li>
 </ul>
 
 {{ wiki|safe }}
 
-<div id='delete_modal' class='modal hide fade' tabindex='-1' role='dialog'
-  aria-labelledby='delete_modal_label' aria-hidden='true'>
-  <div class='modal-header'>
-    <button type='button' class='close' data-dismiss='modal'
-      aria-hidden='true'>×</button>
-    <h3 id='delete_modal_label'>Whoa... hold on.</h3>
-  </div>
-  <div class='modal-body'>
-    <p>If you continue, this wiki page says buh-bye forever. Are you sure you
-    want to do that?</p>
-  </div>
-  <div class='modal-footer'>
-    <button class='btn' data-dismiss='modal'
-      aria-hidden='true'>No, get me out of here!</button>
-    <button id='really_delete'
-      class='btn btn-danger'>Delete {{ page_path }}</button>
+<div id='delete_modal' class='modal fade'>
+  <div class='modal-dialog'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <button type='button' class='close' data-dismiss='modal'
+          aria-hidden='true'>×</button>
+        <h3 class='modal-title'>Whoa... hold on.</h3>
+      </div>
+      <div class='modal-body'>
+        <p>If you continue, this wiki page says buh-bye forever. Are you sure
+        you want to do that?</p>
+      </div>
+      <div class='modal-footer'>
+        <button class='btn btn-default' data-dismiss='modal'
+          aria-hidden='true'>No, get me out of here!</button>
+        <button id='really_delete' aria-hidden='true'
+          class='btn btn-danger'>Delete {{ page_path }}</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -42,16 +43,19 @@
 {% block actions %}
 {# When freezing, do not display the edit and delete links. #}
 {% if not config['FREEZING'] %}
-  <li class='divider'></li>
-  <li class='nav-header'>{{ title }} Actions</li>
-  <li><a href='{{ url_for('edit', page_path=page_path) }}'><i
-    class='icon-edit'></i> Edit</a></li>
+  <h4>Actions</h4>
+  <div class='list-group'>
+    <a class='list-group-item'
+      href='{{ url_for('edit', page_path=page_path) }}'><span
+      class='glyphicon glyphicon-edit'></span> Edit</a>
   {# Home is special so don't allow it to be deleted. #}
   {% if page_path != 'Home' %}
   {# Allow users to get an error from the server if JavaScript is disabled. #}
-  <li><a id='delete' href='{{ url_for('delete', page_path=page_path) }}'><i
-    class='icon-remove'></i> Delete</a></li>
+    <a class='list-group-item alert-danger' id='delete'
+      href='{{ url_for('delete', page_path=page_path) }}'><span
+      class='glyphicon glyphicon-remove'></span> Delete</a>
   {% endif %}
+  </div>
 {% endif %}
 {% endblock %}
 

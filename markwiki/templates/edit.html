@@ -4,17 +4,18 @@
 <h1>{{ self.title() }}</h1>
 <form action='{{ url_for('update_wiki') }}' method='POST'>
   <input type='hidden' name='original_page_path' value='{{ page_path }}'>
-  <div class='control-group'>
+  <div class='form-group'>
     <label for='page_path'>Wiki:</label>
-    <input type='text' name='page_path' value='{{ page_path }}'>
+    <input type='text' name='page_path' class='form-control'
+      value='{{ page_path }}'>
   </div>
-  <div class='control-group'>
-    <textarea rows='30' name='wiki_content' class='span7'
+  <div class='form-group'>
+    <textarea rows='30' name='wiki_content' class='form-control'
       autofocus='autofocus'>{{ wiki_content }}</textarea>
   </div>
-  <div class='control-group'>
+  <div class='form-group'>
     <button type='submit' class='btn btn-success'>
-      <i class='icon-ok icon-white'></i> Save Wiki
+      <span class='glyphicon glyphicon-ok'></span> Save Wiki
     </button>
   </div>
 </form>

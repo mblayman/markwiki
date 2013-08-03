@@ -4,15 +4,22 @@
   <title>{% block title%}{% endblock %}</title>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <link rel='stylesheet' media='screen'
-    href='{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}'>
+    href='{{ url_for('static', filename='bs/css/bootstrap.min.3rc1.css') }}'>
+  <link rel='stylesheet' media='screen'
+    href='{{ url_for('static', filename='bs/css/bootstrap-glyphicons.css') }}'>
   <style>
     body {
       /* 60px to make the container go all the way to the bottom of the topbar*/
       padding-top: 60px;
     }
+    @media (max-width:992px) {
+       .affix {
+         position: static;
+         width: auto;
+         top: 0;
+        }
+    }
   </style>
-  <link rel='stylesheet' media='screen'
-    href='{{ url_for('static', filename='bootstrap/css/bootstrap-responsive.min.css') }}'>
   <link rel='stylesheet' media='screen'
     href='{{ url_for('static', filename='pygments-pastie.css') }}'>
   <style>
@@ -23,35 +30,45 @@
 </head>
 <body>
 <div class='navbar navbar-fixed-top navbar-inverse'>
-  <div class='navbar-inner'>
-    <div class='container'>
-      <a class='brand' href='{{ url_for('index') }}'>MarkWiki</a>
+  <div class='container'>
+    <button type="button" class="navbar-toggle" data-toggle="collapse"
+      data-target=".navbar-responsive-collapse">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class='navbar-brand' href='{{ url_for('index') }}'>MarkWiki</a>
+    <div class="nav-collapse collapse navbar-responsive-collapse">
+      <ul class='nav navbar-nav'>
+        <li><a href='{{ url_for('index') }}'><span
+          class='glyphicon glyphicon-home'></span>&nbsp; Go Home</a></li>
+        {% if not config['FREEZING'] %}
+        <li><a href='{{ url_for('create') }}'><span
+          class='glyphicon glyphicon-pencil'></span>&nbsp; Create a Wiki</a>
+        </li>
+        {% endif %}
+        <li><a href='{{ url_for('list') }}'><span
+          class='glyphicon glyphicon-eye-open'></span>&nbsp;
+          Explore the Wiki</a></li>
+        <li><a href='{{ url_for('wiki', page_path='MarkWiki/Help') }}'><span
+          class='glyphicon glyphicon-question-sign'></span>&nbsp; Get Help</a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
 <div class='container'>
 <div class='row'>
-  <div class='span3 offset1'>
-    <ul class='nav nav-list' data-spy='affix'>
-      <li class='nav-header'>Actions</li>
-      <li><a href='{{ url_for('index') }}'><i
-        class='icon-home'></i> Go Home</a></li>
-      {% if not config['FREEZING'] %}
-      <li><a href='{{ url_for('create') }}'><i
-        class='icon-pencil'></i> Create a Wiki</a></li>
-      {% endif %}
-      <li><a href='{{ url_for('list') }}'><i
-        class='icon-eye-open'></i> Explore the Wiki</a></li>
-      <li><a href='{{ url_for('wiki', page_path='MarkWiki/Help') }}'><i
-        class='icon-question-sign'></i> Get Help</a></li>
+  <div class='col-lg-2'>
+    <div data-spy='affix'>
       {% block actions %}{% endblock %}
-    </ul>
+    </div>
   </div>
-  <div class='span7'>
+  <div class='col-lg-7'>
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         {% for message in messages %}
-          <div class='alert alert-error fade in'>
+          <div class='alert alert-danger fade in'>
             <button class="close" data-dismiss="alert" type="button">×</button>
             {{ message }}
           </div>
@@ -64,7 +81,7 @@
 </div>
 </div>
 <script src='{{ url_for('static', filename='jquery-2.0.0.min.js') }}'></script>
-<script src='{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}'>
+<script src='{{ url_for('static', filename='bs/js/bootstrap.min.3rc1.js') }}'>
 </script>
 <script>
 $(function() {
