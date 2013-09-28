@@ -5,6 +5,7 @@ import unittest
 
 from markwiki.wiki import get_sections_from
 from markwiki.wiki import WikiPage
+from markwiki.wiki import WikiSection
 
 
 class TestWiki(unittest.TestCase):
@@ -22,7 +23,8 @@ class TestWiki(unittest.TestCase):
         self.assertEqual(sections[1].path, 'One/Two')
 
         section_path = '/Foo/Bar'
-        sections = get_sections_from(section_path)
+        section = WikiSection(section_path)
+        sections = section.sections
 
         self.assertEqual(len(sections), 2)
         self.assertEqual(sections[0].name, 'Foo')

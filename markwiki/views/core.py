@@ -13,9 +13,8 @@ from flask.ext.login import login_required
 from markwiki import app
 from markwiki.exceptions import ValidationError
 from markwiki.validators import is_valid_section, validate_page_path
-from markwiki.wiki import get_section_content
-from markwiki.wiki import get_sections_from
 from markwiki.wiki import WikiPage
+from markwiki.wiki import WikiSection
 
 
 def render_wiki_editor(page):
@@ -131,12 +130,11 @@ def wiki(page_path='Home'):
 def list(section_path=''):
     '''List the contents of a directory section.'''
     if is_valid_section(section_path):
-        # Get the sections here and above.
-        g.sections = get_sections_from(section_path)
-
-        sections, pages = get_section_content(section_path)
+        section = WikiSection(section_path)
+        g.sections = section.sections
         return render_template('list.html', section_path=section_path,
-                               sections=sections, pages=pages)
+                               sections=section.subsections,
+                               pages=section.pages)
     else:
         # This should only happen if a wiki link is created with a bad section
         # or if someone directly tries to attempt a bad URL.

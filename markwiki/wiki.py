@@ -84,29 +84,52 @@ class WikiPage(object):
         return True
 
 
-def get_section_content(section_path):
-    '''Get the sections and pages in this section. Assumes valid section.'''
-    pages = []
-    sections = []
-    section_directory = os.path.join(app.config['WIKI_PATH'], section_path)
-    contents = os.listdir(section_directory)
-    contents.sort()
-    for content in contents:
-        if content.endswith('.md'):
-            # Trim the extension.
-            page_name = content[:-3]
-            pages.append(Page(page_name,
-                              os.path.join(section_path, page_name)))
-        else:
-            sections.append(Section(content,
-                            os.path.join(section_path, content)))
+class WikiSection(object):
+    '''A model for wiki sections'''
 
-    return (sections, pages)
+    def __init__(self, section_path):
+        self.section_path = section_path
+        # Not using an empty list to start because there could legitimately be
+        # no pages or subsections and the cache would retry every property call
+        # if it only checked for empty lists.
+        self._pages = None
+        self._subsections = None
 
+    @property
+    def pages(self):
+        if self._pages is None:
+            self._get_section_content()
 
-def get_sections_from(section_path):
-    '''Extract the sections from the provided section path.'''
-    return _get_sections_from_parts(section_path.split('/'))
+        return self._pages
+
+    @property
+    def sections(self):
+        '''Sections include everything above and including this section.'''
+        return _get_sections_from_parts(self.section_path.split('/'))
+
+    @property
+    def subsections(self):
+        if self._subsections is None:
+            self._get_section_content()
+
+        return self._subsections
+
+    def _get_section_content(self):
+        '''Get subsections and pages in this section. Assumes valid section.'''
+        self._pages = []
+        self._subsections = []
+        directory = os.path.join(app.config['WIKI_PATH'], self.section_path)
+        contents = os.listdir(directory)
+        contents.sort()
+        for content in contents:
+            if content.endswith('.md'):
+                # Trim the extension.
+                page_name = content[:-3]
+                self._pages.append(Page(page_name,
+                                   os.path.join(self.section_path, page_name)))
+            else:
+                self._subsections.append(
+                    Section(content, os.path.join(self.section_path, content)))
 
 
 def _get_sections_from_parts(section_parts):
