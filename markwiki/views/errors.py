@@ -6,12 +6,6 @@ from flask import render_template
 from markwiki import app
 
 
-@app.errorhandler(401)
-def method_not_allowed(error):
-    '''Display a 401 page.'''
-    return render_template('unauthorized.html')
-
-
 @app.errorhandler(405)
 def method_not_allowed(error):
     '''Display a 405 page.'''

@@ -4,14 +4,13 @@
 import os
 import sys
 
-from flask.ext.login import LoginManager
-
 from markwiki.application import MarkWikiApp
+from markwiki.authn.manager import MarkWikiLoginManager
 from markwiki.util import bootstrap
 
 
 app = MarkWikiApp(__name__)
-login_manager = LoginManager(app)
+login_manager = MarkWikiLoginManager(app)
 
 # Check if the wiki exists and bootstrap if it isn't there.
 if not os.path.exists(app.config['WIKI_PATH']):
@@ -23,5 +22,6 @@ else:
 
 # Because the import is circular, the importing of the views should be the last
 # thing so that there is no temptation to use them and cause craziness.
+import markwiki.views.authn
 import markwiki.views.core
 import markwiki.views.errors
