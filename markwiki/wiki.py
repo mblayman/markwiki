@@ -4,13 +4,84 @@
 from collections import namedtuple
 import os
 
-from flask import abort
-
 from markwiki import app
+from markwiki.renderer import render_markdown
 
 # Data types used by MarkWiki
 Page = namedtuple('Page', ['name', 'path'])
 Section = namedtuple('Section', ['name', 'path'])
+
+
+class WikiPage(object):
+    '''A model to represent a wiki page'''
+
+    def __init__(self, page_path):
+        self.page_path = page_path
+        self._wiki_path = None
+
+    @property
+    def content(self):
+        '''Get the source content of the page.'''
+        with open(self.wiki_path, 'r') as wiki:
+            return wiki.read()
+
+    @property
+    def exists(self):
+        '''Check if the page actually exists.'''
+        return os.path.isfile(self.wiki_path)
+
+    @property
+    def html(self):
+        '''Render the page for display.'''
+        return render_markdown(self.wiki_path)
+
+    @property
+    def sections(self):
+        '''Extract the sections from the page path.'''
+        # Drop the wiki page name with this slice.
+        section_parts = self.page_path.split('/')[:-1]
+        return _get_sections_from_parts(section_parts)
+
+    @property
+    def title(self):
+        # Always use the last name in the path as the title.
+        return os.path.split(self.page_path)[-1]
+
+    @property
+    def wiki_path(self):
+        '''Get the wiki's page path.'''
+        if not self._wiki_path:
+            self._wiki_path = os.path.join(app.config['WIKI_PATH'],
+                                           self.page_path + '.md')
+        return self._wiki_path
+
+    def store(self, content):
+        '''Write the content. Assumes valid path. Returns success status.'''
+        # Determine if the directories are already in place.
+        directory = os.path.dirname(self.wiki_path)
+        if not os.path.exists(directory):
+            # This could be nested deeply so make all intermediate directories.
+            try:
+                os.makedirs(directory)
+            except:
+                return False
+
+        try:
+            with open(self.wiki_path, 'w') as wiki:
+                wiki.write(content)
+        except IOError:
+            # Something bad happened while writing so report failure.
+            return False
+
+        return True
+
+    def delete(self):
+        try:
+            os.remove(self.wiki_path)
+        except:
+            return False
+
+        return True
 
 
 def get_section_content(section_path):
@@ -33,15 +104,7 @@ def get_section_content(section_path):
     return (sections, pages)
 
 
-def get_sections_from_page_path(page_path):
-    '''Extract the sections from the provided page path.'''
-    # Drop the wiki page name with this slice.
-    section_parts = page_path.split('/')[:-1]
-
-    return _get_sections_from_parts(section_parts)
-
-
-def get_sections_from_section_path(section_path):
+def get_sections_from(section_path):
     '''Extract the sections from the provided section path.'''
     return _get_sections_from_parts(section_path.split('/'))
 
@@ -60,27 +123,3 @@ def _get_sections_from_parts(section_parts):
         sections.append(Section(part, '/'.join(section_path)))
 
     return sections
-
-
-def get_wiki(page_path):
-    '''Get the wiki's page path.'''
-    return os.path.join(app.config['WIKI_PATH'], page_path + '.md')
-
-
-def write_wiki(path, content):
-    '''Write the wiki content to the path provided. Assumes valid path.'''
-    # Determine if the directories are already in place.
-    directory = os.path.dirname(path)
-    if not os.path.exists(directory):
-        # This could be nested deeply so make the intermediate directories too.
-        try:
-            os.makedirs(directory)
-        except:
-            abort(500)
-
-    try:
-        with open(path, 'w') as wiki:
-            wiki.write(content)
-    except IOError:
-        # Something bad happened while writing so report failure.
-        abort(500)

@@ -1,8 +1,6 @@
 # Copyright (c) 2013, Matt Layman
 '''The views that MarkWiki displays'''
 
-import os
-
 from flask import abort
 from flask import flash
 from flask import g
@@ -10,42 +8,24 @@ from flask import redirect
 from flask import render_template
 from flask import request
 from flask import url_for
+from flask.ext.login import login_required
 
 from markwiki import app
 from markwiki.exceptions import ValidationError
-from markwiki.renderer import render_markdown
 from markwiki.validators import is_valid_section, validate_page_path
 from markwiki.wiki import get_section_content
-from markwiki.wiki import get_sections_from_page_path
-from markwiki.wiki import get_sections_from_section_path
-from markwiki.wiki import get_wiki, write_wiki
+from markwiki.wiki import get_sections_from
+from markwiki.wiki import WikiPage
 
 
-def render_wiki_editor(page_path, wiki_page):
+def render_wiki_editor(page):
     '''Render the wiki editor with content from the provided wiki page.
-    Assumes a valid wiki page path.'''
+    Assumes a valid wiki page.'''
     try:
-        with open(wiki_page, 'r') as wiki:
-            wiki_content = wiki.read()
-            return render_template('edit.html', page_path=page_path,
-                                   wiki_content=wiki_content)
+        return render_template('edit.html', page_path=page.page_path,
+                               wiki_content=page.content)
     except IOError:
         abort(500)
-
-    # Some weird stuff happened if we got here.
-    abort(500)
-
-
-@app.errorhandler(405)
-def method_not_allowed(error):
-    '''Display a 405 page.'''
-    return render_template('method_not_allowed.html')
-
-
-@app.errorhandler(500)
-def internal_server_error(error):
-    '''Display a 500 page.'''
-    return render_template('internal_server_error.html')
 
 
 @app.route('/')
@@ -56,6 +36,7 @@ def index():
 
 @app.route('/create/')
 @app.route('/create/<path:page_path>')
+@login_required
 def create(page_path=None, wiki_content=None):
     '''Display the wiki creation form.'''
     return render_template('create.html', page_path=page_path,
@@ -63,16 +44,20 @@ def create(page_path=None, wiki_content=None):
 
 
 @app.route('/make_wiki', methods=['POST'])
+@login_required
 def make_wiki():
     '''Make the wiki page.'''
     page_path = request.form['page_path']
     try:
         validate_page_path(page_path)
-        wiki_page = get_wiki(page_path)
+        page = WikiPage(page_path)
 
         # Proceed if the wiki does not exist.
-        if not os.path.exists(wiki_page):
-            write_wiki(wiki_page, request.form['wiki_content'])
+        if not page.exists:
+            if not page.store(request.form['wiki_content']):
+                # Storing would fail if something unrecoverable happened.
+                abort(500)
+
             return redirect(url_for('wiki', page_path=page_path))
         else:
             flash('That wiki name already exists. Please choose another.')
@@ -84,6 +69,7 @@ def make_wiki():
 
 @app.route('/edit/')
 @app.route('/edit/<path:page_path>')
+@login_required
 def edit(page_path=None):
     '''Edit a wiki page.'''
     # It should be possible to create a new page from the edit link.
@@ -92,11 +78,11 @@ def edit(page_path=None):
 
     try:
         validate_page_path(page_path)
-        wiki_page = get_wiki(page_path)
+        page = WikiPage(page_path)
 
         # Proceed if the wiki exists.
-        if os.path.exists(wiki_page):
-            return render_wiki_editor(page_path, wiki_page)
+        if page.exists:
+            return render_wiki_editor(page)
         else:
             # Get the user going with this new page.
             return redirect(url_for('create', page_path=page_path))
@@ -109,6 +95,7 @@ def edit(page_path=None):
 
 
 @app.route('/update_wiki', methods=['POST'])
+@login_required
 def update_wiki():
     '''Update a wiki page.'''
     # If the path changed, then this is now a new page.
@@ -118,8 +105,11 @@ def update_wiki():
         # Because the path is the same as the original, then it must be valid
         # because it is a pre-existing page.
         page_path = request.form['page_path']
-        wiki_page = get_wiki(page_path)
-        write_wiki(wiki_page, request.form['wiki_content'])
+        page = WikiPage(page_path)
+        if not page.store(request.form['wiki_content']):
+            # Storing would fail if something unrecoverable happened.
+            abort(500)
+
         return redirect(url_for('wiki', page_path=page_path))
 
 
@@ -127,22 +117,13 @@ def update_wiki():
 @app.route('/wiki/<path:page_path>/')
 def wiki(page_path='Home'):
     '''Render the wiki page or make a new one if the wiki doesn't exist.'''
-    wiki_html = ''
-
-    wiki_page = get_wiki(page_path)
-    if os.path.isfile(wiki_page):
-        wiki_html = render_markdown(wiki_page)
+    page = WikiPage(page_path)
+    if page.exists:
+        g.sections = page.sections
+        return render_template('wiki.html', page_path=page_path,
+                               title=page.title, wiki=page.html)
     else:
         return create(page_path)
-
-    # Always use the last name in the path as the title.
-    title = os.path.split(page_path)[-1]
-
-    # Get the sections if there are any.
-    g.sections = get_sections_from_page_path(page_path)
-
-    return render_template('wiki.html', page_path=page_path, title=title,
-                           wiki=wiki_html)
 
 
 @app.route('/list/')
@@ -151,9 +132,9 @@ def list(section_path=''):
     '''List the contents of a directory section.'''
     if is_valid_section(section_path):
         # Get the sections here and above.
-        g.sections = get_sections_from_section_path(section_path)
+        g.sections = get_sections_from(section_path)
 
-        (sections, pages) = get_section_content(section_path)
+        sections, pages = get_section_content(section_path)
         return render_template('list.html', section_path=section_path,
                                sections=sections, pages=pages)
     else:
@@ -164,6 +145,7 @@ def list(section_path=''):
 
 
 @app.route('/delete/<path:page_path>', methods=['POST'])
+@login_required
 def delete(page_path):
     '''Delete the wiki page.'''
     if page_path == 'Home':
@@ -173,11 +155,12 @@ def delete(page_path):
 
     try:
         validate_page_path(page_path)
-        wiki_page = get_wiki(page_path)
+        page = WikiPage(page_path)
 
-        # Proceed if the wiki exists.
-        if os.path.exists(wiki_page):
-            os.remove(wiki_page)
+        if page.exists:
+            if not page.delete():
+                # Unsuccessful delete.
+                abort(500)
         else:
             flash('That wiki doesn\'t exist.')
     except ValidationError as verror:

@@ -12,7 +12,7 @@ from setuptools import setup
 
 setup(
     name='MarkWiki',
-    version='1.1',
+    version='1.2',
     url='https://github.com/mblayman/markwiki',
     license='BSD',
     author='Matt Layman',
@@ -29,6 +29,7 @@ setup(
         'argparse',
         'Flask',
         'Frozen-Flask',
+        'Flask-Login',
         'Markdown',
         'Pygments',
     ],

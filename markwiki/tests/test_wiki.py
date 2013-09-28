@@ -3,8 +3,8 @@
 
 import unittest
 
-from markwiki.wiki import get_sections_from_page_path
-from markwiki.wiki import get_sections_from_section_path
+from markwiki.wiki import get_sections_from
+from markwiki.wiki import WikiPage
 
 
 class TestWiki(unittest.TestCase):
@@ -12,7 +12,8 @@ class TestWiki(unittest.TestCase):
     def test_gets_sections(self):
         '''Test getting sections out of paths.'''
         page_path = '/One/Two/Three'
-        sections = get_sections_from_page_path(page_path)
+        page = WikiPage(page_path)
+        sections = page.sections
 
         self.assertEqual(len(sections), 2)
         self.assertEqual(sections[0].name, 'One')
@@ -21,7 +22,7 @@ class TestWiki(unittest.TestCase):
         self.assertEqual(sections[1].path, 'One/Two')
 
         section_path = '/Foo/Bar'
-        sections = get_sections_from_section_path(section_path)
+        sections = get_sections_from(section_path)
 
         self.assertEqual(len(sections), 2)
         self.assertEqual(sections[0].name, 'Foo')

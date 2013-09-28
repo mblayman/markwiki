@@ -17,13 +17,46 @@ page.
 
 [Nginx] [nginx] is a popular web server to use when deploying to production
 environments. This section will attempt to provide a realistic deployment
-example using MarkWiki and Nginx. This is to help those that might get confused
-by the somewhat unspecific examples listed in the Flask documentation.
+example using MarkWiki and Nginx (via uWSGI). This is to help those that might
+get confused by the somewhat unspecific examples listed in the Flask
+documentation.
+
+Now, here is a bit of context. MarkWiki is a [WSGI] [wsgi] application.
+[uWSGI] [uwsgi] is software that can run WSGI application very quickly. Nginx
+will talk to uWSGI to get web data from MarkWiki.
+
+This sample configuration was done with Ubuntu 12.04. There may be differences
+in what is required to set up MarkWiki for your particular environment.
+
+First, install Nginx, uWSGI, and the uWSGI Python plugin. The Python
+development package is included so that some of MarkWiki's dependencies can
+include some optional speed-ups. Also, install pip.
+
+With the necessary Ubuntu packages installed, install MarkWiki.
+
+```bash
+$ sudo apt-get install nginx uwsgi uwsgi-plugin-python python-dev python-pip
+$ sudo pip install MarkWiki
+```
+
+By default, Nginx will be configured to start automatically on reboot, but for
+first time use, start it.
+
+```bash
+$ sudo service nginx start
+```
+
+Run:
+```bash
+$ uwsgi --plugin python --http :9090 --module markwiki --callable app
+```
 
 ** *TODO:* I promise I'll try to get a good example here. In the interim, you
-may have some success with [the uWSGI quickstart] [uwsgi].**
+may have some success with [the uWSGI quickstart] [uwsgitut].**
 
 [flask]: http://flask.pocoo.org/docs/deploying/#deployment
 [nginx]: http://wiki.nginx.org/Main
-[uwsgi]: http://uwsgi-docs.readthedocs.org/en/latest/WSGIquickstart.html
+[wsgi]: http://wsgi.readthedocs.org/en/latest/
+[uswgi]: http://uwsgi-docs.readthedocs.org/en/latest/
+[uwsgitut]: http://uwsgi-docs.readthedocs.org/en/latest/WSGIquickstart.html
 
