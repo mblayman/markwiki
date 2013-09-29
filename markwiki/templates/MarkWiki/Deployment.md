@@ -51,12 +51,21 @@ Run:
 $ uwsgi --plugin python --http :9090 --module markwiki --callable app
 ```
 
-** *TODO:* I promise I'll try to get a good example here. In the interim, you
+*TODO*: There is more to show:
+
+*   uWSGI is still not hooked into Nginx. MarkWiki is visible locally on 9090
+    but 80 or 443 are still high and dry. :(
+*   Does Flask need any modifications for proxies? Investigating...
+*   How does uWSGI survive restarts? init.d script? upstart? supervisord? Lots
+    of potential options to explore.
+*   Show SSL setup for authentication support? That would be nice.
+
+** *TODO:* I promise I'll try to finish the example here. In the interim, you
 may have some success with [the uWSGI quickstart] [uwsgitut].**
 
 [flask]: http://flask.pocoo.org/docs/deploying/#deployment
 [nginx]: http://wiki.nginx.org/Main
 [wsgi]: http://wsgi.readthedocs.org/en/latest/
-[uswgi]: http://uwsgi-docs.readthedocs.org/en/latest/
+[uwsgi]: http://uwsgi-docs.readthedocs.org/en/latest/
 [uwsgitut]: http://uwsgi-docs.readthedocs.org/en/latest/WSGIquickstart.html
 
