@@ -25,8 +25,8 @@ class MarkWikiApp(Flask):
             self.config['LOGIN_DISABLED'] = True
 
         # Allow override of template and static folders
-        if 'STATIC_PATH' in self.config:
+        if self.config['STATIC_PATH']:
             self.static_folder = self.config['STATIC_PATH']
 
-        if 'TEMPLATE_PATH' in self.config:
+        if self.config['TEMPLATE_PATH']:
             self.template_folder = self.config['TEMPLATE_PATH']

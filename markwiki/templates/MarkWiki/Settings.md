@@ -1,6 +1,8 @@
 Settings
 ========
 
+[TOC]
+
 The settings that are unique to MarkWiki or are used internally by MarkWiki
 are listed below.
 
@@ -20,19 +22,53 @@ the settings before putting MarkWiki into production. Be safe, folks.
 
 ### MarkWiki Specific Settings
 
-* `SERVER_HOST` - This is the hostname of the server. Defaults to `0.0.0.0`.
-* `SERVER_PORT` - This is the port number used by the server. Defaults to
-  `5000`.
-* `WIKI_PATH` - This is the location where all of MarkWiki's content is
-  stored. Defaults to `~/.markwiki`.
+*   `AUTHENTICATION` - This determines if any form of authentication will be
+    used by MarkWiki. The authentication type should be `'basic'` if
+    authentication is to be used. MarkWiki does *not* configure SSL
+    certificates for secure browsing.
+
+    If MarkWiki is not proxied behind a server configured to use HTTPS then
+    credentials will be passed to the server in plain text!
+
+    Defaults to `None`.
+
+*   `SERVER_HOST` - This is the hostname of the server.
+
+    Defaults to `0.0.0.0`.
+
+*   `SERVER_PORT` - This is the port number used by the server.
+
+    Defaults to `5000`.
+
+*   `WIKI_PATH` - This is the location where all of MarkWiki's content is
+    stored.
+
+    Defaults to `~/.markwiki`.
 
 ### Flask Settings Used By MarkWiki
 
-* `DEBUG` - This is a debug flag. It is ***VERY IMPORTANT*** that this be set
-  to `False` for a production environment. Otherwise bad guys may find ways
-  to exploit your server. Defaults to `True`.
-* `SECRET_KEY` - This is used to provide security for user session data. Please
-  be sure to select something unique and very hard to guess. Defaults to `It's
-  a secret to everybody.`.
+*   `DEBUG` - This is a debug flag. It is ***VERY IMPORTANT*** that this be set
+    to `False` for a production environment. Otherwise bad guys may find ways
+    to exploit your server.
+
+    Defaults to `True`.
+
+*   `SECRET_KEY` - This is used to provide security for user session data.
+    Please be sure to select something unique and very hard to guess.
+
+    Defaults to `It's a secret to everybody.`.
+
+### Advanced Settings
+
+*   `STATIC_PATH` - This is to override the path to static files (like
+    JavaScript and CSS). It can be used to customize the user interface.
+
+    Defaults to `None` to use the default interface.
+
+*   `TEMPLATE_PATH` - This is to override the path to template files that
+    provide the structure of the pages. It can be used to customize the user
+    interface.
+
+    Defaults to `None` to use the default interface.
 
 [prod]: https://raw.github.com/mblayman/markwiki/master/production.config

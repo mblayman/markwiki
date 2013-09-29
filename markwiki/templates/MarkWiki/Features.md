@@ -20,6 +20,17 @@ If you ever need to use a literal \[\[ for some reason, you can use a backslash
 (\\) immediately before each square bracket. This will prevent MarkWiki
 from turning it into a wiki link.
 
+### Authentication
+
+By default, MarkWiki lets any anonymous user edit (and delete!) whatever they
+want. This enables teams to start up quickly if they do not care about
+controlling access.
+
+Some teams, however, would like to reduce the number of people who can edit
+the wiki, so MarkWiki makes it easier to enable user identification. When
+authentication is enabled, only logged in users will be able to create, edit,
+and delete wiki pages. See [[MarkWiki/Settings]] for more information.
+
 ### Wiki Sections
 
 A forward slash in a wiki link is used to group pages. MarkWiki takes advantage
@@ -71,6 +82,13 @@ $ markwiki -f "<destination>"
 
 In the example, `<destination>` is the directory that you want the frozen wiki
 to be stored.
+
+### Customization
+
+MarkWiki provides a method to completely customize the interface through use of
+the `STATIC_PATH` and `TEMPLATE_PATH` settings. By using these settings, an
+intrepid user can create all new themes and structure for MarkWiki's pages.
+Check out `Advanced Settings` in [[MarkWiki/Settings]] for more.
 
 [syn]: http://daringfireball.net/projects/markdown/syntax
 [git]: https://github.com
