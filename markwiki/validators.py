@@ -39,12 +39,6 @@ def validate_directories(directories):
 def validate_login(form):
     '''Validate the user login from the provided form. A valid login produces
     no error messages so None is a valid user.'''
-    if not form.get('user_name'):
-        return 'You did not provide a username.'
-
-    if not form.get('user_password'):
-        return 'You did not provide a password.'
-
     # TODO: The actual logic to check if the user is allowed.
 
     return None

@@ -12,25 +12,25 @@ from flask.ext.login import logout_user
 
 from markwiki import app
 from markwiki.authn.user import User
+from markwiki.forms import LoginForm
 from markwiki.validators import validate_login
 
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
-    # Add the check for the form in case the user is being redirected from a
-    # login_required page.
-    if request.form:
+    form = LoginForm()
+    if form.validate_on_submit():
         error = validate_login(request.form)
         if error is None:
-            login_user(User(request.form['user_name']))
-            flash('You\'ve logged in.')
+            login_user(User(form.username.data))
+            flash('You\'ve logged in.', category='success')
 
             # 'next' will be defined if the user was coming from another page.
-            return redirect(request.form.get('next') or url_for('index'))
+            return redirect(form.next.data or url_for('index'))
         else:
             flash(error)
 
-    return render_template('login.html')
+    return render_template('login.html', form=form)
 
 
 @app.route('/logout/')

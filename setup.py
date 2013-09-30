@@ -30,6 +30,7 @@ setup(
         'Flask',
         'Frozen-Flask',
         'Flask-Login',
+        'Flask-WTF',
         'Markdown',
         'Pygments',
     ],

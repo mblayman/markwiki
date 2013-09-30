@@ -13,5 +13,6 @@ class MarkWikiLoginManager(LoginManager):
 
         # All custom configuration for the login manager should be here.
         self.login_message = 'You must be logged in to do that.'
+        self.login_message_category = 'info'
         self.login_view = '/login/'
         self.user_loader(User.get)

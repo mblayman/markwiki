@@ -5,23 +5,30 @@
 <p>Certain actions on MarkWiki require a logged in user. Please enter your
 user information.</p>
 <form action='{{ url_for('login') }}' method='POST'>
+  {{ form.csrf_token }}
+{%if request.args.get('next') %}
+  {{ form.next(value=request.args.get('next')) }}
+{% endif %}
   <div class='form-group'>
-    <label for='user_id'>Username</label>
-    <input type='text' name='user_name' class='form-control' maxlength='80'
-      autofocus='autofocus' placeholder='Please enter your username...'>
+    {{ form.username.label }}
+    {{ form.username(class_='form-control', autofocus='autofocus',
+      placeholder='Please enter your username...') }}
+{% for error in form.username.errors %}
+    <div class='alert alert-danger fade in'>{{ error }}</div>
+{% endfor %}
   </div>
   <div class='form-group'>
-    <label for='user_password'>Password</label>
-    <input type='password' name='user_password' class='form-control'
-      maxlength='80' placeholder='Please enter your password...'>
+    {{ form.password.label }}
+    {{ form.password(class_='form-control',
+      placeholder='Please enter your password...') }}
+{% for error in form.password.errors %}
+    <div class='alert alert-danger fade in'>{{ error }}</div>
+{% endfor %}
   </div>
   <div class='form-group'>
     <button type='submit' class='btn btn-success'>
       <span class='glyphicon glyphicon-ok'></span> Log in
     </button>
   </div>
-{%if request.args.get('next') %}
-  <input type='hidden' name='next' value='{{ request.args.get('next') }}'>
-{% endif %}
 </form>
 {% endblock %}

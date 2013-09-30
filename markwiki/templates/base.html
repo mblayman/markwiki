@@ -78,10 +78,16 @@
     </div>
   </div>
   <div class='col-lg-7'>
-    {% with messages = get_flashed_messages() %}
+    {% with messages = get_flashed_messages(with_categories=True) %}
       {% if messages %}
-        {% for message in messages %}
+        {% for category, message in messages %}
+          {% if category == 'success' %}
+          <div class='alert alert-success fade in'>
+          {% elif category == 'info' %}
+          <div class='alert alert-info fade in'>
+          {% else %}
           <div class='alert alert-danger fade in'>
+          {% endif %}
             <button class="close" data-dismiss="alert" type="button">×</button>
             {{ message }}
           </div>
