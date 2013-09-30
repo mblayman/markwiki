@@ -7,8 +7,8 @@ a simple text based approach to define content which you can
 
 ### Why Should I Use MarkWiki?
 
-The aim of MarkWiki is to be dead simple. MarkWiki was born out of frustration
-with bad documentation tools behind a company firewall.
+MarkWiki aims to be dead simple. MarkWiki was born out of frustration
+with bad documentation tools behind a company firewall that were too complex.
 
 You should consider MarkWiki if you:
 
@@ -38,7 +38,7 @@ install MarkWiki. A great alternative for those without admin access is to use
 Once you have the wiki running, you can begin by editing the main page to suit
 your needs (don't worry, a copy of the page can be found at
 [[MarkWiki/Introduction]] if you ever need to refer back). Or you can select
-the `Create a Wiki` link available under the `ACTIONS` section.
+the `Create a Wiki` link.
 
 Whoever sets up the server should look at [[MarkWiki/Deployment]] for putting
 MarkWiki in a production mode. The getting started instructions are primarily

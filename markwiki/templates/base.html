@@ -59,7 +59,8 @@
   {% if current_user.is_authenticated() %}
       <a type='button' class='btn btn-default navbar-btn pull-right'
         href='{{ url_for('logout') }}'>Log out</a>
-      <p class='navbar-text pull-right'>{{ current_user.get_id() }}</p>
+      <p class='navbar-text pull-right'><span
+        class='glyphicon glyphicon-user'></span> {{ current_user.get_id() }}</p>
   {% else %}
       <a type='button' class='btn btn-default navbar-btn pull-right'
         href='{{ url_for('login') }}'>Log in</a>
