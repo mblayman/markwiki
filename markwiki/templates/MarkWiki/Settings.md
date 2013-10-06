@@ -22,6 +22,11 @@ the settings before putting MarkWiki into production. Be safe, folks.
 
 ### MarkWiki Specific Settings
 
+*   `MARKWIKI_HOME` - This is the location where all of MarkWiki's content is
+    stored.
+
+    Defaults to `~/.markwiki`.
+
 *   `AUTHENTICATION` - This determines if any form of authentication will be
     used by MarkWiki. The authentication type should be `'basic'` if
     authentication is to be used. MarkWiki does *not* configure SSL
@@ -39,11 +44,6 @@ the settings before putting MarkWiki into production. Be safe, folks.
 *   `SERVER_PORT` - This is the port number used by the server.
 
     Defaults to `5000`.
-
-*   `WIKI_PATH` - This is the location where all of MarkWiki's content is
-    stored.
-
-    Defaults to `~/.markwiki`.
 
 ### Flask Settings Used By MarkWiki
 

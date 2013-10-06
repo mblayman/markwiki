@@ -7,6 +7,8 @@ import os
 DEBUG = True
 
 AUTHENTICATION = None
+ADMINISTRATOR = None
+ADMIN_PASSWORD = None
 
 # The app needs a secret key to use flash messages.
 SECRET_KEY = 'It\'s a secret to everybody.'
@@ -14,8 +16,8 @@ SECRET_KEY = 'It\'s a secret to everybody.'
 SERVER_HOST = '0.0.0.0'
 SERVER_PORT = 5000
 
-# The location of all wiki content
-WIKI_PATH = os.path.join(os.path.expanduser('~'), '.markwiki')
+# The location of all MarkWiki information
+MARKWIKI_HOME = os.path.join(os.path.expanduser('~'), '.markwiki')
 
 # Advanced settings
 STATIC_PATH = None

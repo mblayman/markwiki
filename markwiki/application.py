@@ -1,6 +1,8 @@
 # Copyright (c) 2013, Matt Layman and contributors
 '''A simple wiki using Markdown'''
 
+import os
+
 from flask import Flask
 
 
@@ -18,6 +20,12 @@ class MarkWikiApp(Flask):
         if not loaded:
             print(' * MARKWIKI_SETTINGS is not set (or has a bad file path). '
                   'Using defaults ...')
+
+        # Set the locations for derived paths like the wiki storage area.
+        self.config['WIKI_PATH'] = os.path.join(self.config['MARKWIKI_HOME'],
+                                                'wiki')
+        self.config['AUTH_PATH'] = os.path.join(self.config['MARKWIKI_HOME'],
+                                                'auth')
 
         # Inform the login management to disable logins if no authentication
         # is used.
