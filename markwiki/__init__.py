@@ -6,11 +6,11 @@ import sys
 
 from markwiki.application import MarkWikiApp
 from markwiki.authn.manager import MarkWikiLoginManager
-from markwiki.util import bootstrap
+from markwiki.util import bootstrap, bootstrap_auth
 
 
 app = MarkWikiApp(__name__)
-login_manager = MarkWikiLoginManager(app)
+login_manager = MarkWikiLoginManager(app=app)
 
 # Check if the MarkWiki exists and bootstrap if it isn't there.
 if not os.path.exists(app.config['MARKWIKI_HOME']):
@@ -19,6 +19,11 @@ else:
     # The home path must be a directory.
     if not os.path.isdir(app.config['MARKWIKI_HOME']):
         sys.exit('Sorry, the MarkWiki home path must be a directory.')
+
+# Bootstrapping the authentication should be checked every time in case the
+# admin credentials have been updated.
+if app.config.get('AUTHENTICATION'):
+    bootstrap_auth(app, login_manager)
 
 # Because the import is circular, the importing of the views should be the last
 # thing so that there is no temptation to use them and cause craziness.

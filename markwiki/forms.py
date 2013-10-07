@@ -3,6 +3,7 @@
 
 from flask.ext.wtf import Form
 from wtforms.fields import HiddenField
+from wtforms.fields import PasswordField
 from wtforms.fields import StringField
 from wtforms.validators import InputRequired
 from wtforms.validators import Length
@@ -14,7 +15,7 @@ class LoginForm(Form):
         Length(max=80, message='Sorry, the max length of a username is 80.')
     ])
 
-    password = StringField('Password', [
+    password = PasswordField('Password', [
         InputRequired('You did not provide a password.')
     ])
 

@@ -11,16 +11,16 @@ from flask.ext.login import login_user
 from flask.ext.login import logout_user
 
 from markwiki import app
+from markwiki import login_manager
 from markwiki.authn.user import User
 from markwiki.forms import LoginForm
-from markwiki.validators import validate_login
 
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        error = validate_login(request.form)
+        error = validate_login(form)
         if error is None:
             login_user(User(form.username.data))
             flash('You\'ve logged in.', category='success')
@@ -31,6 +31,18 @@ def login():
             flash(error)
 
     return render_template('login.html', form=form)
+
+
+def validate_login(form):
+    '''Validate the user login from the provided form. A valid login produces
+    no error messages so None is a valid user.'''
+    if not login_manager.has_user(form.username.data):
+        return 'That username is not valid.'
+
+    if not login_manager.authenticate(form.username.data, form.password.data):
+        return 'You\'ve entered an incorrect password.'
+
+    return None
 
 
 @app.route('/logout/')

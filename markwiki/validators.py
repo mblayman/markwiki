@@ -36,14 +36,6 @@ def validate_directories(directories):
                 "slash. Sorry, this rule is weird. I know.")
 
 
-def validate_login(form):
-    '''Validate the user login from the provided form. A valid login produces
-    no error messages so None is a valid user.'''
-    # TODO: The actual logic to check if the user is allowed.
-
-    return None
-
-
 def validate_page_path(page_path):
     '''Check that the page path is valid.'''
     # An empty page path is no good.

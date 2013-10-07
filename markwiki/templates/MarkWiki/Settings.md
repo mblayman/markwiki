@@ -37,6 +37,16 @@ the settings before putting MarkWiki into production. Be safe, folks.
 
     Defaults to `None`.
 
+*   `ADMINISTRATOR` - This is the username of the account that will have
+    administrative privileges if authentication is enabled. The adminstrator
+    has the ability to create new user accounts.
+
+    Defaults to `None`.
+
+*   `ADMIN_PASSWORD` - This is the password for the administrator account.
+
+    Defaults to `None`.
+
 *   `SERVER_HOST` - This is the hostname of the server.
 
     Defaults to `0.0.0.0`.
