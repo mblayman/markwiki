@@ -6,6 +6,7 @@ from flask import redirect
 from flask import render_template
 from flask import request
 from flask import url_for
+from flask.ext.login import current_user
 from flask.ext.login import login_required
 from flask.ext.login import login_user
 from flask.ext.login import logout_user
@@ -14,6 +15,17 @@ from markwiki import app
 from markwiki import login_manager
 from markwiki.authn.user import User
 from markwiki.forms import LoginForm
+
+
+@app.route('/administrate/')
+@login_required
+def administrate():
+    if not current_user.is_admin():
+        flash('You don\'t have permission to do that.')
+        return redirect(url_for('index'))
+
+    # TODO: render the actual admin view
+    return redirect(url_for('index'))
 
 
 @app.route('/login/', methods=['GET', 'POST'])

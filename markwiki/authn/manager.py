@@ -7,6 +7,7 @@ import os
 from flask.ext.login import LoginManager
 from werkzeug import security
 
+from markwiki.authn.user import AnonymousUser
 from markwiki.authn.user import User
 
 
@@ -20,6 +21,7 @@ class MarkWikiLoginManager(LoginManager):
         self.app = kwargs['app']
 
         # All custom configuration for the login manager should be here.
+        self.anonymous_user = AnonymousUser
         self.login_message = 'You must be logged in to do that.'
         self.login_message_category = 'info'
         self.login_view = '/login/'

@@ -5,12 +5,12 @@ import os
 import sys
 
 from markwiki.application import MarkWikiApp
-from markwiki.authn.manager import MarkWikiLoginManager
 from markwiki.util import bootstrap, bootstrap_auth
 
-
+# The app is so super special that it needs to come before many imports.
+# Basically, only the app class itself and bootstrapping should be imported
+# before this.
 app = MarkWikiApp(__name__)
-login_manager = MarkWikiLoginManager(app=app)
 
 # Check if the MarkWiki exists and bootstrap if it isn't there.
 if not os.path.exists(app.config['MARKWIKI_HOME']):
@@ -22,6 +22,9 @@ else:
 
 # Bootstrapping the authentication should be checked every time in case the
 # admin credentials have been updated.
+from markwiki.authn.manager import MarkWikiLoginManager
+login_manager = MarkWikiLoginManager(app=app)
+
 if app.config.get('AUTHENTICATION'):
     bootstrap_auth(app, login_manager)
 
