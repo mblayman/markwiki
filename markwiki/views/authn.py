@@ -13,7 +13,9 @@ from flask.ext.login import logout_user
 
 from markwiki import app
 from markwiki import login_manager
+from markwiki import util
 from markwiki.authn.user import User
+from markwiki.forms import AddUserForm
 from markwiki.forms import LoginForm
 
 
@@ -24,8 +26,29 @@ def administrate():
         flash('You don\'t have permission to do that.')
         return redirect(url_for('index'))
 
-    # TODO: render the actual admin view
-    return redirect(url_for('index'))
+    return render_template('administrate.html')
+
+
+@app.route('/add_user/', methods=['GET', 'POST'])
+@login_required
+def add_user():
+    if not current_user.is_admin():
+        flash('You don\'t have permission to do that.')
+        return redirect(url_for('index'))
+
+    form = AddUserForm()
+    if form.validate_on_submit():
+        # Don't overwrite existing users by mistake.
+        if not login_manager.has_user(form.username.data):
+            password = util.generate_password()
+            login_manager.add_user(form.username.data, password)
+            return render_template('user_confirmation.html',
+                                   username=form.username.data,
+                                   password=password)
+        else:
+            flash('Sorry, that user already exists.')
+
+    return render_template('add_user.html', form=form)
 
 
 @app.route('/login/', methods=['GET', 'POST'])

@@ -3,7 +3,7 @@ Releases
 
 [TOC]
 
-### Version 1.2, Released October 2013
+### Version 1.2, Released November 2013
 
 *   MarkWiki has login support. Users can register and log in to make updates.
 *   The user interface was updated significantly.

@@ -2,7 +2,9 @@
 '''The junk drawer. A place for methods that don't logically fit elsewhere.'''
 
 import os
+import random
 import shutil
+import string
 import sys
 
 
@@ -36,3 +38,9 @@ def bootstrap_auth(app, login_manager):
     # Store the credentials of the admin account.
     login_manager.add_user(app.config['ADMINISTRATOR'],
                            app.config['ADMIN_PASSWORD'])
+
+
+def generate_password():
+    '''Generate a random password.'''
+    chars = string.ascii_lowercase + string.ascii_uppercase + string.digits
+    return ''.join(random.choice(chars) for i in xrange(12))
