@@ -18,8 +18,8 @@ You should consider MarkWiki if you:
 
 ### Getting Started
 
-MarkWiki requires a few steps to get going. Fire up the command line and follow
-along!
+MarkWiki requires just a couple of steps to get going. Fire up the command line
+and follow along!
 
 1. Install it.
 2. Run the built-in web server.

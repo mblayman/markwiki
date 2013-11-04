@@ -4,9 +4,9 @@
   <title>{% block title%}{% endblock %}</title>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <link rel='stylesheet' media='screen'
-    href='{{ url_for('static', filename='bs/css/bootstrap.min.3rc1.css') }}'>
+    href='{{ url_for('static', filename='bs/css/bootstrap.min.3.0.1.css') }}'>
   <link rel='stylesheet' media='screen'
-    href='{{ url_for('static', filename='bs/css/bootstrap-glyphicons.css') }}'>
+    href='{{ url_for('static', filename='bs/css/bootstrap-theme.min.3.0.1.css') }}'>
   <style>
     body {
       /* 60px to make the container go all the way to the bottom of the topbar*/
@@ -29,16 +29,18 @@
   </style>
 </head>
 <body>
-<div class='navbar navbar-fixed-top navbar-inverse'>
+<nav class='navbar navbar-fixed-top navbar-inverse' role='navigation'>
   <div class='container'>
-    <button type="button" class="navbar-toggle" data-toggle="collapse"
-      data-target=".navbar-responsive-collapse">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-    <a class='navbar-brand' href='{{ url_for('index') }}'>MarkWiki</a>
-    <div class="nav-collapse collapse navbar-responsive-collapse">
+    <div class='navbar-header'>
+      <button type='button' class='navbar-toggle' data-toggle='collapse'
+        data-target='#mw-navbar-responsive-collapse'>
+        <span class='icon-bar'></span>
+        <span class='icon-bar'></span>
+        <span class='icon-bar'></span>
+      </button>
+      <a class='navbar-brand' href='{{ url_for('index') }}'>MarkWiki</a>
+    </div>
+    <nav class='collapse navbar-collapse' id='mw-navbar-responsive-collapse'>
       <ul class='nav navbar-nav'>
         <li><a href='{{ url_for('index') }}'><span
           class='glyphicon glyphicon-home'></span>&nbsp; Go Home</a></li>
@@ -60,19 +62,24 @@
         {% endif %}
       </ul>
 {% if config['AUTHENTICATION'] %}
+      <ul class='nav navbar-nav navbar-right'>
   {% if current_user.is_authenticated() %}
-      <a type='button' class='btn btn-default navbar-btn pull-right'
-        href='{{ url_for('logout') }}'>Log out</a>
-      <p class='navbar-text pull-right'><span
-        class='glyphicon glyphicon-user'></span> {{ current_user.get_id() }}</p>
+      <li class='dropdown'>
+        <a href='#' class='dropdown-toggle' data-toggle='dropdown'><span
+        class='glyphicon glyphicon-user'></span> {{ current_user.get_id() }} <b
+        class='caret'></b></a>
+        <ul class='dropdown-menu'>
+            <li><a href='{{ url_for('logout') }}'>Log out</a></li>
+        </ul>
+      </li>
   {% else %}
-      <a type='button' class='btn btn-default navbar-btn pull-right'
-        href='{{ url_for('login') }}'>Log in</a>
+      <li><a href='{{ url_for('login') }}'>Log in</a></li>
   {% endif %}
+      </ul>
 {% endif %}
-    </div>
+    </nav>
   </div>
-</div>
+</nav>
 <div class='container'>
 <div class='row'>
   <div class='col-lg-2'>
@@ -91,7 +98,7 @@
           {% else %}
           <div class='alert alert-danger fade in'>
           {% endif %}
-            <button class="close" data-dismiss="alert" type="button">×</button>
+            <button class='close' data-dismiss='alert' type='button'>×</button>
             {{ message }}
           </div>
         {% endfor %}
@@ -103,7 +110,7 @@
 </div>
 </div>
 <script src='{{ url_for('static', filename='jquery-2.0.0.min.js') }}'></script>
-<script src='{{ url_for('static', filename='bs/js/bootstrap.min.3rc1.js') }}'>
+<script src='{{ url_for('static', filename='bs/js/bootstrap.min.3.0.1.js') }}'>
 </script>
 <script>
 $(function() {

@@ -27,7 +27,7 @@ want. This enables teams to start up quickly if they do not care about
 controlling access.
 
 Some teams, however, would like to reduce the number of people who can edit
-the wiki, so MarkWiki makes it easier to enable user identification. When
+the wiki, so MarkWiki makes it easy to enable user identification. When
 authentication is enabled, only logged in users will be able to create, edit,
 and delete wiki pages. See [[MarkWiki/Settings]] for more information.
 

@@ -51,7 +51,7 @@
   {# Home is special so don't allow it to be deleted. #}
   {% if page_path != 'Home' %}
   {# Allow users to get an error from the server if JavaScript is disabled. #}
-    <a class='list-group-item alert-danger' id='delete'
+    <a class='list-group-item' id='delete'
       href='{{ url_for('delete', page_path=page_path) }}'><span
       class='glyphicon glyphicon-remove'></span> Delete</a>
   {% endif %}
