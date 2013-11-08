@@ -1,6 +1,9 @@
 MarkWiki
 ========
 
+[![PyPI version][fury]](http://badge.fury.io/py/MarkWiki)
+[![Downloads][pypip]](https://crate.io/packages/MarkWiki)
+
 *A simple wiki using Markdown*
 
 The user documentation for MarkWiki is at http://pythonhosted.org/MarkWiki/.
@@ -49,3 +52,6 @@ From the project's root directory, run:
 $ python setup.py develop
 $ markwiki
 ```
+
+[fury]: https://badge.fury.io/py/MarkWiki.png
+[pypip]: https://pypip.in/d/MarkWiki/badge.png
