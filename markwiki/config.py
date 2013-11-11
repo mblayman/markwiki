@@ -9,6 +9,7 @@ DEBUG = True
 AUTHENTICATION = None
 ADMINISTRATOR = None
 ADMIN_PASSWORD = None
+ALLOW_REGISTRATION = True
 
 # The app needs a secret key to use flash messages.
 SECRET_KEY = 'It\'s a secret to everybody.'

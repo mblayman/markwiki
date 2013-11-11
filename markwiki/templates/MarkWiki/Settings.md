@@ -47,6 +47,12 @@ the settings before putting MarkWiki into production. Be safe, folks.
 
     Defaults to `None`.
 
+*   `ALLOW_REGISTRATION` - This sets whether or not new users will be able to
+    register an account themselves when authentication is enabled. If `False`,
+    an administrator must create new accounts.
+
+    Defaults to `True`.
+
 *   `SERVER_HOST` - This is the hostname of the server.
 
     Defaults to `0.0.0.0`.
