@@ -52,9 +52,10 @@ can find the (very short) [license text on GitHub] [lic].
 ### Releases
 
 Information about past and present releases of MarkWiki is at
-[[MarkWiki/Releases]].
+[Read the Docs] [rel].
 
 [syn]: http://daringfireball.net/projects/markdown/syntax
 [venv]: http://www.virtualenv.org/en/latest/
 [lic]: https://raw.github.com/mblayman/markwiki/master/LICENSE
+[rel]: https://markwiki.read-the-docs.org/en/latest/releases.html
 
