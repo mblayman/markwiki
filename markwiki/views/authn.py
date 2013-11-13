@@ -17,6 +17,7 @@ from markwiki import util
 from markwiki.authn.user import User
 from markwiki.forms import AddUserForm
 from markwiki.forms import LoginForm
+from markwiki.forms import RegisterForm
 
 
 @app.route('/administrate/')
@@ -38,17 +39,34 @@ def add_user():
 
     form = AddUserForm()
     if form.validate_on_submit():
-        # Don't overwrite existing users by mistake.
-        if not login_manager.has_user(form.username.data):
-            password = util.generate_password()
-            login_manager.add_user(form.username.data, password)
-            return render_template('user_confirmation.html',
-                                   username=form.username.data,
-                                   password=password)
-        else:
-            flash('Sorry, that user already exists.')
+        password = util.generate_password()
+        login_manager.add_user(form.username.data, password)
+        return render_template('user_confirmation.html',
+                               username=form.username.data,
+                               password=password)
 
     return render_template('add_user.html', form=form)
+
+
+@app.route('/register/', methods=['GET', 'POST'])
+def register():
+    if not app.config['ALLOW_REGISTRATION']:
+        flash('You don\'t have permission to do that.')
+        return redirect(url_for('index'))
+
+    form = RegisterForm()
+    if form.validate_on_submit():
+        login_manager.add_user(form.username.data, form.password.data)
+        message = (
+            'Hi, {username}. You\'ve successfully registered!. '
+            'Please log in to begin creating new wikis.'.format(
+                username=form.username.data)
+        )
+        flash(message, category='success')
+        # Do a redirect so a refresh won't attempt to add the user again.
+        return redirect(url_for('login'))
+
+    return render_template('register.html', form=form)
 
 
 @app.route('/login/', methods=['GET', 'POST'])

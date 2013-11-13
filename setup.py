@@ -7,7 +7,7 @@ MarkWiki is a simple wiki using Markdown.
 
 Follow development on `GitHub <https://github.com/mblayman/markwiki>`_.
 Developer documentation is on `Read the Docs
-<https://MarkWiki.read-the-docs.org/>`_.
+<https://markwiki.read-the-docs.org/>`_.
 '''
 
 from setuptools import setup
