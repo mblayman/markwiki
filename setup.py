@@ -45,6 +45,7 @@ if __name__ == '__main__':
             'Flask-WTF',
             'Markdown',
             'Pygments',
+            'Whoosh',
         ],
         test_suite='markwiki.tests'
     )
