@@ -166,3 +166,10 @@ def delete(page_path):
         flash(verror.message)
 
     return redirect(url_for('index'))
+
+@app.route('/search/')
+def search():
+    user_query = request.args.get('q', '')
+    wiki_pages = app.search_engine.search(user_query)
+    return render_template('search.html', user_query=user_query,
+                           wiki_pages=wiki_pages)

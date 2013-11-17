@@ -3,6 +3,7 @@
 import os
 
 from whoosh import index
+from whoosh.qparser import QueryParser
 
 from markwiki.search.schema import WikiSchema
 
@@ -14,6 +15,18 @@ class SearchEngine(object):
         self.index_dir = os.path.join(markwiki_home, 'search')
         # Whoosh convention prefers 'ix' for index.
         self._ix = None
+
+    def search(self, user_query):
+        '''Search the index for wikis that relate to the user's query.'''
+        parser = QueryParser('content', schema=self._ix.schema)
+        query = parser.parse(unicode(user_query))
+
+        pages = []
+        with self._ix.searcher() as searcher:
+            results = searcher.search(query)
+            [pages.append(result['path']) for result in results]
+
+        return pages
 
     def create_index(self, wiki_path):
         '''Create the search index and populate with initial wiki content.'''

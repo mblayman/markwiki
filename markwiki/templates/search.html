@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}
+Search results for '{{ user_query|default('nothin', true) }}'
+{% endblock %}
+{% block content %}
+{% if user_query %}
+  <h1>Search results for <i>'{{ user_query }}'</i></h1>
+  {% if wiki_pages %}
+    <p>Your search for <b>'{{ user_query }}'</b> was found on these pages:</p>
+    {% for wiki_page in wiki_pages %}
+      <h4>
+        <span class='glyphicon glyphicon-chevron-right'></span>
+        <a href='{{ url_for('wiki', page_path=wiki_page) }}'>
+        {{ wiki_page }}</a>
+      </h4>
+    {% endfor %}
+  {% else %}
+    <p>Sorry, no results were found for '{{ user_query }}'.</p>
+  {% endif %}
+{% else %}
+  <h1>Hey, I can't read your mind.</h1>
+  <p>It helps if you provide something to search for.</p>
+{% endif %}
+{% endblock %}
