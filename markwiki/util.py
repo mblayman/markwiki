@@ -21,6 +21,8 @@ def bootstrap(app):
     home_source = os.path.join(markwiki_help, 'Introduction.md')
     shutil.copy(home_source, os.path.join(wiki_path, 'Home.md'))
 
+    app.search_engine.create_index(wiki_path)
+
 
 def bootstrap_auth(app, login_manager):
     '''Bootstrap all the necessary authentication support if it is enabled.'''

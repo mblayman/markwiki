@@ -5,6 +5,8 @@ import os
 
 from flask import Flask
 
+from markwiki.search.engine import SearchEngine
+
 
 class MarkWikiApp(Flask):
 
@@ -38,3 +40,5 @@ class MarkWikiApp(Flask):
 
         if self.config['TEMPLATE_PATH']:
             self.template_folder = self.config['TEMPLATE_PATH']
+
+        self.search_engine = SearchEngine(self.config['MARKWIKI_HOME'])

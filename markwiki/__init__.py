@@ -28,6 +28,9 @@ login_manager = MarkWikiLoginManager(app=app)
 if app.config.get('AUTHENTICATION'):
     bootstrap_auth(app, login_manager)
 
+# Ensure that the search engine is available.
+app.search_engine.open_index()
+
 # Because the import is circular, the importing of the views should be the last
 # thing so that there is no temptation to use them and cause craziness.
 import markwiki.views.authn
