@@ -3,6 +3,7 @@
 import os
 
 from whoosh import index
+from whoosh import query
 from whoosh.qparser import QueryParser
 
 from markwiki.search.schema import WikiSchema
@@ -18,12 +19,15 @@ class SearchEngine(object):
 
     def search(self, user_query):
         '''Search the index for wikis that relate to the user's query.'''
-        parser = QueryParser('content', schema=self._ix.schema)
-        query = parser.parse(unicode(user_query))
+        # Exchange some speed by searching for variations of what the user
+        # queried for to improve search quality.
+        parser = QueryParser('content', schema=self._ix.schema,
+                             termclass=query.Variations)
+        q = parser.parse(unicode(user_query))
 
         pages = []
         with self._ix.searcher() as searcher:
-            results = searcher.search(query)
+            results = searcher.search(q)
             [pages.append(result['path']) for result in results]
 
         return pages

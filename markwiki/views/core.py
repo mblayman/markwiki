@@ -167,6 +167,7 @@ def delete(page_path):
 
     return redirect(url_for('index'))
 
+
 @app.route('/search/')
 def search():
     user_query = request.args.get('q', '')
