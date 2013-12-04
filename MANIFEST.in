@@ -1,2 +1,3 @@
+include docs/releases.rst
 recursive-include markwiki/templates *
 recursive-include markwiki/static *

@@ -10,7 +10,7 @@ Developer documentation is on `Read the Docs
 <https://markwiki.read-the-docs.org/>`_.
 '''
 
-from setuptools import setup
+from setuptools import find_packages, setup
 
 __version__ = '1.3'
 
@@ -31,7 +31,7 @@ if __name__ == '__main__':
         author_email='matthewlayman@gmail.com',
         description='A simple wiki using Markdown',
         long_description=long_description,
-        packages=['markwiki'],
+        packages=find_packages(),
         entry_points={
             'console_scripts': ['markwiki = markwiki.server:run']
         },
