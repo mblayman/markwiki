@@ -3,7 +3,6 @@
 
 import unittest
 
-from markwiki.wiki import get_sections_from
 from markwiki.wiki import WikiPage
 from markwiki.wiki import WikiSection
 
