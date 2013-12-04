@@ -3,6 +3,7 @@ MarkWiki
 
 [![PyPI version][fury]](http://badge.fury.io/py/MarkWiki)
 [![Downloads][pypip]](https://crate.io/packages/MarkWiki)
+[![Build Status][travis]](https://travis-ci.org/mblayman/markwiki)
 
 *A simple wiki using Markdown*
 
@@ -55,3 +56,4 @@ $ markwiki
 
 [fury]: https://badge.fury.io/py/MarkWiki.png
 [pypip]: https://pypip.in/d/MarkWiki/badge.png
+[travis]: https://travis-ci.org/mblayman/markwiki.png?branch=master
