@@ -47,15 +47,18 @@ def create(page_path=None, wiki_content=None):
 def make_wiki():
     '''Make the wiki page.'''
     page_path = request.form['page_path']
+    content = request.form['wiki_content']
     try:
         validate_page_path(page_path)
         page = WikiPage(page_path)
 
         # Proceed if the wiki does not exist.
         if not page.exists:
-            if not page.store(request.form['wiki_content']):
+            if not page.store(content):
                 # Storing would fail if something unrecoverable happened.
                 abort(500)
+
+            app.search_engine.add_wiki(page_path, content)
 
             return redirect(url_for('wiki', page_path=page_path))
         else:
