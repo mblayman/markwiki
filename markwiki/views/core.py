@@ -171,6 +171,6 @@ def delete(page_path):
 @app.route('/search/')
 def search():
     user_query = request.args.get('q', '')
-    wiki_pages = app.search_engine.search(user_query)
+    results = app.search_engine.search(user_query)
     return render_template('search.html', user_query=user_query,
-                           wiki_pages=wiki_pages)
+                           results=results)

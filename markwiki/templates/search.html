@@ -5,14 +5,16 @@ Search results for '{{ user_query|default('nothin', true) }}'
 {% block content %}
 {% if user_query %}
   <h1>Search results for <i>'{{ user_query }}'</i></h1>
-  {% if wiki_pages %}
+  {% if results %}
     <p>Your search for <b>'{{ user_query }}'</b> was found on these pages:</p>
-    {% for wiki_page in wiki_pages %}
+    <br>
+    {% for result in results %}
       <h4>
         <span class='glyphicon glyphicon-chevron-right'></span>
-        <a href='{{ url_for('wiki', page_path=wiki_page) }}'>
-        {{ wiki_page }}</a>
+        <a href='{{ url_for('wiki', page_path=result.path) }}'>
+        {{ result.path }}</a>
       </h4>
+      <div class='well'>{{ result.highlight|safe }}</div>
     {% endfor %}
   {% else %}
     <p>Sorry, no results were found for '{{ user_query }}'.</p>

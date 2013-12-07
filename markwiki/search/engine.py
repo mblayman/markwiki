@@ -1,12 +1,16 @@
 # Copyright (c) 2013, Matt Layman and contributors
 
+from collections import namedtuple
 import os
 
 from whoosh import index
 from whoosh import query
+from whoosh.highlight import ContextFragmenter
 from whoosh.qparser import QueryParser
 
 from markwiki.search.schema import WikiSchema
+
+SearchResult = namedtuple('SearchResult', ['path', 'highlight'])
 
 
 class SearchEngine(object):
@@ -14,6 +18,7 @@ class SearchEngine(object):
 
     def __init__(self, markwiki_home):
         self.index_dir = os.path.join(markwiki_home, 'search')
+        self._context_fragmenter = ContextFragmenter(maxchars=300, surround=55)
         # Whoosh convention prefers 'ix' for index.
         self._ix = None
 
@@ -25,12 +30,15 @@ class SearchEngine(object):
                              termclass=query.Variations)
         q = parser.parse(unicode(user_query))
 
-        pages = []
+        results = []
         with self._ix.searcher() as searcher:
-            results = searcher.search(q)
-            [pages.append(result['path']) for result in results]
+            hits = searcher.search(q)
+            hits.fragmenter = self._context_fragmenter
+            for hit in hits:
+                results.append(SearchResult(hit['path'],
+                                            hit.highlights('content')))
 
-        return pages
+        return results
 
     def create_index(self, wiki_path):
         '''Create the search index and populate with initial wiki content.'''
