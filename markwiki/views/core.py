@@ -162,6 +162,8 @@ def delete(page_path):
             if not page.delete():
                 # Unsuccessful delete.
                 abort(500)
+
+            app.search_engine.delete_wiki(page_path)
         else:
             flash('That wiki doesn\'t exist.')
     except ValidationError as verror:

@@ -64,9 +64,10 @@ class SearchEngine(object):
         '''Update an existing wiki in the index.'''
         # TODO: implement
 
-    def delete_wiki(self, path, content):
+    def delete_wiki(self, path):
         '''Delete a wiki from the index.'''
-        # TODO: implement
+        with self._ix.writer() as writer:
+            writer.delete_by_term('path', unicode(path))
 
     def _populate_index(self, wiki_path):
         '''Populate the search index with the initial content of the wiki.'''

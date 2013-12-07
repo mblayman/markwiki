@@ -8,7 +8,7 @@ class WikiSchema(fields.SchemaClass):
 
     # The field boost helps wiki page paths show more prevalently in results
     # since they will also be used as links in the content of other pages.
-    path = fields.TEXT(field_boost=2.0, stored=True)
+    path = fields.ID(field_boost=2.0, stored=True)
 
     # The content is stored so that highlights can be extracted to display.
     content = fields.TEXT(stored=True)
