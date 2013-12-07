@@ -47,6 +47,9 @@ if __name__ == '__main__':
             'Pygments',
             'Whoosh',
         ],
-        setup_requires=['nose>=1.0'],
+        setup_requires=[
+            'coverage',
+            'nose'
+        ],
         test_suite='markwiki.tests'
     )
