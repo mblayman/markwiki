@@ -84,6 +84,7 @@
 <div class='row'>
   <div class='col-lg-3'>
     <div data-spy='affix'>
+    {% if not config['FREEZING'] %}
       <form action='{{ url_for('search') }}' method='GET'>
         <div class='input-group'>
           <input type='text' name='q' class='form-control'
@@ -95,6 +96,7 @@
           </span>
         </div>
       </form>
+    {% endif %}
       {% block actions %}{% endblock %}
     </div>
   </div>
