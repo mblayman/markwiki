@@ -62,7 +62,9 @@ class SearchEngine(object):
 
     def update_wiki(self, path, content):
         '''Update an existing wiki in the index.'''
-        # TODO: implement
+        with self._ix.writer() as writer:
+            writer.update_document(path=unicode(path),
+                                   content=unicode(content))
 
     def delete_wiki(self, path):
         '''Delete a wiki from the index.'''

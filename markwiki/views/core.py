@@ -112,6 +112,9 @@ def update_wiki():
             # Storing would fail if something unrecoverable happened.
             abort(500)
 
+        app.search_engine.update_wiki(page_path,
+                                      request.form['wiki_content'])
+
         return redirect(url_for('wiki', page_path=page_path))
 
 
