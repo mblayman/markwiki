@@ -9,4 +9,5 @@ is available at `pythonhosted.org <http://pythonhosted.org/MarkWiki/>`_.
 .. toctree::
    :maxdepth: 2
 
+   contribute
    releases

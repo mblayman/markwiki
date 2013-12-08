@@ -57,5 +57,5 @@ Information about past and present releases of MarkWiki is at
 [syn]: http://daringfireball.net/projects/markdown/syntax
 [venv]: http://www.virtualenv.org/en/latest/
 [lic]: https://raw.github.com/mblayman/markwiki/master/LICENSE
-[rel]: https://markwiki.read-the-docs.org/en/latest/releases.html
+[rel]: https://markwiki.readthedocs.org/en/latest/releases.html
 

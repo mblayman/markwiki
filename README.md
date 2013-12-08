@@ -26,12 +26,8 @@ Contributing
 
 Fork MarkWiki on GitHub and submit a pull request when you're ready.
 
-Guidelines:
-
-1.  Your code should follow PEP 8 style. Run it through `pep8` to check.
-2.  Please try to conform with any other conventions seen in the code for
-    consistency (e.g., using ''' for docstrings instead of """).
-3.  Make sure your change works against master! (Bonus points for unit tests.)
+Additional guidance is available in the developer documentation at
+[Read the Docs][rtd].
 
 Running MarkWiki
 ----------------
@@ -57,3 +53,4 @@ $ markwiki
 [fury]: https://badge.fury.io/py/MarkWiki.png
 [pypip]: https://pypip.in/d/MarkWiki/badge.png
 [travis]: https://travis-ci.org/mblayman/markwiki.png?branch=master
+[rtd]: http://markwiki.readthedocs.org/en/latest/contribute.html

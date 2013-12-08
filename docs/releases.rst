@@ -1,6 +1,13 @@
 Releases
 ========
 
+Version 1.3, Released December 2013
+-----------------------------------
+
+* Users can search MarkWiki to find wiki pages related to their search.
+* MarkWiki allows self-registration for new users instead of admin only
+  registration.
+
 Version 1.2, Released November 2013
 -----------------------------------
 
