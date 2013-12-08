@@ -10,4 +10,5 @@ is available at `pythonhosted.org <http://pythonhosted.org/MarkWiki/>`_.
    :maxdepth: 2
 
    contribute
+   dependencies
    releases

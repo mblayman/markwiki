@@ -40,9 +40,9 @@ if __name__ == '__main__':
         install_requires=[
             'argparse',
             'Flask',
-            'Frozen-Flask',
             'Flask-Login',
             'Flask-WTF',
+            'Frozen-Flask',
             'Markdown',
             'Pygments',
             'Whoosh',
