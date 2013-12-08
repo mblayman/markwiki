@@ -39,6 +39,12 @@ of this categorization itself by putting all its help pages under the
 "Sections." Sections can exist within other sections and can be as deep as
 desired, but it is recommended that you [[Please/Do/Not/Torture/Others]].
 
+### Search
+
+All content in MarkWiki is tracked by a search tool. This means that the
+information that you're looking for is right at your fingertips. Type a search
+into the search box and be on your way.
+
 ### Table Of Contents
 
 You can add a table of contents anywhere in the wiki page by putting `[TOC]` on
