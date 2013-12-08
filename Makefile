@@ -1,5 +1,7 @@
 # Copyright (c) 2013, Matt Layman
 
+.PHONY: docs
+
 # Build the docs and hack the URLs so that they will refer to /MarkWiki path
 # expected by pythonhosted.org.
 

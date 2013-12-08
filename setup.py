@@ -1,13 +1,8 @@
 # Copyright (c) 2013, Matt Layman
 '''
-MarkWiki
-========
-
-MarkWiki is a simple wiki using Markdown.
-
-Follow development on `GitHub <https://github.com/mblayman/markwiki>`_.
-Developer documentation is on `Read the Docs
-<https://markwiki.read-the-docs.org/>`_.
+Follow MarkWiki development on `GitHub
+<https://github.com/mblayman/markwiki>`_. Developer documentation is on
+`Read the Docs <https://markwiki.readthedocs.org/>`_.
 '''
 
 from setuptools import find_packages, setup
