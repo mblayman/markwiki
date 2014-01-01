@@ -10,6 +10,10 @@ To override default settings, you will need to create a configuration file and
 set an environment variable named `MARKWIKI_SETTINGS` with the path of that
 configuration file. MarkWiki will read the settings when it starts.
 
+MarkWiki will also take any settings from environment variables if they are
+defined. Environment variables will override default settings or any settings
+from a configuration file.
+
 ```bash
 $ export MARKWIKI_SETTINGS="/home/matt/production.config"
 $ markwiki

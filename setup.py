@@ -6,6 +6,7 @@ Follow MarkWiki development on `GitHub
 '''
 
 from setuptools import find_packages, setup
+import sys
 
 __version__ = '1.4'
 
@@ -16,6 +17,25 @@ if __name__ == '__main__':
         releases = f.read()
 
     long_description = __doc__ + '\n\n' + releases
+
+    install_requires = [
+        'argparse',
+        'Flask',
+        'Flask-Login',
+        'Flask-WTF',
+        'Frozen-Flask',
+        'Markdown',
+        'Pygments',
+        'Whoosh',
+    ]
+
+    # Add some developer tools.
+    if 'develop' in sys.argv:
+        install_requires.extend([
+            'coverage',
+            'gunicorn',
+            'nose',
+        ])
 
     setup(
         name='MarkWiki',
@@ -32,19 +52,6 @@ if __name__ == '__main__':
         },
         include_package_data=True,
         zip_safe=False,
-        install_requires=[
-            'argparse',
-            'Flask',
-            'Flask-Login',
-            'Flask-WTF',
-            'Frozen-Flask',
-            'Markdown',
-            'Pygments',
-            'Whoosh',
-        ],
-        setup_requires=[
-            'coverage',
-            'nose'
-        ],
+        install_requires=install_requires,
         test_suite='markwiki.tests'
     )

@@ -8,6 +8,10 @@ import string
 import sys
 
 
+def boolify(value):
+    '''Check the string value for boolean-like behavior and return a bool.'''
+    return value.lower().startswith('t')
+
 def bootstrap(app):
     '''Bootstrap the wiki with some basic content.'''
     here = os.path.abspath(os.path.dirname(__file__))
