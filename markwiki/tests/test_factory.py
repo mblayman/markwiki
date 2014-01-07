@@ -33,7 +33,7 @@ class TestUserStorageFactory(unittest.TestCase):
         }
 
         storage = self.factory._get_storage(config)
-        self.assertIsInstance(storage, FileUserStorage)
+        self.assertTrue(isinstance(storage, FileUserStorage))
 
     def test_invalid_storage(self):
         config = {}
