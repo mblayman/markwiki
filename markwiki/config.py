@@ -6,6 +6,9 @@ import os
 # Developers may set debug to True to get reloading and other debug support.
 DEBUG = False
 
+# Use simple file system storage by default.
+STORAGE_TYPE = 'file'
+
 AUTHENTICATION = None
 ADMINISTRATOR = None
 ADMIN_PASSWORD = None

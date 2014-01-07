@@ -6,7 +6,21 @@ import os
 from flask import Flask
 
 from markwiki.search.engine import SearchEngine
+from markwiki.storage.factory import UserStorageFactory
 from markwiki import util
+
+
+def build_app(app_name):
+    '''Build the application and extend it with various services.'''
+    app = MarkWikiApp(app_name)
+
+    # Extend the app with the search engine.
+    app.search_engine = SearchEngine(app.config['MARKWIKI_HOME'])
+
+    user_storage_factory = UserStorageFactory()
+    app.user_storage = user_storage_factory.get_storage(app.config)
+
+    return app
 
 
 class MarkWikiApp(Flask):
@@ -49,8 +63,6 @@ class MarkWikiApp(Flask):
 
         if self.config['TEMPLATE_PATH']:
             self.template_folder = self.config['TEMPLATE_PATH']
-
-        self.search_engine = SearchEngine(self.config['MARKWIKI_HOME'])
 
     def _load_from_environment(self):
         '''Load any config options from the environment if they exist.'''

@@ -65,6 +65,11 @@ the settings before putting MarkWiki into production. Be safe, folks.
 
     Defaults to `5000`.
 
+*   `STORAGE_TYPE` - MarkWiki is designed to store its data in multiple
+    possible formats. The currently supported formats are: 'file'.
+
+    Defaults to `file`.
+
 ### Flask Settings Used By MarkWiki
 
 *   `DEBUG` - This is a debug flag. It is ***VERY IMPORTANT*** that this be set

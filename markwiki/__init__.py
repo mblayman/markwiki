@@ -1,16 +1,16 @@
-# Copyright (c) 2013, Matt Layman and contributors
+# Copyright (c) 2014, Matt Layman and contributors
 '''A simple wiki using Markdown'''
 
 import os
 import sys
 
-from markwiki.application import MarkWikiApp
+from markwiki.application import build_app
 from markwiki.util import bootstrap, bootstrap_auth
 
 # The app is so super special that it needs to come before many imports.
 # Basically, only the app class itself and bootstrapping should be imported
 # before this.
-app = MarkWikiApp(__name__)
+app = build_app(__name__)
 
 # Check if the MarkWiki exists and bootstrap if it isn't there.
 if not os.path.exists(app.config['MARKWIKI_HOME']):
