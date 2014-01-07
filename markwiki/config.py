@@ -1,10 +1,10 @@
-# Copyright (c) 2013, Matt Layman
+# Copyright (c) 2014, Matt Layman
 '''The default configuration for MarkWiki'''
 
 import os
 
-# Production configurations should override this setting and not debug.
-DEBUG = True
+# Developers may set debug to True to get reloading and other debug support.
+DEBUG = False
 
 AUTHENTICATION = None
 ADMINISTRATOR = None

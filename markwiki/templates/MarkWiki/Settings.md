@@ -71,7 +71,7 @@ the settings before putting MarkWiki into production. Be safe, folks.
     to `False` for a production environment. Otherwise bad guys may find ways
     to exploit your server.
 
-    Defaults to `True`.
+    Defaults to `False`.
 
 *   `SECRET_KEY` - This is used to provide security for user session data.
     Please be sure to select something unique and very hard to guess.
