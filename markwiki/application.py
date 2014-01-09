@@ -14,8 +14,14 @@ def build_app(app_name):
     '''Build the application and extend it with various services.'''
     app = MarkWikiApp(app_name)
 
+    if not app.is_bootstrapped():
+        print('This appears to be a new MarkWiki. Adding initial content ...')
+        util.bootstrap(app)
+
     # Extend the app with the search engine.
     app.search_engine = SearchEngine(app.config['MARKWIKI_HOME'])
+    if not app.search_engine.has_index():
+        app.search_engine.create_index(app.config['WIKI_PATH'])
 
     user_storage_factory = UserStorageFactory()
     app.user_storage = user_storage_factory.get_storage(app.config)
@@ -30,6 +36,10 @@ class MarkWikiApp(Flask):
         'ALLOW_REGISTRATION',
         'DEBUG',
     ]
+
+    # For file stroage, the bootstrap token acts as an indicator that the wiki
+    # has been bootstrapped before.
+    bootstrapped_token_file = '.bootstrapped'
 
     def __init__(self, *args, **kwargs):
         super(MarkWikiApp, self).__init__(*args, **kwargs)
@@ -74,3 +84,7 @@ class MarkWikiApp(Flask):
                     self.config[key] = util.boolify(os.environ[key])
                 else:
                     self.config[key] = os.environ[key]
+
+    def is_bootstrapped(self):
+        return os.path.exists(os.path.join(self.config['MARKWIKI_HOME'],
+                                           self.bootstrapped_token_file))

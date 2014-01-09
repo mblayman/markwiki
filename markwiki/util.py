@@ -26,7 +26,10 @@ def bootstrap(app):
     home_source = os.path.join(markwiki_help, 'Introduction.md')
     shutil.copy(home_source, os.path.join(wiki_path, 'Home.md'))
 
-    app.search_engine.create_index(wiki_path)
+    token = os.path.join(app.config['MARKWIKI_HOME'],
+                         app.bootstrapped_token_file)
+    with open(token, 'w') as f:
+        f.write('Bootstrapping is complete. Do not delete this file.')
 
 
 def bootstrap_auth(app, login_manager):

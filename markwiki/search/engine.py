@@ -49,6 +49,9 @@ class SearchEngine(object):
         self._ix = index.create_in(self.index_dir, WikiSchema)
         self._populate_index(wiki_path)
 
+    def has_index(self):
+        return os.path.exists(self.index_dir)
+
     def open_index(self):
         '''Open the search index.'''
         # The index may already be open from a create_index call.
