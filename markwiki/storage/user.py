@@ -20,3 +20,7 @@ class UserStorage(object):
     @abstractmethod
     def create(self, user):
         '''Create a new user. Raise ``UserStorageError`` on failure.'''
+
+    @abstractmethod
+    def find_by_id(self, user_id):
+        '''Find a user by their ID. Return ``None`` if no such user exists.'''

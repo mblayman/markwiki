@@ -51,3 +51,13 @@ class TestFileUserStorage(unittest.TestCase):
         self.storage.create(user)
 
         self.assertRaises(UserStorageError, self.storage.create, user)
+
+    def test_create_generates_id(self):
+        user = User('mblayman', 'test@123.com', 'password', 'passwd_digest')
+        self.storage.create(user)
+        self.assertEqual(u'0', user.user_id)
+
+        user = User('laymanmb', '123@test.com', 'password', 'passwd_digest')
+        self.storage.create(user)
+        print self.storage._path
+        self.assertEqual(u'2', user.user_id)
