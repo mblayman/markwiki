@@ -7,6 +7,10 @@ import shutil
 import string
 import sys
 
+from werkzeug import security
+
+from markwiki.models.user import User
+
 
 def boolify(value):
     '''Check the string value for boolean-like behavior and return a bool.'''
@@ -32,12 +36,8 @@ def bootstrap(app):
         f.write('Bootstrapping is complete. Do not delete this file.')
 
 
-def bootstrap_auth(app, login_manager):
+def bootstrap_auth(app):
     '''Bootstrap all the necessary authentication support if it is enabled.'''
-    # Ensure the auth storage area exists.
-    if not os.path.exists(app.config['AUTH_PATH']):
-        os.makedirs(app.config['AUTH_PATH'])
-
     # Check that the admin credentials are valid.
     if not app.config.get('ADMINISTRATOR'):
         sys.exit('You did not provide an administrator username.')
@@ -46,8 +46,20 @@ def bootstrap_auth(app, login_manager):
         sys.exit('You did not provide an administrator password.')
 
     # Store the credentials of the admin account.
-    login_manager.add_user(app.config['ADMINISTRATOR'],
-                           app.config['ADMIN_PASSWORD'])
+    admin = app.user_storage.find_by_name(app.config['ADMINISTRATOR'])
+    if admin is None:
+        pwhash = security.generate_password_hash(app.config['ADMIN_PASSWORD'])
+        # No admin for this account name so create one.
+        admin = User(app.config['ADMINISTRATOR'],
+                     '',  # The admin does not use email.
+                     'password',
+                     pwhash)
+        app.user_storage.create(admin)
+    else:
+        # The configuration file may have changed the password so always update
+        # the administrator's password.
+        # TODO: call user_storage.update when implemented
+        pass
 
 
 def generate_password():

@@ -20,6 +20,7 @@ class UserStorageFactory(object):
         '''Get the storage and initialize it.'''
         storage = self._get_storage(config)
         storage.initialize()
+        return storage
 
     def _get_storage(self, config):
         '''Build a user storage service for the app's configuration.'''

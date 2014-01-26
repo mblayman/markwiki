@@ -10,3 +10,16 @@ class User(object):
         self.login_type = login_type
         self.password_digest = password_digest
         self.user_id = user_id
+
+    # The methods below are to satisfy the API of the auth framework.
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.user_id

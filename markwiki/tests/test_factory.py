@@ -8,17 +8,14 @@ from markwiki.storage.factory import UserStorageFactory
 from markwiki.storage.fs.user import FileUserStorage
 
 
-class InitializeException(Exception):
-    '''An exception to ensure storage initialization was invoked.'''
-
-
-class FakeUserStorage(object):
+class FakeUserStorage(FileUserStorage):
 
     def __init__(self, config):
         '''Do nothing.'''
+        self.initialized = False
 
     def initialize(self):
-        raise InitializeException()
+        self.initialized = True
 
 
 class TestUserStorageFactory(unittest.TestCase):
@@ -43,4 +40,6 @@ class TestUserStorageFactory(unittest.TestCase):
         config = {'STORAGE_TYPE': 'file'}
         types = {'file': FakeUserStorage}
         factory = UserStorageFactory(storage_types=types)
-        self.assertRaises(InitializeException, factory.get_storage, config)
+        storage = factory.get_storage(config)
+        self.assertTrue(isinstance(storage, FileUserStorage))
+        self.assertTrue(storage.initialized)

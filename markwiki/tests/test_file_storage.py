@@ -59,5 +59,4 @@ class TestFileUserStorage(unittest.TestCase):
 
         user = User('laymanmb', '123@test.com', 'password', 'passwd_digest')
         self.storage.create(user)
-        print self.storage._path
-        self.assertEqual(u'2', user.user_id)
+        self.assertEqual(u'1', user.user_id)

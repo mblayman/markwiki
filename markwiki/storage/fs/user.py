@@ -12,7 +12,6 @@ from markwiki.storage.user import UserStorage
 class FileUserStorage(UserStorage):
     '''A file system based user storage'''
 
-
     def __init__(self, config):
         self._path = os.path.join(config['MARKWIKI_HOME'], 'users')
         # An index of user ID to user file paths
@@ -23,6 +22,8 @@ class FileUserStorage(UserStorage):
         if not os.path.exists(self._path):
             os.mkdir(self._path)
             self._write_json(self._id_index, self._id_index_file)
+        else:
+            self._read_indices()
 
     def create(self, user):
         '''Create a new user by storing it as JSON on the file system.'''
@@ -47,12 +48,22 @@ class FileUserStorage(UserStorage):
             return None
 
         if os.path.exists(user_file):
-            with open(user_file, 'r') as f:
-                data = json.loads(f.read())
-                return User(data['name'], data['email'], data['login_type'],
-                            data['password_digest'], data['user_id'])
+            return self._load_user(user_file)
 
         return None
+
+    def find_by_name(self, name):
+        '''Find a user by their name or return ``None``.'''
+        user_file = self._get_user_file(name)
+
+        if os.path.exists(user_file):
+            return self._load_user(user_file)
+
+        return None
+
+    def update(self, user):
+        '''Update an existing user.'''
+        # TODO: implement
 
     def _generate_user_id(self):
         '''Generate a unique user ID.'''
@@ -72,6 +83,13 @@ class FileUserStorage(UserStorage):
         m = hashlib.md5()
         m.update(name)
         return os.path.join(self._path, m.hexdigest())
+
+    def _load_user(self, user_file):
+        '''Load a user from a file. Assumes that the file exists.'''
+        with open(user_file, 'r') as f:
+            data = json.loads(f.read())
+            return User(data['name'], data['email'], data['login_type'],
+                        data['password_digest'], data['user_id'])
 
     def _read_indices(self):
         '''Read the file indices into memory.'''

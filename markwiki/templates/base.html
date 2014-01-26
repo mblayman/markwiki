@@ -3,6 +3,7 @@
 <head>
   <title>{% block title%}{% endblock %}</title>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible' content='IE=Edge'>
   <link rel='stylesheet' media='screen'
     href='{{ url_for('static', filename='bs/css/bootstrap.min.3.0.1.css') }}'>
   <link rel='stylesheet' media='screen'
@@ -55,7 +56,7 @@
         <li><a href='{{ url_for('wiki', page_path='MarkWiki/Help') }}'><span
           class='glyphicon glyphicon-question-sign'></span>&nbsp; Get Help</a>
         </li>
-        {% if current_user.is_admin() %}
+        {% if current_user.name == config['ADMINISTRATOR'] %}
         <li><a href='{{ url_for('administrate') }}'><span
           class='glyphicon glyphicon-lock'></span>&nbsp; Administrate</a>
         </li>
@@ -66,10 +67,10 @@
   {% if current_user.is_authenticated() %}
       <li class='dropdown'>
         <a href='#' class='dropdown-toggle' data-toggle='dropdown'><span
-        class='glyphicon glyphicon-user'></span> {{ current_user.get_id() }} <b
+        class='glyphicon glyphicon-user'></span> {{ current_user.name }} <b
         class='caret'></b></a>
         <ul class='dropdown-menu'>
-            <li><a href='{{ url_for('logout') }}'>Log out</a></li>
+            <li><a href='{{ url_for('logout') }}' id='logout'>Log out</a></li>
         </ul>
       </li>
   {% else %}

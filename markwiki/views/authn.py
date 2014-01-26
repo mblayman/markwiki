@@ -1,6 +1,7 @@
 # Copyright (c) 2013, Matt Layman
 '''The authentication views'''
 
+from flask import abort
 from flask import flash
 from flask import redirect
 from flask import render_template
@@ -10,6 +11,8 @@ from flask.ext.login import current_user
 from flask.ext.login import login_required
 from flask.ext.login import login_user
 from flask.ext.login import logout_user
+import requests
+from werkzeug import security
 
 from markwiki import app
 from markwiki import login_manager
@@ -18,12 +21,13 @@ from markwiki.authn.user import User
 from markwiki.forms import AddUserForm
 from markwiki.forms import LoginForm
 from markwiki.forms import RegisterForm
+from markwiki.models.user import User
 
 
 @app.route('/administrate/')
 @login_required
 def administrate():
-    if not current_user.is_admin():
+    if current_user.name != app.config['ADMINISTRATOR']:
         flash('You don\'t have permission to do that.')
         return redirect(url_for('index'))
 
@@ -33,14 +37,19 @@ def administrate():
 @app.route('/add_user/', methods=['GET', 'POST'])
 @login_required
 def add_user():
-    if not current_user.is_admin():
+    if current_user.name != app.config['ADMINISTRATOR']:
         flash('You don\'t have permission to do that.')
         return redirect(url_for('index'))
 
     form = AddUserForm()
     if form.validate_on_submit():
         password = util.generate_password()
-        login_manager.add_user(form.username.data, password)
+        pwhash = security.generate_password_hash(password)
+        user = User(form.username.data,
+                    '',  # Email is not used.
+                    'password',
+                    pwhash)
+        app.user_storage.create(user)
         return render_template('user_confirmation.html',
                                username=form.username.data,
                                password=password)
@@ -56,15 +65,22 @@ def register():
 
     form = RegisterForm()
     if form.validate_on_submit():
-        login_manager.add_user(form.username.data, form.password.data)
+        pwhash = security.generate_password_hash(form.password.data)
+        user = User(form.username.data,
+                    '',  # Email is not used.
+                    'password',
+                    pwhash)
+        app.user_storage.create(user)
+        login_user(user)
+
         message = (
-            'Hi, {username}. You\'ve successfully registered!. '
-            'Please log in to begin creating new wikis.'.format(
+            'Hi, {username}. You\'ve successfully registered!'.format(
                 username=form.username.data)
         )
         flash(message, category='success')
+
         # Do a redirect so a refresh won't attempt to add the user again.
-        return redirect(url_for('login'))
+        return redirect(url_for('index'))
 
     return render_template('register.html', form=form)
 
@@ -75,7 +91,8 @@ def login():
     if form.validate_on_submit():
         error = validate_login(form)
         if error is None:
-            login_user(User(form.username.data))
+            user = app.user_storage.find_by_name(form.username.data)
+            login_user(user)
             flash('You\'ve logged in.', category='success')
 
             # 'next' will be defined if the user was coming from another page.
@@ -89,10 +106,11 @@ def login():
 def validate_login(form):
     '''Validate the user login from the provided form. A valid login produces
     no error messages so None is a valid user.'''
-    if not login_manager.has_user(form.username.data):
+    user = app.user_storage.find_by_name(form.username.data)
+    if user is None:
         return 'That username is not valid.'
 
-    if not login_manager.authenticate(form.username.data, form.password.data):
+    if not login_manager.authenticate(user, form.password.data):
         return 'You\'ve entered an incorrect password.'
 
     return None

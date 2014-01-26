@@ -1,4 +1,4 @@
-# Copyright (c) 2013, Matt Layman and contributors
+# Copyright (c) 2014, Matt Layman and contributors
 '''A simple wiki using Markdown'''
 
 import os
@@ -59,8 +59,6 @@ class MarkWikiApp(Flask):
         # Set the locations for derived paths like the wiki storage area.
         self.config['WIKI_PATH'] = os.path.join(self.config['MARKWIKI_HOME'],
                                                 'wiki')
-        self.config['AUTH_PATH'] = os.path.join(self.config['MARKWIKI_HOME'],
-                                                'auth')
 
         # Inform the login management to disable logins if no authentication
         # is used.

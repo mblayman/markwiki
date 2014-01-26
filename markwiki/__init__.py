@@ -15,7 +15,7 @@ from markwiki.authn.manager import MarkWikiLoginManager
 login_manager = MarkWikiLoginManager(app=app)
 
 if app.config.get('AUTHENTICATION'):
-    bootstrap_auth(app, login_manager)
+    bootstrap_auth(app)
 
 # Ensure that the search engine is available.
 app.search_engine.open_index()

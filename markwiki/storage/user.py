@@ -23,4 +23,12 @@ class UserStorage(object):
 
     @abstractmethod
     def find_by_id(self, user_id):
-        '''Find a user by their ID. Return ``None`` if no such user exists.'''
+        '''Find a user by ID. Return ``None`` if no such user exists.'''
+
+    @abstractmethod
+    def find_by_name(self, name):
+        '''Find a user by name. Return ``None`` if no such user exists.'''
+
+    @abstractmethod
+    def update(self, user):
+        '''Update an existing user. Raise ``UserStorageError`` on failure.'''
