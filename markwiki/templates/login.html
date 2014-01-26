@@ -34,4 +34,28 @@ user information.</p>
     </button>
   </div>
 </form>
+{% if config['ALLOW_REGISTRATION'] %}
+  <p>You may also log in with <a
+  href='http://www.mozilla.org/en-US/persona/'>Mozilla Persona</a>.</p>
+  <p><a href='#' id='login'><img
+      src='{{ url_for('static', filename='persona.png') }}' id='login' /></a>
+  </p>
+{% endif %}
+{% endblock %}
+{% block onready %}
+{% if config['ALLOW_REGISTRATION'] %}
+  {# Only the login page will be used for non-authenticated Persona users. #}
+  {% if not current_user.is_authenticated() %}
+  navigator.id.watch({
+    loggedInUser: null,
+    onlogin: App.verifyAssertion,
+    onlogout: App.logoutUser
+  });
+  {% endif %}
+
+  var logIn = document.getElementById('login');
+  if (logIn) {
+    logIn.onclick = function() { navigator.id.request(); };
+  }
+{% endif %}
 {% endblock %}

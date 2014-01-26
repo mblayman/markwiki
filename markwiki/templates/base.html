@@ -126,9 +126,57 @@
 <script src='{{ url_for('static', filename='jquery-2.0.0.min.js') }}'></script>
 <script src='{{ url_for('static', filename='bs/js/bootstrap.min.3.0.1.js') }}'>
 </script>
+<script src='{{ url_for('static', filename='persona.js') }}'></script>
 <script>
+{% if config['ALLOW_REGISTRATION'] %}
+  var App = {
+    verifyAssertion: function(assertion) {
+      $.post('{{ url_for('persona_login') }}',
+        {assertion: assertion},
+        function (data, textStatus) {
+          if ('success' === textStatus) {
+            // TODO: Do a redirect if appropriate.
+            window.location.reload();
+          } else {
+            // TODO: Alert with some kind of failure message.
+            navigator.id.logout();
+          }
+        }, 'json');
+    },
+
+    logoutUser: function() {
+      $.get('{{ url_for('logout') }}', {}, function () {
+        window.location.href = '{{ url_for('index') }}'
+      });
+    },
+
+    init: function() {
+  {% if current_user.is_authenticated() %}
+    {% if current_user.login_type == 'persona' %}
+      {# Only Persona users need to use the navigator logout method. #}
+      var logOut = document.getElementById('logout');
+      if (logOut) {
+        logOut.onclick = function(ev) {
+          ev.preventDefault();
+          navigator.id.logout();
+        };
+      }
+      {# watch() will logout non-Persona users so use for Persona only. #}
+      navigator.id.watch({
+        loggedInUser: '{{ current_user.email }}',
+        onlogin: this.verifyAssertion,
+        onlogout: this.logoutUser
+      });
+    {% endif %}
+  {% endif %}
+    }
+  };
+{% endif %}
 $(function() {
 {% block onready %}{% endblock %}
+{% if config['ALLOW_REGISTRATION'] %}
+  App.init();
+{% endif %}
 });
 </script>
 </body>

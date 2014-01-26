@@ -116,6 +116,40 @@ def validate_login(form):
     return None
 
 
+@app.route('/persona/login/', methods=['POST'])
+def persona_login():
+    # Must have the assertion.
+    if 'assertion' not in request.form:
+        abort(400)
+
+    location = app.config['SERVER_NAME']
+    if location is None:
+        # Do a best guess effort of the localhost and port number.
+        location = ':'.join(['localhost', str(app.config['SERVER_PORT'])])
+
+    # Send the assertion to Mozilla's verifier service.
+    assertion_info = {
+        'assertion': request.form['assertion'],
+        'audience': location,
+    }
+    r = requests.post('https://verifier.login.persona.org/verify',
+                      data=assertion_info, verify=True)
+    if not r.ok:
+        print('Failed to post to Persona.')
+        abort(500)
+
+    data = r.json()
+
+    if data.get('status') == 'okay':
+        # TODO: The email account is not in with the rest of the users. That's
+        # wrong.
+        login_user(User(data['email']))
+        return ''
+    else:
+        # TODO: Flash a message about a verification failure?
+        abort(401)
+
+
 @app.route('/logout/')
 @login_required
 def logout():
