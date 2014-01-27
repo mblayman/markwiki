@@ -9,7 +9,7 @@ user information.</p>
 {% endif %}
 <form action='{{ url_for('login') }}' method='POST'>
   {{ form.csrf_token }}
-{%if request.args.get('next') %}
+{% if request.args.get('next') %}
   {{ form.next(value=request.args.get('next')) }}
 {% endif %}
   <div class='form-group'>
@@ -44,6 +44,10 @@ user information.</p>
 {% endblock %}
 {% block onready %}
 {% if config['ALLOW_REGISTRATION'] %}
+  {% if request.args.get('next') %}
+    App.next = '{{ request.args.get('next') }}';
+  {% endif %}
+
   {# Only the login page will be used for non-authenticated Persona users. #}
   {% if not current_user.is_authenticated() %}
   navigator.id.watch({

@@ -3,6 +3,7 @@
 
 from flask import abort
 from flask import flash
+from flask import jsonify
 from flask import redirect
 from flask import render_template
 from flask import request
@@ -140,12 +141,25 @@ def persona_login():
     data = r.json()
 
     if data.get('status') == 'okay':
-        # TODO: The email account is not in with the rest of the users. That's
-        # wrong.
-        login_user(User(data['email']))
-        return ''
+        user = app.user_storage.find_by_email(data['email'])
+        if user is None:
+            # Generate a password that the Persona user will not be told about.
+            # This is to help prevent hackers from logging in using an empty
+            # password hash of a Persona user.
+            password = util.generate_password()
+            pwhash = security.generate_password_hash(password)
+            user = User(data['email'],  # Use the email as the username.
+                        data['email'],
+                        'persona',
+                        pwhash)
+            app.user_storage.create(user)
+
+        login_user(user)
+        return jsonify({
+            # Pass back whatever redirect was provided.
+            'next': request.form.get('next')
+        })
     else:
-        # TODO: Flash a message about a verification failure?
         abort(401)
 
 

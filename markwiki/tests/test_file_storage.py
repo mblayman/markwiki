@@ -60,3 +60,22 @@ class TestFileUserStorage(unittest.TestCase):
         user = User('laymanmb', '123@test.com', 'password', 'passwd_digest')
         self.storage.create(user)
         self.assertEqual(u'1', user.user_id)
+
+    def test_find_by_email(self):
+        user = User('mblayman', 'test@123.com', 'password', 'passwd_digest')
+        self.storage.create(user)
+
+        found_user = self.storage.find_by_email(user.email)
+        self.assertTrue(user.user_id, found_user.user_id)
+
+        missing_user = self.storage.find_by_email('foo@123.com')
+        self.assertTrue(missing_user is None, 'An unknown user returns None.')
+
+    def test_find_by_email_when_no_email(self):
+        user = User('mblayman', '',  # No email address
+                    'password', 'passwd_digest')
+        self.storage.create(user)
+
+        missing_user = self.storage.find_by_email(user.email)
+        self.assertTrue(missing_user is None,
+                        'A user with no email returns None.')

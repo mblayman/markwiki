@@ -17,11 +17,15 @@ class FileUserStorage(UserStorage):
         # An index of user ID to user file paths
         self._id_index_file = os.path.join(self._path, 'id.index')
         self._id_index = {}
+        # An index of user email to user file paths
+        self._email_index_file = os.path.join(self._path, 'email.index')
+        self._email_index = {}
 
     def initialize(self):
         if not os.path.exists(self._path):
             os.mkdir(self._path)
             self._write_json(self._id_index, self._id_index_file)
+            self._write_json(self._email_index, self._email_index_file)
         else:
             self._read_indices()
 
@@ -41,25 +45,26 @@ class FileUserStorage(UserStorage):
         # Now that the user is saved, update the indices.
         self._update_indices(user, user_file)
 
+    def find_by_email(self, email):
+        '''Find a user by their email or return ``None``.'''
+        user_file = self._email_index.get(email)
+        if user_file is None:
+            return None
+
+        return self._load_user(user_file)
+
     def find_by_id(self, user_id):
         '''Find a user by their ID or return ``None``.'''
         user_file = self._id_index.get(user_id)
         if user_file is None:
             return None
 
-        if os.path.exists(user_file):
-            return self._load_user(user_file)
-
-        return None
+        return self._load_user(user_file)
 
     def find_by_name(self, name):
         '''Find a user by their name or return ``None``.'''
         user_file = self._get_user_file(name)
-
-        if os.path.exists(user_file):
-            return self._load_user(user_file)
-
-        return None
+        return self._load_user(user_file)
 
     def update(self, user):
         '''Update an existing user.'''
@@ -85,7 +90,10 @@ class FileUserStorage(UserStorage):
         return os.path.join(self._path, m.hexdigest())
 
     def _load_user(self, user_file):
-        '''Load a user from a file. Assumes that the file exists.'''
+        '''Load a user from a file.'''
+        if not os.path.exists(user_file):
+            return None
+
         with open(user_file, 'r') as f:
             data = json.loads(f.read())
             return User(data['name'], data['email'], data['login_type'],
@@ -96,10 +104,18 @@ class FileUserStorage(UserStorage):
         with open(self._id_index_file, 'r') as f:
             self._id_index = json.loads(f.read())
 
+        with open(self._email_index_file, 'r') as f:
+            self._email_index = json.loads(f.read())
+
     def _update_indices(self, user, user_file):
         '''Update the file indices with the provided user information.'''
         self._id_index[user.user_id] = user_file
         self._write_json(self._id_index, self._id_index_file)
+
+        # Not every user has an associated email account.
+        if user.email:
+            self._email_index[user.email] = user_file
+            self._write_json(self._email_index, self._email_index_file)
 
     def _write_json(self, data, out):
         '''Write out JSON with common settings.'''

@@ -123,6 +123,24 @@
   </div>
 </div>
 </div>
+<div id='auth_modal' class='modal fade'>
+  <div class='modal-dialog'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <button type='button' class='close' data-dismiss='modal'
+          aria-hidden='true'>×</button>
+        <h3 class='modal-title'>Oops...</h3>
+      </div>
+      <div class='modal-body'>
+        <p>It looks like there was a problem verifying your login.</p>
+      </div>
+      <div class='modal-footer'>
+        <button class='btn btn-default' data-dismiss='modal'
+          aria-hidden='true'>Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script src='{{ url_for('static', filename='jquery-2.0.0.min.js') }}'></script>
 <script src='{{ url_for('static', filename='bs/js/bootstrap.min.3.0.1.js') }}'>
 </script>
@@ -132,13 +150,16 @@
   var App = {
     verifyAssertion: function(assertion) {
       $.post('{{ url_for('persona_login') }}',
-        {assertion: assertion},
+        {assertion: assertion, next: App.next},
         function (data, textStatus) {
           if ('success' === textStatus) {
-            // TODO: Do a redirect if appropriate.
-            window.location.reload();
+            if (data.next) {
+              window.location.href = data.next;
+            } else {
+              window.location.href = '{{ url_for('index') }}'
+            }
           } else {
-            // TODO: Alert with some kind of failure message.
+            $('#auth_modal').modal('show');
             navigator.id.logout();
           }
         }, 'json');
