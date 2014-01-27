@@ -17,7 +17,6 @@ from werkzeug import security
 from markwiki import app
 from markwiki import login_manager
 from markwiki import util
-from markwiki.authn.user import User
 from markwiki.forms import AddUserForm
 from markwiki.forms import LoginForm
 from markwiki.forms import RegisterForm
