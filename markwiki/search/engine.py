@@ -45,9 +45,12 @@ class SearchEngine(object):
         if not os.path.exists(self.index_dir):
             os.mkdir(self.index_dir)
 
-        print(' * Creating the search index ...')
+        print('Creating the search index ...')
         self._ix = index.create_in(self.index_dir, WikiSchema)
         self._populate_index(wiki_path)
+
+    def has_index(self):
+        return os.path.exists(self.index_dir)
 
     def open_index(self):
         '''Open the search index.'''

@@ -1,5 +1,13 @@
-# Copyright (c) 2013, Matt Layman
+# Copyright (c) 2014, Matt Layman
 '''MarkWiki exceptions'''
+
+
+class ConfigurationError(Exception):
+    '''An exception to raise when an error occurred from misconfiguration.'''
+
+
+class UserStorageError(Exception):
+    '''An error occurred in the user storage service.'''
 
 
 class ValidationError(Exception):

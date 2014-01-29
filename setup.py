@@ -26,6 +26,7 @@ if __name__ == '__main__':
         'Frozen-Flask',
         'Markdown',
         'Pygments',
+        'requests',
         'Whoosh',
     ]
 

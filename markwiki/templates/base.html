@@ -3,6 +3,7 @@
 <head>
   <title>{% block title%}{% endblock %}</title>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible' content='IE=Edge'>
   <link rel='stylesheet' media='screen'
     href='{{ url_for('static', filename='bs/css/bootstrap.min.3.0.1.css') }}'>
   <link rel='stylesheet' media='screen'
@@ -55,7 +56,7 @@
         <li><a href='{{ url_for('wiki', page_path='MarkWiki/Help') }}'><span
           class='glyphicon glyphicon-question-sign'></span>&nbsp; Get Help</a>
         </li>
-        {% if current_user.is_admin() %}
+        {% if current_user.name == config['ADMINISTRATOR'] %}
         <li><a href='{{ url_for('administrate') }}'><span
           class='glyphicon glyphicon-lock'></span>&nbsp; Administrate</a>
         </li>
@@ -66,10 +67,10 @@
   {% if current_user.is_authenticated() %}
       <li class='dropdown'>
         <a href='#' class='dropdown-toggle' data-toggle='dropdown'><span
-        class='glyphicon glyphicon-user'></span> {{ current_user.get_id() }} <b
+        class='glyphicon glyphicon-user'></span> {{ current_user.name }} <b
         class='caret'></b></a>
         <ul class='dropdown-menu'>
-            <li><a href='{{ url_for('logout') }}'>Log out</a></li>
+            <li><a href='{{ url_for('logout') }}' id='logout'>Log out</a></li>
         </ul>
       </li>
   {% else %}
@@ -122,12 +123,82 @@
   </div>
 </div>
 </div>
+<div id='auth_modal' class='modal fade'>
+  <div class='modal-dialog'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <button type='button' class='close' data-dismiss='modal'
+          aria-hidden='true'>×</button>
+        <h3 class='modal-title'>Oops...</h3>
+      </div>
+      <div class='modal-body'>
+        <p>It looks like there was a problem verifying your login.</p>
+      </div>
+      <div class='modal-footer'>
+        <button class='btn btn-default' data-dismiss='modal'
+          aria-hidden='true'>Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script src='{{ url_for('static', filename='jquery-2.0.0.min.js') }}'></script>
 <script src='{{ url_for('static', filename='bs/js/bootstrap.min.3.0.1.js') }}'>
 </script>
+<script src='{{ url_for('static', filename='persona.js') }}'></script>
 <script>
+{% if config['ALLOW_REGISTRATION'] %}
+  var App = {
+    verifyAssertion: function(assertion) {
+      $.post('{{ url_for('persona_login') }}',
+        {assertion: assertion, next: App.next},
+        function (data, textStatus) {
+          if ('success' === textStatus) {
+            if (data.next) {
+              window.location.href = data.next;
+            } else {
+              window.location.href = '{{ url_for('index') }}'
+            }
+          } else {
+            $('#auth_modal').modal('show');
+            navigator.id.logout();
+          }
+        }, 'json');
+    },
+
+    logoutUser: function() {
+      $.get('{{ url_for('logout') }}', {}, function () {
+        window.location.href = '{{ url_for('index') }}'
+      });
+    },
+
+    init: function() {
+// TODO: Why is there so much network traffic for persona?
+  {% if current_user.is_authenticated() %}
+    {% if current_user.login_type == 'persona' %}
+      {# Only Persona users need to use the navigator logout method. #}
+      var logOut = document.getElementById('logout');
+      if (logOut) {
+        logOut.onclick = function(ev) {
+          ev.preventDefault();
+          navigator.id.logout();
+        };
+      }
+      {# watch() will logout non-Persona users so use for Persona only. #}
+      navigator.id.watch({
+        loggedInUser: '{{ current_user.email }}',
+        onlogin: this.verifyAssertion,
+        onlogout: this.logoutUser
+      });
+    {% endif %}
+  {% endif %}
+    }
+  };
+{% endif %}
 $(function() {
 {% block onready %}{% endblock %}
+{% if config['ALLOW_REGISTRATION'] %}
+  App.init();
+{% endif %}
 });
 </script>
 </body>

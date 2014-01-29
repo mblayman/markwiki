@@ -1,4 +1,4 @@
-# Copyright (c) 2013, Matt Layman
+# Copyright (c) 2014, Matt Layman
 '''Forms used by MarkWiki'''
 
 from flask.ext.wtf import Form
@@ -10,11 +10,11 @@ from wtforms.validators import InputRequired
 from wtforms.validators import Length
 from wtforms.validators import ValidationError
 
-from markwiki import login_manager
+from markwiki import app
 
 
 def is_new_user(form, field):
-    if login_manager.has_user(field.data):
+    if app.user_storage.find_by_name(field.data) is not None:
         raise ValidationError('Sorry, that user already exists.')
 
 

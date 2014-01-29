@@ -1,24 +1,13 @@
-# Copyright (c) 2013, Matt Layman and contributors
+# Copyright (c) 2014, Matt Layman and contributors
 '''A simple wiki using Markdown'''
 
-import os
-import sys
-
-from markwiki.application import MarkWikiApp
-from markwiki.util import bootstrap, bootstrap_auth
+from markwiki.application import build_app
+from markwiki.util import bootstrap_auth
 
 # The app is so super special that it needs to come before many imports.
 # Basically, only the app class itself and bootstrapping should be imported
 # before this.
-app = MarkWikiApp(__name__)
-
-# Check if the MarkWiki exists and bootstrap if it isn't there.
-if not os.path.exists(app.config['MARKWIKI_HOME']):
-    bootstrap(app)
-else:
-    # The home path must be a directory.
-    if not os.path.isdir(app.config['MARKWIKI_HOME']):
-        sys.exit('Sorry, the MarkWiki home path must be a directory.')
+app = build_app(__name__)
 
 # Bootstrapping the authentication should be checked every time in case the
 # admin credentials have been updated.
@@ -26,7 +15,7 @@ from markwiki.authn.manager import MarkWikiLoginManager
 login_manager = MarkWikiLoginManager(app=app)
 
 if app.config.get('AUTHENTICATION'):
-    bootstrap_auth(app, login_manager)
+    bootstrap_auth(app)
 
 # Ensure that the search engine is available.
 app.search_engine.open_index()
