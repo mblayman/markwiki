@@ -36,7 +36,8 @@ class FileUserStorage(UserStorage):
         if os.path.exists(user_file):
             raise UserStorageError('A user with that name already exists.')
 
-        # TODO: validate that the username and email are not in use already.
+        if self.find_by_email(user.email) is not None:
+            raise UserStorageError('A user with that email already exists.')
 
         # Everything looks good so get the user an ID and save it.
         user.user_id = self._generate_user_id()
