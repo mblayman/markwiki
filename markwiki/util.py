@@ -58,8 +58,9 @@ def bootstrap_auth(app):
     else:
         # The configuration file may have changed the password so always update
         # the administrator's password.
-        # TODO: call user_storage.update when implemented
-        pass
+        pwhash = security.generate_password_hash(app.config['ADMIN_PASSWORD'])
+        admin.password_digest = pwhash
+        app.user_storage.update(admin)
 
 
 def generate_password():

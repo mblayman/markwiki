@@ -68,7 +68,8 @@ class FileUserStorage(UserStorage):
 
     def update(self, user):
         '''Update an existing user.'''
-        # TODO: implement
+        user_file = self._get_user_file(user.name)
+        self._write_json(user.__dict__, user_file)
 
     def _generate_user_id(self):
         '''Generate a unique user ID.'''

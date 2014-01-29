@@ -172,6 +172,7 @@
     },
 
     init: function() {
+// TODO: Why is there so much network traffic for persona?
   {% if current_user.is_authenticated() %}
     {% if current_user.login_type == 'persona' %}
       {# Only Persona users need to use the navigator logout method. #}
