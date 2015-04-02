@@ -19,23 +19,23 @@ if __name__ == '__main__':
     long_description = __doc__ + '\n\n' + releases
 
     install_requires = [
-        'argparse',
-        'Flask',
-        'Flask-Login',
-        'Flask-WTF',
-        'Frozen-Flask',
-        'Markdown',
-        'Pygments',
-        'requests',
-        'Whoosh',
+        'argparse==1.2.1',
+        'Flask==0.10.1',
+        'Flask-Login==0.2.9',
+        'Flask-WTF==0.9.4',
+        'Frozen-Flask==0.11',
+        'Markdown==2.3.1',
+        'Pygments==1.6',
+        'requests==2.6.0',
+        'Whoosh==2.5.6',
     ]
 
     # Add some developer tools.
     if 'develop' in sys.argv:
         install_requires.extend([
-            'coverage',
-            'gunicorn',
-            'nose',
+            'coverage==3.7.1',
+            'gunicorn==18.0',
+            'nose==1.3.0',
         ])
 
     setup(

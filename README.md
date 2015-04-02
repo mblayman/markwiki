@@ -46,13 +46,9 @@ $ markwiki
 From the project's root directory, run:
 
 ```bash
-$ pip install -r requirements.txt
 $ python setup.py develop
 $ markwiki
 ```
-
-This will do three things for developers: install the *exact* versions used by
-other developers, install the `markwiki` console script, start MarkWiki.
 
 [fury]: https://badge.fury.io/py/MarkWiki.png
 [pypip]: https://pypip.in/d/MarkWiki/badge.png
