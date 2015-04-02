@@ -36,6 +36,7 @@ if __name__ == '__main__':
             'coverage==3.7.1',
             'gunicorn==18.0',
             'nose==1.3.0',
+            'pep8',
         ])
 
     setup(

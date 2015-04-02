@@ -11,7 +11,7 @@ app = build_app(__name__)
 
 # Bootstrapping the authentication should be checked every time in case the
 # admin credentials have been updated.
-from markwiki.authn.manager import MarkWikiLoginManager
+from markwiki.authn.manager import MarkWikiLoginManager  # NOQA
 login_manager = MarkWikiLoginManager(app=app)
 
 if app.config.get('AUTHENTICATION'):
@@ -22,6 +22,6 @@ app.search_engine.open_index()
 
 # Because the import is circular, the importing of the views should be the last
 # thing so that there is no temptation to use them and cause craziness.
-import markwiki.views.authn
-import markwiki.views.core
-import markwiki.views.errors
+import markwiki.views.authn  # NOQA
+import markwiki.views.core  # NOQA
+import markwiki.views.errors  # NOQA
