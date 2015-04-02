@@ -1,4 +1,4 @@
-# Copyright (c) 2014, Matt Layman
+# Copyright (c) 2015, Matt Layman
 '''A set of factories to generate storage services based on configuration'''
 
 from markwiki.exceptions import ConfigurationError

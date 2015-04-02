@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-# MarkWiki documentation build configuration file, created by
-# sphinx-quickstart on Mon Nov 11 16:35:31 2013.
-#
 # This file is execfile()d with the current directory set to its
 # containing dir.
 #
@@ -47,7 +44,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'MarkWiki'
-copyright = u'2013, Matt Layman and contributors'
+copyright = u'2015, Matt Layman and contributors'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

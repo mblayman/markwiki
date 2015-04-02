@@ -1,4 +1,4 @@
-# Copyright (c) 2013, Matt Layman
+# Copyright (c) 2015, Matt Layman
 '''
 Follow MarkWiki development on `GitHub
 <https://github.com/mblayman/markwiki>`_. Developer documentation is on

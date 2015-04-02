@@ -1,4 +1,4 @@
-# Copyright (c) 2014, Matt Layman
+# Copyright (c) 2015, Matt Layman
 '''MarkWiki's authentication manager'''
 
 from flask.ext.login import LoginManager

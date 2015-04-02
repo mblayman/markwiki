@@ -1,2 +1,2 @@
-# Copyright (c) 2013, Matt Layman and contributors
+# Copyright (c) 2015, Matt Layman and contributors
 '''Provide search capability'''
