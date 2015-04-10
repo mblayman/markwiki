@@ -29,7 +29,7 @@ class SearchEngine(object):
         # queried for to improve search quality.
         parser = QueryParser('content', schema=self._ix.schema,
                              termclass=query.Variations)
-        q = parser.parse(unicode(user_query))
+        q = parser.parse(u'{0}'.format(user_query))
 
         results = []
         with self._ix.searcher() as searcher:
@@ -68,13 +68,12 @@ class SearchEngine(object):
     def update_wiki(self, path, content):
         '''Update an existing wiki in the index.'''
         with self._ix.writer() as writer:
-            writer.update_document(path=unicode(path),
-                                   content=unicode(content))
+            writer.update_document(path=u'{0}'.format(path), content=content)
 
     def delete_wiki(self, path):
         '''Delete a wiki from the index.'''
         with self._ix.writer() as writer:
-            writer.delete_by_term('path', unicode(path))
+            writer.delete_by_term('path', u'{0}'.format(path))
 
     def _populate_index(self, wiki_path):
         '''Populate the search index with the initial content of the wiki.'''
