@@ -42,7 +42,7 @@ class TestFileUserStorage(unittest.TestCase):
         self.storage.create(user)
 
         m = hashlib.md5()
-        m.update('mblayman')
+        m.update('mblayman'.encode('utf-8'))
         user_path = os.path.join(self.storage._path, m.hexdigest())
         self.assertTrue(os.path.exists(user_path), 'The user was stored.')
 

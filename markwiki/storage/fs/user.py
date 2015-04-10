@@ -78,17 +78,17 @@ class FileUserStorage(UserStorage):
         # gunicorn), refresh the in-memory indices to avoid ID clashes.
         self._read_indices()
         user_id = len(self._id_index)
-        while self.find_by_id(unicode(user_id)) is not None:
+        while self.find_by_id(u'{0}'.format(user_id)) is not None:
             user_id += 1
 
         # The auth system will try to do lookups with unicode so the key might
         # as well be unicode to be consistent.
-        return unicode(user_id)
+        return u'{0}'.format(user_id)
 
     def _get_user_file(self, name):
         '''Get the file path where the user's data will be stored.'''
         m = hashlib.md5()
-        m.update(name)
+        m.update(name.encode('utf-8'))
         return os.path.join(self._path, m.hexdigest())
 
     def _load_user(self, user_file):

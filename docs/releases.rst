@@ -1,6 +1,12 @@
 Releases
 ========
 
+Version 1.4, In Development
+---------------------------
+
+* Officially support Python 2.6, 2.7, 3.3, and 3.4.
+* Integrate Mozilla Persona for user authentication.
+
 Version 1.3, Released December 2013
 -----------------------------------
 

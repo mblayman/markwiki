@@ -2,6 +2,7 @@
 '''Functions for handling interaction with wiki pages.'''
 
 from collections import namedtuple
+import io
 import os
 
 from markwiki import app
@@ -22,7 +23,7 @@ class WikiPage(object):
     @property
     def content(self):
         '''Get the source content of the page.'''
-        with open(self.wiki_path, 'r') as wiki:
+        with io.open(self.wiki_path, 'r', encoding='utf-8') as wiki:
             return wiki.read()
 
     @property
@@ -67,8 +68,8 @@ class WikiPage(object):
                 return False
 
         try:
-            with open(self.wiki_path, 'w') as wiki:
-                wiki.write(content)
+            with open(self.wiki_path, 'wb') as wiki:
+                wiki.write(content.encode('utf-8'))
         except IOError:
             # Something bad happened while writing so report failure.
             return False
