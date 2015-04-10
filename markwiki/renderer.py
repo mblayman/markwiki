@@ -1,6 +1,8 @@
 # Copyright (c) 2015, Matt Layman
 '''Custom rendering'''
 
+import io
+
 import markdown
 
 from markwiki.wikilinks import MarkWikiLinkExtension
@@ -12,7 +14,7 @@ wiki_link_extension = MarkWikiLinkExtension()
 
 def render_markdown(wiki_page):
     '''Render the Markdown from the wiki page provided. Assumes path exists.'''
-    with open(wiki_page) as wiki_file:
+    with io.open(wiki_page, 'r', encoding='utf-8') as wiki_file:
         text = wiki_file.read()
         extensions = [wiki_link_extension, 'fenced_code', 'codehilite',
                       'toc(anchorlink=True)']
