@@ -1,6 +1,7 @@
 # Copyright (c) 2015, Matt Layman and contributors
 
 from collections import namedtuple
+import io
 import os
 
 from whoosh import index
@@ -61,7 +62,8 @@ class SearchEngine(object):
     def add_wiki(self, path, content):
         '''Add and index a wiki page.'''
         with self._ix.writer() as writer:
-            writer.add_document(path=unicode(path), content=unicode(content))
+            # unicode() is gone in Python 3 so use a string format.
+            writer.add_document(path=u'{0}'.format(path), content=content)
 
     def update_wiki(self, path, content):
         '''Update an existing wiki in the index.'''
@@ -96,7 +98,7 @@ class SearchEngine(object):
 
     def _get_markdown_content(self, markdown_path):
         '''Read all the content out of a Markdown file.'''
-        with open(markdown_path, 'r') as f:
+        with io.open(markdown_path, 'r', encoding='utf-8') as f:
             content = f.read()
 
         return content
