@@ -55,5 +55,17 @@ if __name__ == '__main__':
         include_package_data=True,
         zip_safe=False,
         install_requires=install_requires,
+        classifiers=[
+            'Development Status :: 4 - Beta',
+            'Environment :: Web Environment',
+            'Framework :: Flask',
+            'License :: OSI Approved :: BSD License',
+            'Operating System :: POSIX :: Linux',
+            'Programming Language :: Python :: 2.6',
+            'Programming Language :: Python :: 2.7',
+            'Programming Language :: Python :: 3.3',
+            'Programming Language :: Python :: 3.4',
+            'Topic :: Internet',
+        ],
         test_suite='markwiki.tests'
     )
