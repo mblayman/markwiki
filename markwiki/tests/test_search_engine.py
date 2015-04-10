@@ -30,5 +30,5 @@ class TestSearchEngine(unittest.TestCase):
 
         engine.create_index(wiki_path)
 
-        self.assertTrue(os.path.exists
-            (os.path.join(self.markwiki_home, 'search', 'MAIN_WRITELOCK')))
+        self.assertTrue(os.path.exists(
+            os.path.join(self.markwiki_home, 'search', 'MAIN_WRITELOCK')))
