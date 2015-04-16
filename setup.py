@@ -8,7 +8,7 @@ Follow MarkWiki development on `GitHub
 from setuptools import find_packages, setup
 import sys
 
-__version__ = '1.4'
+__version__ = '1.4.1'
 
 # The docs import setup.py for the version so only call setup when not behaving
 # as a module.
