@@ -1,8 +1,8 @@
 MarkWiki
 ========
 
-[![PyPI version][fury]](http://badge.fury.io/py/MarkWiki)
-[![Downloads][pypip]](https://crate.io/packages/MarkWiki)
+[![PyPI version][fury]](https://pypi.python.org/pypi/MarkWiki)
+[![Downloads][shield]](https://pypi.python.org/pypi/MarkWiki)
 [![Build Status][travis]](https://travis-ci.org/mblayman/markwiki)
 
 *A simple wiki using Markdown*
@@ -51,6 +51,6 @@ $ markwiki
 ```
 
 [fury]: https://badge.fury.io/py/MarkWiki.png
-[pypip]: https://pypip.in/d/MarkWiki/badge.png
+[shield]: https://img.shields.io/pypi/dm/MarkWiki.svg
 [travis]: https://travis-ci.org/mblayman/markwiki.png?branch=master
 [rtd]: http://markwiki.readthedocs.org/en/latest/contribute.html
