@@ -1,6 +1,12 @@
 Releases
 ========
 
+Version 1.5, Released May 8, 2015
+---------------------------------
+
+* Update Bootstrap to 3.3.4.
+* Remove rendering artifact that appeared in Chrome.
+
 Version 1.4, Released April 16, 2015
 ------------------------------------
 
