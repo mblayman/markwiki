@@ -69,7 +69,10 @@ class WikiPage(object):
 
         try:
             with open(self.wiki_path, 'wb') as wiki:
-                wiki.write(content.encode('utf-8'))
+                if app.config['GIT_ENABLED']:
+                    app.gitint.update_file(self.wiki_path, content.encode('utf-8'))
+                else:
+                    wiki.write(content.encode('utf-8'))
         except IOError:
             # Something bad happened while writing so report failure.
             return False
