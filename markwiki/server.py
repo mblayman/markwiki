@@ -6,6 +6,7 @@ import sys
 
 from markwiki import app
 from markwiki.freezer import freeze
+from markwiki.search.engine import SearchEngine
 
 
 def run():
@@ -28,12 +29,25 @@ def run():
         metavar='DESTINATION'
     )
 
+    parser.add_argument(
+        '-r', '--reindex',
+        action='store_true',
+        default=False,  # When no flag is provided.
+        help='force recreate the search index',
+        dest='reindex_search'
+    )
+
     args = parser.parse_args()
 
     # If a freezer destination was specified, then the wiki should be frozen.
     if args.freezer_destination:
         status = freeze(args.freezer_destination)
         # Quit after the wiki is frozen.
+        sys.exit(status)
+    if args.reindex_search:
+        app.search_engine = SearchEngine(app.config['MARKWIKI_HOME'])
+        status = app.search_engine.create_index(app.config['WIKI_PATH'])
+        # Quit after re-creating the search index
         sys.exit(status)
 
     app.run(app.config['SERVER_HOST'], app.config['SERVER_PORT'])
