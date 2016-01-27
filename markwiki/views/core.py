@@ -182,3 +182,10 @@ def search():
     results = app.search_engine.search(user_query)
     return render_template('search.html', user_query=user_query,
                            results=results)
+
+
+@app.route('/reindex/')
+def reindex():
+    results = app.search_engine.create_index(app.config['WIKI_PATH'])
+    flash('Search index re-created', 'info')
+    return redirect(url_for('index'))
