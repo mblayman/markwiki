@@ -1,4 +1,4 @@
-# Copyright (c) 2015, Matt Layman and contributors
+# Copyright (c) 2016, Matt Layman and contributors
 '''A simple wiki using Markdown'''
 
 import os

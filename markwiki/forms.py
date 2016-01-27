@@ -1,4 +1,4 @@
-# Copyright (c) 2015, Matt Layman
+# Copyright (c) 2016, Matt Layman
 '''Forms used by MarkWiki'''
 
 from flask.ext.wtf import Form

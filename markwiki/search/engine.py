@@ -1,4 +1,4 @@
-# Copyright (c) 2015, Matt Layman and contributors
+# Copyright (c) 2016, Matt Layman and contributors
 
 from collections import namedtuple
 import io

@@ -1,4 +1,4 @@
-# Copyright (c) 2015, Matt Layman
+# Copyright (c) 2016, Matt Layman
 
 from abc import ABCMeta
 from abc import abstractmethod

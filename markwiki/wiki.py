@@ -1,4 +1,4 @@
-# Copyright (c) 2015, Matt Layman
+# Copyright (c) 2016, Matt Layman
 '''Functions for handling interaction with wiki pages.'''
 
 from collections import namedtuple

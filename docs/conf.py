@@ -44,7 +44,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'MarkWiki'
-copyright = u'2015, Matt Layman and contributors'
+copyright = u'2016, Matt Layman and contributors'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
