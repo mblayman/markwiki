@@ -35,10 +35,6 @@ def bootstrap(app):
     with open(token, 'w') as f:
         f.write('Bootstrapping is complete. Do not delete this file.')
 
-    # bootstrap git
-    if app.gitint:
-        app.gitint.bootstrap()
-
 
 def bootstrap_auth(app):
     '''Bootstrap all the necessary authentication support if it is enabled.'''
