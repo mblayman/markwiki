@@ -126,7 +126,8 @@ def wiki(page_path='Home'):
     if page.exists:
         g.sections = page.sections
         return render_template('wiki.html', page_path=page_path,
-                               title=page.title, wiki=page.html)
+                               title=page.title, wiki=page.html,
+                               git=app.gitint)
     else:
         return create(page_path)
 
@@ -189,3 +190,41 @@ def reindex():
     results = app.search_engine.create_index(app.config['WIKI_PATH'])
     flash('Search index re-created', 'info')
     return redirect(url_for('index'))
+
+
+@app.route('/history/<path:page_path>/')
+def history(page_path):
+    '''display history of a specific wiki page'''
+    page = WikiPage(page_path)
+    if page.exists:
+        changes = app.gitint.get_changes(page.rel_path)
+        return render_template('history.html', page=page_path, changes=changes)
+    else:
+        flash('Sorry. That wiki doesn\'t exist.')
+        return redirect(url_for('index'))
+
+
+@app.route('/view_history/<path:page_path>/<commit>', methods=['POST'])
+def view_history(page_path, commit):
+    '''Render the wiki page as it was back in history'''
+    page = WikiPage(page_path)
+    if page.exists:
+        title = '%s - %s' % (page.title, commit)
+        content = app.gitint.view_history(page.rel_path, commit)
+        return render_template('view_history.html', content=content,
+                               title=title, page=page_path, commit=commit)
+    else:
+        flash('Sorry. That version doesn\'t exist.')
+        return redirect(url_for('index'))
+
+
+@app.route('/revert/<path:page_path>/<commit>', methods=['POST'])
+def revert(page_path, commit):
+    '''Revert the wiki page as it was back in history'''
+    page = WikiPage(page_path)
+    if page.exists:
+        app.gitint.revert_file(page.rel_path, commit)
+        return redirect(url_for('wiki', page_path=page_path))
+    else:
+        flash('Sorry. That version doesn\'t exist.')
+        return redirect(url_for('index'))
