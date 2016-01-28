@@ -55,6 +55,12 @@
       href='{{ url_for('delete', page_path=page_path) }}'><span
       class='glyphicon glyphicon-remove'></span> Delete</a>
   {% endif %}
+  {% if page_path == 'Home' %}
+  {# Allow user to launch re-indexing for search on Home page #}
+    <a class='list-group-item'
+      href='{{ url_for('reindex') }}'><span
+      class='glyphicon glyphicon-refresh'></span> Re-index</a>
+  {% endif %}
   </div>
 {% endif %}
 {% endblock %}
