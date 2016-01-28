@@ -28,6 +28,7 @@ if __name__ == '__main__':
         'Pygments==1.6',
         'requests==2.6.0',
         'Whoosh==2.5.6',
+        'sh==1.11',
     ]
 
     # Add some developer tools.
