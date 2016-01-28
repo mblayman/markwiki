@@ -14,11 +14,6 @@ from markwiki import util
 def build_app(app_name):
     '''Build the application and extend it with various services.'''
     app = MarkWikiApp(app_name)
-    # create git integration
-    app.gitint = None
-    if app.config['GIT_ENABLED']:
-        app.gitint = GitIntegration(app.config['WIKI_PATH'],
-          remote=app.config['GIT_REMOTE'])
 
     if not app.is_bootstrapped():
         print('This appears to be a new MarkWiki. Adding initial content ...')
@@ -31,6 +26,11 @@ def build_app(app_name):
 
     user_storage_factory = UserStorageFactory()
     app.user_storage = user_storage_factory.get_storage(app.config)
+
+    # init git
+    app.gitint = None
+    if app.config['GIT_ENABLED']:
+        app.gitint = GitIntegration(app.config['WIKI_PATH'])
 
     return app
 
