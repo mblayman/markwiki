@@ -55,6 +55,11 @@
       href='{{ url_for('delete', page_path=page_path) }}'><span
       class='glyphicon glyphicon-remove'></span> Delete</a>
   {% endif %}
+  {% if git != None %}
+    <a class='list-group-item' id='history'
+      href='{{ url_for('history', page_path=page_path) }}'><span
+      class='glyphicon glyphicon-flash'></span> History</a>
+  {% endif %}
   </div>
 {% endif %}
 {% endblock %}
