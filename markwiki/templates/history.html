@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}History{% endblock %}
+{% block content %}
+
+<h1>{{ self.title() }}</h1>
+<div class="container content">
+  <div class="heading">
+    <h2>Commit(s) for <a href='{{ url_for('wiki', page_path=page) }}'>
+      {{ page }}</a>
+    </h2>
+  </div>
+
+  <table class="table table-hover table-bordered">
+    <tr>
+      <th>commit</th>
+      <th>date</th>
+      <th>action</th>
+    </tr>
+    {% for change in changes %}
+      <tr>
+        <td>
+          {{ change['commit'] }}
+        </td>
+        <td>
+          {{ change['date'] }}
+        </td>
+        <td>
+          <form action='{{ url_for('view_history', page_path=page, commit=change['commit']) }}' method='POST'>
+            <button type='submit' class='btn btn-default'>
+              <span class='glyphicon glyphicon-search'></span>View this version
+            </button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+
+{% endblock %}
+
+{% block actions %}
+<h4>Actions</h4>
+<div class='list-group'>
+  <a class='list-group-item' id='view'
+    href='{{ url_for('wiki', page_path=page) }}'><span
+    class='glyphicon glyphicon-default'></span> View current version</a>
+</div>
+{% endblock %}
