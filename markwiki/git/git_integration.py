@@ -1,42 +1,68 @@
-import git
-import os
+# Copyright (c) 2016, deadc0de6
+'''Versioning of the wiki pages through git'''
+from sh import git
+
 
 class GitIntegration(object):
 
-    GIT_MSG = 'change on page \"%s\"'
+    GIT_MSG = 'change on page %s'
 
-    def __init__(self, wiki_path, remote=None):
-        self.repo = git.Repo.init(wiki_path)
-        if remote:
-            origin = self.repo.create_remote('origin', remote)
-            origin.fetch()
-            origin.pull(origin.refs[0].remote_head)
-
-    def _add_all(self):
-        self.repo.git.add('--all')
-        self.repo.index.commit('adding uncommitted changes')
+    def __init__(self, wiki_path):
+        self.path = wiki_path
+        self.git = git.bake(_cwd=self.path)
+        self.git.init()
+        self._set_config()
+        self.bootstrap()
 
     def bootstrap(self):
-        if len(self.repo.untracked_files) > 0:
-            self._add_all()
+        self._add_untracked()
+        self._add_local_change()
 
-    def update_file(self, path, content):
-        with open(path, 'wb') as f:
-            f.write(content)
-        self.repo.index.add([path])
-        self.repo.index.commit(self.GIT_MSG % (os.path.basename(path)))
+    def update_file(self, path):
+        '''called on each update of a wiki page'''
+        self._commit_file(path)
 
-    def get_change(self, path):
-        # TODO should return last change for path
-        pass
+    def _set_config(self):
+        '''handle correctly line ending'''
+        self.git.config('--local', 'core.autocrlf', 'input')
 
-    def revert_file(self, path):
-        # TODO should revert file to last commit
-        pass
-        #self.repo.index.checkout([path], force=False)
+    def _add_untracked(self):
+        '''add individual commits for each untracked file'''
+        for f in self.git('ls-files', '-o').split('\n'):
+            if f:
+                self._commit_file(f)
 
-    # check if origin has changed
-    def _change_with_origin(self):
-        local = self.repo.commit()
-        remote = self.repo.origin.fetch()[0].commit
-        return local.hexsha == remote.hexsha
+    def _add_local_change(self):
+        '''commit local changes if any'''
+        for f in self.git('ls-files', '-m').split('\n'):
+            if f:
+                self._commit_file(f)
+
+    def _commit_file(self, path):
+        '''commit some change on a wiki page'''
+        self.git.add(path)
+        msg = self.GIT_MSG % (path)
+        self.git.commit('-m', msg)
+
+    def get_changes(self, path):
+        '''get list of commits for a specific page'''
+        changes = []
+        commits = self.git('--no-pager', 'log', '--format=%H,%ai', path)
+        for i, commit in enumerate(commits):
+            if i == 0:
+                continue
+            commit = commit.strip('\'').rstrip('\'')
+            change = {}
+            change['commit'] = commit.split(',')[0]
+            change['date'] = commit.split(',')[1]
+            changes.append(change)
+        return changes
+
+    def view_history(self, path, commit):
+        '''view the file as it was at a specific commit'''
+        return self.git('--no-pager', 'show', '%s:%s' % (commit, path))
+
+    def revert_file(self, path, commit):
+        '''revert a file to a specific commit'''
+        self.git.checkout(commit, path)
+        self._commit_file(path)
