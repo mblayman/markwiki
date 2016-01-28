@@ -29,4 +29,3 @@ TEMPLATE_PATH = None
 
 # git integration
 GIT_ENABLED = True
-GIT_REMOTE = None
