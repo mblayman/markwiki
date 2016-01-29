@@ -30,7 +30,7 @@ class TestGitIntegration(unittest.TestCase):
         fname = self.get_string()
         newfile = os.path.join(folder, fname)
         content = self.get_string()
-        open(newfile, 'wb').write(content)
+        open(newfile, 'w').write(content)
         return fname, content
 
     def get_tmpdir(self):
@@ -42,7 +42,7 @@ class TestGitIntegration(unittest.TestCase):
         fpath = os.path.join(folder, path)
         self.assertTrue(os.path.exists(fpath))
         content = self.get_string()
-        open(fpath, 'wb').write(content)
+        open(fpath, 'w').write(content)
         return content
 
     def get_content(self, folder, path):
