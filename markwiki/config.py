@@ -28,4 +28,4 @@ STATIC_PATH = None
 TEMPLATE_PATH = None
 
 # git integration
-GIT_ENABLED = True
+GIT_ENABLED = False
