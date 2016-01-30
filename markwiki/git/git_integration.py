@@ -12,9 +12,9 @@ class GitIntegration(object):
         self.git = git.bake(_cwd=self.path)
         self.git.init()
         self._set_config()
-        self.bootstrap()
+        self._bootstrap()
 
-    def bootstrap(self):
+    def _bootstrap(self):
         self._add_untracked()
         self._add_local_change()
 
@@ -23,7 +23,7 @@ class GitIntegration(object):
         self._commit_file(path)
 
     def _set_config(self):
-        '''handle correctly line ending'''
+        '''set git configs'''
         self.git.config('--local', 'core.autocrlf', 'input')
         self.git.config('--local', 'user.name', 'markwiki')
         self.git.config('--local', 'user.email', '')
@@ -50,10 +50,8 @@ class GitIntegration(object):
         '''get list of commits for a specific page'''
         changes = []
         commits = self.git('--no-pager', 'log', '--format=%H,%ai', path)
-        for i, commit in enumerate(commits):
-            if i == 0:
-                continue
-            commit = commit.strip('\'').rstrip('\'')
+        for commit in list(commits)[1:]:
+            commit = commit.strip('\'')
             change = {}
             change['commit'] = commit.split(',')[0]
             change['date'] = commit.split(',')[1]
