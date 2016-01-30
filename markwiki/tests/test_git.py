@@ -1,4 +1,3 @@
-
 # Copyright (c) 2016, deadc0de6
 '''Basic tests for git integration.'''
 
@@ -8,7 +7,6 @@ import tempfile
 import random
 import string
 import shutil
-import sys
 
 from markwiki.git.git_integration import GitIntegration
 
@@ -16,7 +14,7 @@ from markwiki.git.git_integration import GitIntegration
 class TestGitIntegration(unittest.TestCase):
 
     STRINGLEN = 10
-    MASTER = '.git/logs/refs/heads/master'
+    MASTERPATH = '.git/logs/refs/heads/master'
     TMPSUFFIX = 'markwikigit'
 
     def get_string(self):
@@ -24,17 +22,17 @@ class TestGitIntegration(unittest.TestCase):
         alpha = string.ascii_uppercase + string.digits
         return ''.join(random.choice(alpha) for _ in range(self.STRINGLEN))
 
+    def get_tmpdir(self):
+        '''return a temporary directory for tests'''
+        return tempfile.mkdtemp(suffix=self.TMPSUFFIX)
+
     def create_file(self, folder):
         '''create a new file in folder with random content'''
         self.assertTrue(os.path.exists(folder))
         fname = self.get_string()
-        newfile = os.path.join(folder, fname)
         content = self.get_string()
-        open(newfile, 'w').write(content)
+        open(os.path.join(folder, fname), 'w').write(content)
         return fname, content
-
-    def get_tmpdir(self):
-        return tempfile.mkdtemp(suffix=self.TMPSUFFIX)
 
     def change_content(self, folder, path):
         '''change content of file'''
@@ -78,7 +76,7 @@ class TestGitIntegration(unittest.TestCase):
 
         # check new file is in git
         git = GitIntegration(gitpath)
-        head = self.get_content(gitpath, self.MASTER)
+        head = self.get_content(gitpath, self.MASTERPATH)
         self.assertTrue(newfile in head)
         self.clean(gitpath)
 
@@ -87,12 +85,13 @@ class TestGitIntegration(unittest.TestCase):
         gitpath = self.get_tmpdir()
         git = GitIntegration(gitpath)
 
+        # create a new file
         newfile, _ = self.create_file(gitpath)
         git.update_file(newfile)
 
-        head = self.get_content(gitpath, self.MASTER)
+        # make sure the file is referenced in HEAD
+        head = self.get_content(gitpath, self.MASTERPATH)
         self.assertTrue(newfile in head)
-
         self.clean(gitpath)
 
     def test_githistory(self):
@@ -100,9 +99,11 @@ class TestGitIntegration(unittest.TestCase):
         gitpath = self.get_tmpdir()
         git = GitIntegration(gitpath)
 
+        # create a new file
         newfile, _ = self.create_file(gitpath)
         git.update_file(newfile)
 
+        # change file's content
         newcontent = self.change_content(gitpath, newfile)
         git.update_file(newfile)
 
@@ -115,16 +116,20 @@ class TestGitIntegration(unittest.TestCase):
         gitpath = self.get_tmpdir()
         git = GitIntegration(gitpath)
 
+        # create a new file
         newfile, oldcontent = self.create_file(gitpath)
         git.update_file(newfile)
 
+        # change file content
         newcontent = self.change_content(gitpath, newfile)
         git.update_file(newfile)
 
+        # check changes is not empty
         commits = git.get_changes(newfile)
         self.assertEqual(type(commits), list)
         self.assertTrue(len(commits) > 0)
 
+        # revert the file and get content
         commit = commits[0]['commit']
         git.revert_file(newfile, commit)
         revcontent = self.get_content(gitpath, newfile)
