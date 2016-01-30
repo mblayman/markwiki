@@ -74,7 +74,7 @@ the settings before putting MarkWiki into production. Be safe, folks.
     the pages of the wiki. It also then allows to view and revert a page
     to any old version if needed.
 
-    Defaults to `True`.
+    Defaults to `False`.
 
 ### Flask Settings Used By MarkWiki
 
