@@ -29,9 +29,7 @@
   <h3>Commit {{ commit }}</h3>
 </div>
 
-<pre>
-  {{ content }}
-</pre>
+{{ content|safe }}
 
 <form id='revert_form' action='{{ url_for('revert', page_path=page, commit=commit) }}'
    method='POST'>

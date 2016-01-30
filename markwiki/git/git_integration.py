@@ -2,6 +2,8 @@
 '''Versioning of the wiki pages through git'''
 from sh import git
 
+from markwiki.renderer import render_markdown_txt
+
 
 class GitIntegration(object):
 
@@ -60,7 +62,8 @@ class GitIntegration(object):
 
     def view_history(self, path, commit):
         '''view the file as it was at a specific commit'''
-        return self.git('--no-pager', 'show', '%s:%s' % (commit, path))
+        content = self.git('--no-pager', 'show', '%s:%s' % (commit, path))
+        return render_markdown_txt(content)
 
     def revert_file(self, path, commit):
         '''revert a file to a specific commit'''
