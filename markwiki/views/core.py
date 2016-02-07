@@ -194,7 +194,7 @@ def reindex():
 
 @app.route('/history/<path:page_path>/')
 def history(page_path):
-    '''display history of a specific wiki page'''
+    '''Display history of a specific wiki page.'''
     page = WikiPage(page_path)
     if page.exists:
         changes = app.gitint.get_changes(page.rel_path)
@@ -206,7 +206,7 @@ def history(page_path):
 
 @app.route('/view_history/<path:page_path>/<commit>', methods=['POST'])
 def view_history(page_path, commit):
-    '''Render the wiki page as it was back in history'''
+    '''Render the wiki page as it was back in history.'''
     page = WikiPage(page_path)
     if page.exists:
         title = '%s - %s' % (page.title, commit)
@@ -220,7 +220,7 @@ def view_history(page_path, commit):
 
 @app.route('/revert/<path:page_path>/<commit>', methods=['POST'])
 def revert(page_path, commit):
-    '''Revert the wiki page as it was back in history'''
+    '''Revert the wiki page as it was back in history.'''
     page = WikiPage(page_path)
     if page.exists:
         app.gitint.revert_file(page.rel_path, commit)

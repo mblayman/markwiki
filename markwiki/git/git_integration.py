@@ -21,35 +21,35 @@ class GitIntegration(object):
         self._add_local_change()
 
     def update_file(self, path):
-        '''called on each update of a wiki page'''
+        '''Called on each update of a wiki page.'''
         self._commit_file(path)
 
     def _set_config(self):
-        '''set git configs'''
+        '''Set git configs.'''
         self.git.config('--local', 'core.autocrlf', 'input')
         self.git.config('--local', 'user.name', 'markwiki')
         self.git.config('--local', 'user.email', '')
 
     def _add_untracked(self):
-        '''add individual commits for each untracked file'''
+        '''Add individual commits for each untracked file.'''
         for f in self.git('ls-files', '-o').split('\n'):
             if f:
                 self._commit_file(f)
 
     def _add_local_change(self):
-        '''commit local changes if any'''
+        '''Commit local changes if any.'''
         for f in self.git('ls-files', '-m').split('\n'):
             if f:
                 self._commit_file(f)
 
     def _commit_file(self, path):
-        '''commit some change on a wiki page'''
+        '''Commit some change on a wiki page.'''
         self.git.add(path)
         msg = self.GIT_MSG % (path)
         self.git.commit('-m', msg)
 
     def get_changes(self, path):
-        '''get list of commits for a specific page'''
+        '''Get list of commits for a specific page.'''
         changes = []
         commits = self.git('--no-pager', 'log', '--format=%H,%ai', path)
         for commit in list(commits)[1:]:
@@ -61,11 +61,11 @@ class GitIntegration(object):
         return changes
 
     def view_history(self, path, commit):
-        '''view the file as it was at a specific commit'''
+        '''View the file as it was at a specific commit.'''
         content = self.git('--no-pager', 'show', '%s:%s' % (commit, path))
         return render_markdown_txt(content)
 
     def revert_file(self, path, commit):
-        '''revert a file to a specific commit'''
+        '''Revert a file to a specific commit.'''
         self.git.checkout(commit, path)
         self._commit_file(path)
