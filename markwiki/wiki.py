@@ -19,6 +19,7 @@ class WikiPage(object):
     def __init__(self, page_path):
         self.page_path = page_path
         self._wiki_path = None
+        self._rel_path = None
 
     @property
     def content(self):
@@ -56,6 +57,13 @@ class WikiPage(object):
                                            self.page_path + '.md')
         return self._wiki_path
 
+    @property
+    def rel_path(self):
+        '''Get the relative path.'''
+        if not self._rel_path:
+            self._rel_path = self.page_path + '.md'
+        return self._rel_path
+
     def store(self, content):
         '''Write the content. Assumes valid path. Returns success status.'''
         # Determine if the directories are already in place.
@@ -69,10 +77,13 @@ class WikiPage(object):
 
         try:
             with open(self.wiki_path, 'wb') as wiki:
-                wiki.write(content.encode('utf-8'))
+                # get rid of any Windows-like ending
+                wiki.write(content.encode('utf-8').replace('\r\n', '\n'))
         except IOError:
             # Something bad happened while writing so report failure.
             return False
+        if app.config['GIT_ENABLED']:
+            app.gitint.update_file(self.rel_path)
 
         return True
 
@@ -128,7 +139,7 @@ class WikiSection(object):
                 page_name = content[:-3]
                 self._pages.append(Page(page_name,
                                    os.path.join(self.section_path, page_name)))
-            else:
+            elif not content.startswith('.'):
                 self._subsections.append(
                     Section(content, os.path.join(self.section_path, content)))
 

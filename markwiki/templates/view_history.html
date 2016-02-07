@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}MarkWiki - {{ title }}{% endblock %}
+
+{% block content %}
+
+<div id='revert_modal' class='modal fade'>
+  <div class='modal-dialog'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <button type='button' class='close' data-dismiss='modal'
+          aria-hidden='true'>×</button>
+        <h3 class='modal-title'>Whoa... hold on.</h3>
+      </div>
+      <div class='modal-body'>
+        <p>If you continue, this wiki page will be reverted to the displayed
+        version. Are you sure you want to do this?</p>
+      </div>
+      <div class='modal-footer'>
+        <button class='btn btn-default' data-dismiss='modal'
+          aria-hidden='true'>Nope!</button>
+        <button id='really_revert' aria-hidden='true'
+          class='btn btn-danger'>Revert {{ page_path }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="heading">
+  <h3>Commit {{ commit }}</h3>
+</div>
+
+{{ content|safe }}
+
+<form id='revert_form' action='{{ url_for('revert', page_path=page, commit=commit) }}'
+   method='POST'>
+</form>
+{% endblock %}
+
+{% block actions %}
+{# When freezing, do not display the links. #}
+{% if not config['FREEZING'] %}
+  <h4>Actions</h4>
+  <div class='list-group'>
+    <a class='list-group-item' id='view'
+      href='{{ url_for('wiki', page_path=page) }}'><span
+      class='glyphicon glyphicon-default'></span> View current version</a>
+    <a class='list-group-item' id='history'
+      href='{{ url_for('history', page_path=page) }}'><span
+      class='glyphicon glyphicon-flash'></span> View all history</a>
+    <a class='list-group-item' id='revert'
+      href='{{ url_for('revert', page_path=page, commit=commit) }}'><span
+      class='glyphicon glyphicon-fast-backward'></span> Revert to this</a>
+  </div>
+{% endif %}
+{% endblock %}
+
+{% block onready %}
+$('#revert').click(function(event) {
+  // Prevent the default so that the GET delete doesn't happen.
+  event.preventDefault();
+  $('#revert_modal').modal('show');
+});
+
+$('#really_revert').click(function(event) {
+  $('#revert_form').submit();
+});
+{% endblock %}

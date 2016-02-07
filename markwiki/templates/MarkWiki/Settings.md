@@ -70,6 +70,11 @@ the settings before putting MarkWiki into production. Be safe, folks.
 
     Defaults to `file`.
 
+*   `GIT_ENABLED` - This versions the pages of the wiki with a local Git
+    repository. Users can view and revert a page to any older version if needed.
+
+    Defaults to `False`.
+
 ### Flask Settings Used By MarkWiki
 
 *   `DEBUG` - This is a debug flag. It is ***VERY IMPORTANT*** that this be set

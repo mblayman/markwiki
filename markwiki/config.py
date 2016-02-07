@@ -26,3 +26,6 @@ MARKWIKI_HOME = os.path.join(os.path.expanduser('~'), '.markwiki')
 # Advanced settings
 STATIC_PATH = None
 TEMPLATE_PATH = None
+
+# git integration
+GIT_ENABLED = False
