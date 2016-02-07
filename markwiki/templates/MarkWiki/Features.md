@@ -92,11 +92,11 @@ to be stored.
 ### Git integration
 
 Git can be enabled on Markwiki to handle the versioning of your different
-wiki pages. This allows you to view file's history of each page and
+wiki pages. This allows you to view a file's history of each page and
 get back to any version in a few clicks.
 
 To use it, please make sure `git` is in your PATH and then follow instructions
-under  `MarkWiki Specific Settings` in [[Markwiki/Settings]].
+under  `MarkWiki Specific Settings` in [[MarkWiki/Settings]].
 
 ### Customization
 
