@@ -1,6 +1,13 @@
 Releases
 ========
 
+Version 1.6, Released February 7, 2016
+--------------------------------------
+
+* Integrate with Git to provide version history for wiki pages.
+* Add the option to re-index the search engine from the command
+  line or the administrator interface.
+
 Version 1.5, Released May 8, 2015
 ---------------------------------
 
