@@ -5,9 +5,9 @@ import os
 
 from flask import Flask
 
+from markwiki.git.git_integration import GitIntegration
 from markwiki.search.engine import SearchEngine
 from markwiki.storage.factory import UserStorageFactory
-from markwiki.git.git_integration import GitIntegration
 from markwiki import util
 
 
@@ -27,7 +27,6 @@ def build_app(app_name):
     user_storage_factory = UserStorageFactory()
     app.user_storage = user_storage_factory.get_storage(app.config)
 
-    # init git
     app.gitint = None
     if app.config['GIT_ENABLED']:
         app.gitint = GitIntegration(app.config['WIKI_PATH'])
