@@ -8,7 +8,9 @@
 # Sometimes docs get built while some doc files are still open. Clean out the
 # swp files.
 docs:
+	rm -rf build/docs*
 	markwiki -f build/docs
 	find build/docs -name "*.swp" -print0 | xargs -0 rm -rf
 	find build/docs -type f -exec sed -i "s|='/|='/MarkWiki/|g" {} \;
 	find build/docs -type f -exec sed -i 's|="/|="/MarkWiki/|g' {} \;
+	cd build/docs && zip -r ../docs.zip ./* && cd ../..
