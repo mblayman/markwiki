@@ -187,6 +187,7 @@ def search():
 
 @app.route('/reindex/')
 def reindex():
+    '''Force recreation of index for search.'''
     results = app.search_engine.create_index(app.config['WIKI_PATH'])
     flash('Search index re-created', 'info')
     return redirect(url_for('index'))
