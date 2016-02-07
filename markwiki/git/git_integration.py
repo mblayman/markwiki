@@ -32,13 +32,13 @@ class GitIntegration(object):
 
     def _add_untracked(self):
         '''Add individual commits for each untracked file.'''
-        for f in self.git('ls-files', '-o').split('\n'):
+        for f in self.git('ls-files', '--others').split('\n'):
             if f:
                 self._commit_file(f)
 
     def _add_local_change(self):
         '''Commit local changes if any.'''
-        for f in self.git('ls-files', '-m').split('\n'):
+        for f in self.git('ls-files', '--modified').split('\n'):
             if f:
                 self._commit_file(f)
 
@@ -46,7 +46,7 @@ class GitIntegration(object):
         '''Commit some change on a wiki page.'''
         self.git.add(path)
         msg = self.GIT_MSG % (path)
-        self.git.commit('-m', msg)
+        self.git.commit('--message', msg)
 
     def get_changes(self, path):
         '''Get list of commits for a specific page.'''
