@@ -16,4 +16,8 @@ Guidelines
    check.
 2. Please try to conform with any other conventions seen in the code for
    consistency (e.g., using ``'''`` for docstrings instead of ``"""``).
-3. Make sure your change works against master! (Bonus points for unit tests.)
+3. Docstrings and comments should be grammatical English sentences,
+   including punctuation.
+4. Import order should follow PEP 8 style *and* be alphabetized within each
+   group.
+5. Make sure your change works against master! (Bonus points for unit tests.)
