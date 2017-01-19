@@ -28,7 +28,7 @@ class GitIntegration(object):
         '''Set git configs.'''
         self.git.config('--local', 'core.autocrlf', 'input')
         self.git.config('--local', 'user.name', 'markwiki')
-        self.git.config('--local', 'user.email', '')
+        self.git.config('--local', 'user.email', '<>')
 
     def _add_untracked(self):
         '''Add individual commits for each untracked file.'''
